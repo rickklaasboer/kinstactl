@@ -46,6 +46,7 @@
         "build:lib": "bun build src/index.ts --target=node --outfile dist/index.js",
         "build:types": "tsc -p tsconfig.build.json",
         "prepack": "bun run build",
+        "build:bin": "bun scripts/build-binaries.ts",
         "smoke:package": "bash scripts/smoke-package.sh"
     },
     "devDependencies": {
