@@ -117,6 +117,43 @@ test('src/client uses no path aliases', () => {
     expect(hits).toEqual([]);
 });
 
+function extensionlessRelativeImports(source: string): string[] {
+    return [...source.matchAll(/(?:from\s+|import\(\s*)'(\.{1,2}\/[^']*)'/g)]
+        .map((m) => m[1] as string)
+        .filter((specifier) => !specifier.endsWith('.js'));
+}
+
+test('the relative import matcher flags extensionless specifiers', () => {
+    const source = [
+        "import {a} from './a';",
+        "export * as b from '../b';",
+        "const c = await import('./c');",
+        "import {d} from './d.js';",
+        "import {e} from 'node:fs';",
+    ].join('\n');
+    expect(extensionlessRelativeImports(source)).toEqual([
+        './a',
+        '../b',
+        './c',
+    ]);
+});
+
+test('src/client and src/index.ts use .js extensions on relative imports', () => {
+    const files = [
+        'src/index.ts',
+        ...readdirSync('src/client', {recursive: true, encoding: 'utf8'})
+            .filter((f) => f.endsWith('.ts') && !f.startsWith('generated'))
+            .map((f) => join('src/client', f)),
+    ];
+    expect(files.length).toBeGreaterThan(1);
+    const hits = files.flatMap((f) =>
+        extensionlessRelativeImports(readFileSync(f, 'utf8')).map(
+            (specifier) => `${f}: ${specifier}`,
+        ),
+    );
+    expect(hits).toEqual([]);
+});
+
 test('src/cli uses no @singleton', () => {
     const files = readdirSync('src/cli', {
         recursive: true,
