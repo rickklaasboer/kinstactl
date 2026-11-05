@@ -5,7 +5,9 @@ import {AuthLogoutCommand} from './auth/AuthLogoutCommand';
 import {AuthProfilesCommand} from './auth/AuthProfilesCommand';
 import {AuthStatusCommand} from './auth/AuthStatusCommand';
 import {registerBackups} from './backups';
-import {registerCache} from './cache';
+import {CacheCdnClearCommand} from './cache/CacheCdnClearCommand';
+import {CacheClearCommand} from './cache/CacheClearCommand';
+import {CacheEdgeClearCommand} from './cache/CacheEdgeClearCommand';
 import {registerCommands} from './commands';
 import type {CommandClass, GroupDef} from './BaseCommand';
 import {EnvListCommand} from './env/EnvListCommand';
@@ -13,7 +15,8 @@ import {EnvPushCommand} from './env/EnvPushCommand';
 import {LogsCommand} from './logs/LogsCommand';
 import {OperationsGetCommand} from './operations/OperationsGetCommand';
 import {OperationsWaitCommand} from './operations/OperationsWaitCommand';
-import {registerPhp} from './php';
+import {PhpRestartCommand} from './php/PhpRestartCommand';
+import {PhpVersionCommand} from './php/PhpVersionCommand';
 import {registerPlugins} from './plugins';
 import {SitesGetCommand} from './sites/SitesGetCommand';
 import {SitesListCommand} from './sites/SitesListCommand';
@@ -36,8 +39,11 @@ export const COMMANDS: (CommandClass | LegacyEntry)[] = [
     SitesGetCommand,
     EnvListCommand,
     EnvPushCommand,
-    {legacy: registerCache},
-    {legacy: registerPhp},
+    CacheClearCommand,
+    CacheEdgeClearCommand,
+    CacheCdnClearCommand,
+    PhpRestartCommand,
+    PhpVersionCommand,
     {legacy: registerPlugins},
     {legacy: registerBackups},
 ];
@@ -50,4 +56,8 @@ export const GROUPS: GroupDef[] = [
     },
     {path: 'sites', description: 'List and inspect Kinsta sites'},
     {path: 'env', description: 'List and manage environments of a site'},
+    {path: 'cache', description: 'Clear the caches of a site environment'},
+    {path: 'cache edge', description: 'Edge cache'},
+    {path: 'cache cdn', description: 'CDN cache'},
+    {path: 'php', description: 'Manage the PHP engine of a site environment'},
 ];
