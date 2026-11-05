@@ -2204,7 +2204,7 @@ exports[`commands --json is unchanged 1`] = `
               "flags": "--env <environment>",
             },
             {
-              "description": "also add the www subdomain",
+              "description": "also add the www subdomain (requires --wildcard)",
               "flags": "--with-www",
             },
             {
@@ -4697,7 +4697,7 @@ Arguments:
 
 Options:
   --env <environment>  environment name or ID
-  --with-www           also add the www subdomain
+  --with-www           also add the www subdomain (requires --wildcard)
   --wildcard           also cover subdomains (clears is_wildcardless)
   --setup-type <type>  quick or avoid_downtime
   --ssl-key <file>     private key file of a custom SSL certificate
@@ -4709,7 +4709,7 @@ Options:
 
 Examples:
   $ kinstactl domains add klant-x example.com --env live
-  $ kinstactl domains add klant-x example.com --with-www --ssl-key key.pem --ssl-cert cert.pem
+  $ kinstactl domains add klant-x example.com --wildcard --with-www --ssl-key key.pem --ssl-cert cert.pem
 "
 ,
 }

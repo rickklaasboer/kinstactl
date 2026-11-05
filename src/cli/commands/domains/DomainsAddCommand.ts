@@ -66,7 +66,7 @@ export class DomainsAddCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
         {
             flags: '--with-www',
-            description: 'also add the www subdomain',
+            description: 'also add the www subdomain (requires --wildcard)',
         },
         {
             flags: '--wildcard',
@@ -89,7 +89,7 @@ export class DomainsAddCommand implements BaseCommand<Options> {
     ];
     readonly examples = [
         'kinstactl domains add klant-x example.com --env live',
-        'kinstactl domains add klant-x example.com --with-www --ssl-key key.pem --ssl-cert cert.pem',
+        'kinstactl domains add klant-x example.com --wildcard --with-www --ssl-key key.pem --ssl-cert cert.pem',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',
@@ -107,6 +107,9 @@ export class DomainsAddCommand implements BaseCommand<Options> {
                 'USAGE',
                 '--ssl-key and --ssl-cert must be given together',
             );
+        // The API rejects add_with_www_subdomain while is_wildcardless is true (its default).
+        if (options.withWww && !options.wildcard)
+            throw new CliError('USAGE', '--with-www requires --wildcard');
         const domain = args.domain as string;
         const customSslKey =
             options.sslKey && readPemFile('--ssl-key', options.sslKey);

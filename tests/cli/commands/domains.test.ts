@@ -103,6 +103,16 @@ describe('domains add', () => {
         });
     });
 
+    test('--with-www without --wildcard is a usage error', async () => {
+        const r = await runCli(
+            ['domains', 'add', 'klant-x', 'new.com', '--with-www'],
+            {routes: {...base, ...addRoute}},
+        );
+        expect(r.code).toBe(2);
+        expect(r.stderr).toContain('--with-www requires --wildcard');
+        expect(writes(r.calls)).toHaveLength(0);
+    });
+
     test('an unknown --setup-type is a usage error', async () => {
         const r = await runCli(
             ['domains', 'add', 'klant-x', 'new.com', '--setup-type', 'fast'],
