@@ -16,6 +16,8 @@ test('release-it bumps on main and leaves publishing to the workflow', () => {
     expect(releaseIt.git.requireBranch).toBe('main');
     expect(releaseIt.npm.publish).toBe(false);
     expect(releaseIt.github.release).toBe(true);
+    // a re-run with increment "none" finds the tag and its release already there
+    expect(releaseIt.github.update).toBe(true);
     expect(releaseIt.hooks['before:init']).toEqual([
         'bun run lint',
         'bun test',
