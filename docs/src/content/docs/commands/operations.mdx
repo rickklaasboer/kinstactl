@@ -15,14 +15,14 @@ kinstactl operations wait <operation-id>
 
 ## Operation IDs
 
-Every command that starts an operation takes `--no-wait`. It returns as soon as Kinsta has accepted the request and prints the operation ID, followed by a hint on stderr:
+Most commands that start an operation take `--no-wait` (commands that finish immediately, such as `ssh enable`, do not; `--help` lists the flags). It returns as soon as Kinsta has accepted the request. Without `--json` stdout gets a `Started …` line and the operation ID appears only in the `Follow with:` hint on stderr:
 
 ```text
 ✔ Started Clear cache
 Follow with: kinstactl operations wait 0e7b2d61-example
 ```
 
-With `--json` the ID is in the `operation_id` field of the output, next to `status: "pending"`.
+With `--json` stdout has the ID in the `operation_id` field, next to `status: "pending"`, so use `--json` when a script has to capture it.
 
 ## operations get
 
