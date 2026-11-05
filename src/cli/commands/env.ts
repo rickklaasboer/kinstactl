@@ -98,6 +98,16 @@ export function registerEnv(program: Command, rt: Runtime): void {
                     'USAGE',
                     '--from and --to must be different environments',
                 );
+            if (!opts.db && !opts.files)
+                throw new CliError(
+                    'USAGE',
+                    'nothing to push: --no-db and --no-files together',
+                );
+            if (!opts.files && opts.path !== undefined)
+                throw new CliError(
+                    'USAGE',
+                    '--path requires pushing files (drop --no-files)',
+                );
 
             const what = [opts.db && 'database', opts.files && 'files'].filter(
                 (w): w is string => typeof w === 'string',

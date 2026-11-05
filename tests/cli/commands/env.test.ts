@@ -162,6 +162,26 @@ describe('env push', () => {
         expect(puts(r.calls)).toEqual([]);
     });
 
+    test('--no-db with --no-files exits 2 and sends no PUT', async () => {
+        const r = await runCli(
+            [...base, '--no-db', '--no-files', '--yes', '--json'],
+            {routes: pushRoutes},
+        );
+        expect(r.code).toBe(2);
+        expect(JSON.parse(r.stderr).error.code).toBe('USAGE');
+        expect(puts(r.calls)).toEqual([]);
+    });
+
+    test('--no-files with --path exits 2 and sends no PUT', async () => {
+        const r = await runCli(
+            [...base, '--no-files', '--path', 'wp-content', '--yes', '--json'],
+            {routes: pushRoutes},
+        );
+        expect(r.code).toBe(2);
+        expect(JSON.parse(r.stderr).error.code).toBe('USAGE');
+        expect(puts(r.calls)).toEqual([]);
+    });
+
     test('missing --to non-interactive exits 2 with ENV_REQUIRED', async () => {
         const r = await runCli(
             ['env', 'push', 'klant-x', '--from', 'staging', '--yes', '--json'],
