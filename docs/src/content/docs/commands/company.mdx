@@ -1,0 +1,128 @@
+---
+title: company
+description: Manage company users and their roles, and list API keys, regions, activity, plugins and themes of the company.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `company` commands work on the company your API key belongs to: its users and their roles, its API keys, the regions you can create sites in, its activity log, and the plugins and themes in use across all its sites.
+
+```sh
+kinstactl company users list
+kinstactl company activity --category siteActions --limit 25
+kinstactl company plugins --updates --vulnerable
+```
+
+All of them are scoped to the company of the active profile; see [profiles](/getting-started/profiles/). The listing commands only read. The two role commands change something and accept `--dry-run`, `--no-wait` and `--timeout <minutes>`; see [operations](/commands/operations/). Neither asks for confirmation.
+
+## company users list
+
+List the users of the company with their roles.
+
+```sh
+kinstactl company users list
+```
+
+<CommandRef path="company users list" />
+
+The table shows each user's email, name, roles and ID. Use the email, the full name or the ID wherever another command asks for a `<user>`.
+
+## company users get
+
+Show a company user and the roles they hold.
+
+```sh
+kinstactl company users get jan@example.com
+```
+
+<CommandRef path="company users get" />
+
+The user is looked up by exact email, ID or full name first, then by a unique prefix. If several users match, the command fails with a `USAGE` error that lists their emails; it never picks one for you. The output shows the email, name and two-factor setting, followed by a table with the roles of the user and the company or site each role applies to.
+
+## company users role
+
+Set the company-wide role of a user.
+
+```sh
+kinstactl company users role jan@example.com company-developer
+```
+
+<CommandRef path="company users role" />
+
+The role is one of `company-admin`, `company-developer` or `company-billing`. On success the command prints `<email> is now <role>`; with `--json` you get `user_id`, `role`, `status` and, when Kinsta started an operation, its `operation_id`.
+
+## company users site-role
+
+Set the role of a user on one site.
+
+```sh
+kinstactl company users site-role jan@example.com my-site site-developer
+```
+
+<CommandRef path="company users site-role" />
+
+The role is `site-admin` or `site-developer`, and applies to the one site. The site is resolved against fresh data, not the cache. See [Sites and environments](/getting-started/sites-and-environments/) for how a site is named.
+
+## company api-keys
+
+List the API keys of the company.
+
+```sh
+kinstactl company api-keys
+```
+
+<CommandRef path="company api-keys" />
+
+The table shows the name, status, expiry (`never` when the key does not expire) and ID of each key. The key itself is never shown.
+
+## company regions
+
+List the regions a site can be created in.
+
+```sh
+kinstactl company regions
+```
+
+<CommandRef path="company regions" />
+
+The table shows the region ID and its name. The ID is what [`sites create`](/commands/sites/) takes in `--region`.
+
+## company activity
+
+Show the activity log of the company.
+
+```sh
+kinstactl company activity --category siteActions --site my-site --limit 25
+```
+
+<CommandRef path="company activity" />
+
+The command shows 10 entries by default; page through the log with `--limit` and `--offset`. The table shows the date, type, site ID, who started it (a user or an API key) and the status (`done`, `pending`, `warning` or `failed`). A line such as `10 of 340` goes to stderr.
+
+`--category` narrows the log to one of `siteActions`, `kinstaDns`, `migrations`, `billing`, `notifications`, `userManagement`, `personalSettings` or `samlSso`. `--site` keeps the entries of one site, by name, display name or ID. `--language` sets the language of the descriptions to one of `da`, `de`, `en`, `es`, `fr`, `it`, `ja`, `nl`, `pt` or `sv`.
+
+## company plugins
+
+List the plugins in use across the company.
+
+```sh
+kinstactl company plugins --updates --vulnerable
+```
+
+<CommandRef path="company plugins" />
+
+The table shows each plugin once, with its latest version, the number of environments that use it, the number of pending updates and whether the latest version is vulnerable. This is the company-wide inventory; for one environment use [`plugins list`](/commands/plugins/).
+
+`--updates` keeps plugins with at least one update available, and `--vulnerable` keeps plugins whose latest version is vulnerable. Both filters are applied by kinstactl after the full inventory is fetched, and combining them keeps only plugins that match both. When the inventory is empty, the command prints a message with the time it was last updated instead of a table.
+
+## company themes
+
+List the themes in use across the company.
+
+```sh
+kinstactl company themes --updates
+```
+
+<CommandRef path="company themes" />
+
+Works like `company plugins`, with the same table, the same `--updates` and `--vulnerable` filters and the same message for an empty inventory. For one environment use [`themes list`](/commands/themes/).

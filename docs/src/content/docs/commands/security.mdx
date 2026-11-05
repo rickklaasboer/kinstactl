@@ -1,0 +1,178 @@
+---
+title: security
+description: Force HTTPS, bot protection, denied IPs and redirect rules of an environment.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `security` commands show and change the security settings of an environment: how HTTPS is forced, bot protection, the list of denied IP addresses and the redirect rules.
+
+```sh
+kinstactl security force-https my-site --env live
+kinstactl security bot-protection level my-site challenge-bots --env live
+kinstactl security redirects add my-site /old /new --env live
+```
+
+Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/). Commands that change something accept `--dry-run`, which prints the request and sends nothing; a dry run needs no confirmation. Commands marked below as asking for confirmation prompt on a terminal; in a script pass `--yes`, otherwise they fail with `CONFIRMATION_REQUIRED` (exit code 5).
+
+`--no-wait` and `--timeout <minutes>` exist on `force-https`, on the three `bot-protection` settings and on `bot-protection exceptions add` and `delete`; see [operations](/commands/operations/). The `denied-ips` and `redirects` commands have neither flag.
+
+## security force-https
+
+Show or change how an environment forces HTTPS.
+
+```sh
+kinstactl security force-https my-site primary --env live
+```
+
+<CommandRef path="security force-https" />
+
+Without a mode the command prints the current one. The mode is one of `all` (redirect every domain to HTTPS), `primary` (redirect to the primary domain) or `off` (do not force HTTPS). Changing it asks for no confirmation and waits for Kinsta to finish.
+
+## security bot-protection level
+
+Show or set the bot protection level.
+
+```sh
+kinstactl security bot-protection level my-site challenge-bots --env live
+```
+
+<CommandRef path="security bot-protection level" />
+
+Without a value the command prints the current level, or `(not configured)` when the environment has no bot protection. The level is one of `block-malicious-traffic`, `block-automations`, `challenge-bots` or `challenge-everyone`. Setting it asks for no confirmation.
+
+## security bot-protection ai-crawlers
+
+Show or set whether AI crawlers are blocked.
+
+```sh
+kinstactl security bot-protection ai-crawlers my-site block --env live
+```
+
+<CommandRef path="security bot-protection ai-crawlers" />
+
+The value is `block` or `allow`. Without a value the command prints the current one, or `(not configured)`.
+
+## security bot-protection wp-automations
+
+Show or set whether WordPress automations are allowed.
+
+```sh
+kinstactl security bot-protection wp-automations my-site allow --env live
+```
+
+<CommandRef path="security bot-protection wp-automations" />
+
+The value is `allow` or `block`. Without a value the command prints the current one, or `(not configured)`.
+
+## security bot-protection exceptions list
+
+List the bot protection exception rules.
+
+```sh
+kinstactl security bot-protection exceptions list my-site --env live
+```
+
+<CommandRef path="security bot-protection exceptions list" />
+
+The table shows the ID, type, action and value of each rule. When the environment also has custom WAF rules, the command adds a line about that on stderr. The ID is what `exceptions delete` expects, and has the form `type:action:value`, for example `ip:skip:192.0.2.1`.
+
+## security bot-protection exceptions add
+
+Add a bot protection exception rule.
+
+```sh
+kinstactl security bot-protection exceptions add my-site ip skip 192.0.2.1 --env live
+```
+
+<CommandRef path="security bot-protection exceptions add" />
+
+A rule has a type (`ip`, `path`, `user_agent` or `country`), an action (`skip`, `challenge` or `block`) and the value to match, such as an IP address or a country code. Adding needs no confirmation.
+
+## security bot-protection exceptions delete
+
+Delete a bot protection exception rule.
+
+```sh
+kinstactl security bot-protection exceptions delete my-site ip:skip:192.0.2.1 --env live --yes
+```
+
+<CommandRef path="security bot-protection exceptions delete" />
+
+The rule is identified by its ID, as shown by `exceptions list`. The command asks for confirmation; in a script pass `--yes`.
+
+## security denied-ips
+
+Show or change the denied IP addresses of an environment.
+
+```sh
+kinstactl security denied-ips my-site --env live
+```
+
+<CommandRef path="security denied-ips" />
+
+Without `--add`, `--remove` or `--clear` the command prints the current list, one address per line. `--add` and `--remove` take one or more addresses; `--clear` empties the list:
+
+```sh
+kinstactl security denied-ips my-site --env live --add 203.0.113.7 --yes
+kinstactl security denied-ips my-site --env live --remove 203.0.113.7 203.0.113.8 --yes
+kinstactl security denied-ips my-site --env live --clear --yes
+```
+
+Kinsta only accepts the complete list, so the command reads the current list, applies your change and sends the result, replacing the whole list. Every change therefore asks for confirmation; in a script pass `--yes`. The command fails with a `USAGE` error if you add an address that is already present, repeat one in `--add`, give the same address to `--add` and `--remove`, remove an address that is not in the list, or combine `--clear` with `--add` or `--remove`.
+
+## security redirects list
+
+List the redirect rules of an environment.
+
+```sh
+kinstactl security redirects list my-site --env live --search /blog --sort from --desc
+```
+
+<CommandRef path="security redirects list" />
+
+The table shows the from path, the target, the type and the domain (`(all)` for a rule that applies to every domain). The command shows 10 rules by default; page through the rest with `--limit` and `--offset`. A line such as `10 of 42 rules` goes to stderr. `--search` keeps rules matching a text, or a regular expression with `--regex`. `--sort` takes `domain`, `from`, `to` or `type`, and `--desc` reverses the order.
+
+## security redirects add
+
+Add a redirect rule.
+
+```sh
+kinstactl security redirects add my-site /old /new --env live
+```
+
+<CommandRef path="security redirects add" />
+
+The rule redirects the path `from` to a path or URL `to`. `--type` is `permanent` (301, the default) or `redirect` (302). Without `--domain` the rule applies to every domain. Adding needs no confirmation.
+
+```sh
+kinstactl security redirects add my-site /old https://example.com/new --env live --type redirect --domain example.com
+```
+
+## security redirects update
+
+Change a redirect rule.
+
+```sh
+kinstactl security redirects update my-site /old --env live --to /newer --yes
+```
+
+<CommandRef path="security redirects update" />
+
+The rule is found by its from path. Pass at least one of `--to`, `--type` or `--new-domain`, otherwise the command fails with a `USAGE` error. When several rules share the same from path, the command fails and lists their domains; pick one with `--domain`. Updating asks for confirmation; in a script pass `--yes`.
+
+## security redirects delete
+
+Delete a redirect rule, or all of them.
+
+```sh
+kinstactl security redirects delete my-site /old --env live --yes
+```
+
+<CommandRef path="security redirects delete" />
+
+Pass either the from path of one rule or `--all`, not both and not neither. `--domain` picks the rule when several share the from path, and cannot be combined with `--all`. Deleting asks for confirmation; in a script pass `--yes`.
+
+```sh
+kinstactl security redirects delete my-site --env live --all --yes
+```

@@ -1,0 +1,48 @@
+---
+title: commands
+description: List every command with its arguments, options and API endpoints, for people and for scripts.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `commands` command prints the full command tree of kinstactl. It needs no credentials and makes no request.
+
+```sh
+kinstactl commands
+kinstactl commands --json
+```
+
+## commands
+
+List all commands, their options and the API endpoints they use.
+
+```sh
+kinstactl commands
+```
+
+<CommandRef path="commands" />
+
+Without `--json` the command prints the tree as indented text: one line per command with its arguments (`<site>` for a required one, `[site]` for an optional one) and its description. Options are not part of this view; for those use `--help` on a command, or `--json`.
+
+### The JSON tree
+
+With `--json` the command prints the whole tree as one JSON document, starting at the `kinstactl` program itself. Every node has the same shape:
+
+| Field | Meaning |
+| --- | --- |
+| `name` | The last word of the command, such as `list`. |
+| `path` | The full command, such as `backups downloadable list`; empty for the root. |
+| `description` | The one-line description. |
+| `arguments` | The positional arguments, each with `name`, `required`, `description` and, when the values are fixed, `choices`. |
+| `options` | The flags, each with `flags` and `description`. |
+| `destructive` | `"confirm"` when the command asks for confirmation (`--yes` skips it), `"irreversible"` when you must pass `--confirm <site-name>`, or `null`. |
+| `endpoints` | The Kinsta API endpoints the command calls, such as `GET /sites`. |
+| `commands` | The child nodes. A node without children is a command you can run. |
+
+The root node lists the options that apply to every command (`--profile`, `--json`, `--no-input`), and every command node repeats them in its own `options`.
+
+The tree is generated from the same definitions that drive the commands, so it is always current. A script can use it to find the commands that change something, or the endpoints a command depends on:
+
+```sh
+kinstactl commands --json | jq '[.. | objects | select(.destructive != null) | .path]'
+```

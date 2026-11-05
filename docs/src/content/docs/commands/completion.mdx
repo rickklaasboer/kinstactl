@@ -1,0 +1,76 @@
+---
+title: completion
+description: Print the shell completion script for zsh, bash or fish.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `completion` commands print a completion script that makes your shell complete kinstactl commands, flags, site names and environment names.
+
+```sh
+kinstactl completion zsh > "${fpath[1]}/_kinstactl"
+eval "$(kinstactl completion bash)"
+kinstactl completion fish > ~/.config/fish/completions/kinstactl.fish
+```
+
+Each command prints the script of one shell to stdout, so you install it by redirecting the output to the place your shell loads completions from, or by evaluating it. With `--json` the command prints an object with the `shell` and the `script`. Site and environment names come from the site cache; see [Sites and environments](/getting-started/sites-and-environments/).
+
+## completion zsh
+
+Print the zsh completion script.
+
+```sh
+kinstactl completion zsh > "${fpath[1]}/_kinstactl"
+```
+
+<CommandRef path="completion zsh" />
+
+This writes the script to the first directory in your `fpath`, under the name `_kinstactl` that zsh looks for. Start a new shell to load it.
+
+## completion bash
+
+Print the bash completion script.
+
+```sh
+eval "$(kinstactl completion bash)"
+```
+
+<CommandRef path="completion bash" />
+
+Put the `eval` line in your `~/.bashrc` to load the script in every shell.
+
+## completion fish
+
+Print the fish completion script.
+
+```sh
+kinstactl completion fish > ~/.config/fish/completions/kinstactl.fish
+```
+
+<CommandRef path="completion fish" />
+
+Fish loads every file in `~/.config/fish/completions`, so the script is active in the next shell you start.
+
+## completion sites
+
+Print the site names for shell completion.
+
+```sh
+kinstactl completion sites
+```
+
+<CommandRef path="completion sites" />
+
+A helper that the completion scripts call to complete a `<site>` argument; you do not run it yourself. It prints one site name per line from the site cache, and fetches the list from Kinsta only when the cache has expired.
+
+## completion envs
+
+Print the environment names of a site for shell completion.
+
+```sh
+kinstactl completion envs my-site
+```
+
+<CommandRef path="completion envs" />
+
+A helper that the completion scripts call to complete `--env`; you do not run it yourself. It prints one environment name of the site per line, from the site cache, and never opens the site picker.
