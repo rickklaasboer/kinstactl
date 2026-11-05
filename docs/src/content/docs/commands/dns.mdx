@@ -1,0 +1,86 @@
+---
+title: dns
+description: List the DNS zones of the company and manage the records in them.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `dns` commands manage the DNS zones Kinsta hosts for your company and the records inside them. They work on zones, not on sites, so they take no `--env`.
+
+```sh
+kinstactl dns zones
+kinstactl dns records list example.com
+kinstactl dns records add example.com A www --value 203.0.113.10
+```
+
+Wherever a command takes a `<zone>`, give the zone name or its ID; a unique prefix of the name also works, and an ambiguous one fails with the matching names. Records are identified by their `<type>` and `<name>`, for example `A` and `www`. Commands that change records wait for Kinsta to finish by default, and accept `--no-wait`, `--timeout <minutes>` and `--dry-run`; see [operations](/commands/operations/).
+
+## dns zones
+
+List the DNS zones of the company.
+
+```sh
+kinstactl dns zones
+```
+
+<CommandRef path="dns zones" />
+
+The table shows the name, ID and linked site of each zone, and whether it is active. Use it to find the zone name for the other commands.
+
+## dns records list
+
+List the DNS records of a zone.
+
+```sh
+kinstactl dns records list example.com
+```
+
+<CommandRef path="dns records list" />
+
+The table shows the type, name and TTL of each record, and its values. A record with several values, such as a round-robin `A` record, shows them comma-separated.
+
+## dns records add
+
+Add a DNS record to a zone.
+
+```sh
+kinstactl dns records add example.com A www --value 203.0.113.10
+```
+
+<CommandRef path="dns records add" />
+
+`--value` is required; without it the command fails with a `USAGE` error, there is no prompt. Repeat the values after one `--value` to create a round-robin record, and set the TTL with `--ttl`:
+
+```sh
+kinstactl dns records add example.com A @ --value 203.0.113.10 203.0.113.11 --ttl 600
+```
+
+`--ttl` is in seconds, at least 300, which is also the default.
+
+## dns records update
+
+Change the TTL or values of a DNS record.
+
+```sh
+kinstactl dns records update example.com A www --ttl 600
+```
+
+<CommandRef path="dns records update" />
+
+Pass at least one of `--ttl`, `--add` and `--remove`; with none the command fails with `Nothing to change`. `--add` and `--remove` change the values of the record, each taking one or more values:
+
+```sh
+kinstactl dns records update example.com A www --add 203.0.113.11 --remove 203.0.113.10
+```
+
+## dns records delete
+
+Delete a DNS record from a zone.
+
+```sh
+kinstactl dns records delete example.com A www --yes
+```
+
+<CommandRef path="dns records delete" />
+
+Deleting removes the record with all its values, so the command asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`, otherwise it fails with `CONFIRMATION_REQUIRED` (exit code 5).

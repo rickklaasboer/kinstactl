@@ -1,0 +1,26 @@
+---
+title: db
+description: Open the database of an environment in phpMyAdmin.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `db` command gives you access to the database of an environment through phpMyAdmin. For changing text in the database, see [search-replace](/commands/search-replace/).
+
+```sh
+kinstactl db login klant-x --env live
+```
+
+## db login
+
+Create a phpMyAdmin login link.
+
+```sh
+kinstactl db login klant-x --env live
+```
+
+<CommandRef path="db login" />
+
+The command prints a URL on stdout. Open it in a browser to be logged in to phpMyAdmin without a password. With `--json` it prints `url` and `expires_at`, so a script can see how long the link is valid. Treat the URL like a password while it is valid.
+
+Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/). The command accepts `--dry-run`, but has no `--no-wait`.

@@ -1,0 +1,143 @@
+---
+title: ssh
+description: Turn SSH and SFTP access on and off, show the connection details, manage the IP allowlist and the SSH password.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `ssh` commands control SSH and SFTP access to an environment. For extra SFTP accounts with their own credentials, see [sftp-users](/commands/sftp-users/).
+
+```sh
+kinstactl ssh status klant-x --env live
+kinstactl ssh config klant-x --env live
+kinstactl ssh password get klant-x --env live
+```
+
+Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/). Commands that change something accept `--dry-run`, which prints the request and sends nothing. The `--no-wait` and `--timeout` flags of [operations](/commands/operations/) do not exist here.
+
+## ssh status
+
+Show whether SSH and SFTP access is enabled.
+
+```sh
+kinstactl ssh status klant-x --env live
+```
+
+<CommandRef path="ssh status" />
+
+The command prints `enabled` or `disabled`. With `--json` it prints `site`, `environment` and `is_ssh_enabled`.
+
+## ssh enable
+
+Enable SSH and SFTP access of an environment.
+
+```sh
+kinstactl ssh enable klant-x --env live
+```
+
+<CommandRef path="ssh enable" />
+
+Enabling needs no confirmation. On success the command prints `SSH enabled`.
+
+## ssh disable
+
+Disable SSH and SFTP access of an environment.
+
+```sh
+kinstactl ssh disable klant-x --env live
+```
+
+<CommandRef path="ssh disable" />
+
+Disabling asks for no confirmation either. On success the command prints `SSH disabled`.
+
+## ssh config
+
+Show the SSH and SFTP connection details.
+
+```sh
+kinstactl ssh config klant-x --env live
+```
+
+<CommandRef path="ssh config" />
+
+The command prints the host, port and user, followed by a ready-to-run command line of the form `ssh <user>@<host> -p <port>`. It does not print a `~/.ssh/config` block, and no password. With `--json` you get `host`, `port`, `user` and `ssh_command`. If the environment has no connection details, the command fails with `API_ERROR`.
+
+## ssh allowlist
+
+Show or change the IP allowlist for SSH and SFTP access.
+
+```sh
+kinstactl ssh allowlist klant-x --env live
+```
+
+<CommandRef path="ssh allowlist" />
+
+Without `--add` or `--remove` the command prints the current allowlist, one address per line. `--add` and `--remove` take one or more addresses and change the list:
+
+```sh
+kinstactl ssh allowlist klant-x --env live --add 203.0.113.7
+kinstactl ssh allowlist klant-x --env live --remove 203.0.113.7 203.0.113.8
+```
+
+The command checks the change against the current list before sending it. It fails with a `USAGE` error if you add an address that is already present, repeat one in `--add`, give the same address to `--add` and `--remove`, or remove an address that is not in the list. There is no option to clear the whole list; remove the addresses one by one. Changes need no confirmation.
+
+## ssh password get
+
+Print the SSH and SFTP password of an environment.
+
+```sh
+kinstactl ssh password get klant-x --env live
+```
+
+<CommandRef path="ssh password get" />
+
+The password is the only thing printed on stdout, so it can be captured in a script. With `--json` it is the field `sftp_password`. This is the only `ssh` command that prints a secret.
+
+## ssh password generate
+
+Generate a new SSH and SFTP password.
+
+```sh
+kinstactl ssh password generate klant-x --env live
+```
+
+<CommandRef path="ssh password generate" />
+
+The new password replaces the old one, and is not printed. The command prints a message that tells you to run `ssh password get` to read it.
+
+## ssh password enable
+
+Enable SSH and SFTP password login.
+
+```sh
+kinstactl ssh password enable klant-x --env live
+```
+
+<CommandRef path="ssh password enable" />
+
+On success the command prints `SSH password login enabled`.
+
+## ssh password disable
+
+Disable SSH and SFTP password login.
+
+```sh
+kinstactl ssh password disable klant-x --env live
+```
+
+<CommandRef path="ssh password disable" />
+
+On success the command prints `SSH password login disabled`. Neither this command nor `ssh password enable` asks for confirmation.
+
+## ssh password expiration
+
+Set how long the SSH and SFTP password stays valid.
+
+```sh
+kinstactl ssh password expiration klant-x 7d --env live
+```
+
+<CommandRef path="ssh password expiration" />
+
+The interval is a required argument after the site, and one of `24h`, `7d`, `30d`, `90d` or `never`. On success the command prints `Password expiration set to <interval>`.
