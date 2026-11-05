@@ -142,7 +142,10 @@ export class OperationRunner {
         const {title, spec, target, flags, confirm, redact} = args;
 
         if (flags.dryRun) {
-            const body = redact ? redact(spec.body) : spec.body;
+            const body =
+                redact && spec.body !== undefined
+                    ? redact(spec.body)
+                    : spec.body;
             const request = {
                 method: spec.method,
                 path: spec.path,

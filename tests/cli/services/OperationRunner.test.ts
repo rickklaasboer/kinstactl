@@ -182,6 +182,20 @@ describe('runOperation redact', () => {
         expect(human.stdout).not.toContain('secret');
     });
 
+    test('dry-run leaves a request without body unredacted', async () => {
+        const getSpec: RequestSpec = {
+            endpoint: 'GET /sites',
+            method: 'GET',
+            path: '/sites',
+        };
+        const r = await exec(
+            {},
+            {dryRun: true},
+            {json: true, spec: getSpec, redact},
+        );
+        expect(JSON.parse(r.stdout).request).not.toHaveProperty('body');
+    });
+
     test('redact does not touch the sent body', async () => {
         const r = await exec(
             started,
