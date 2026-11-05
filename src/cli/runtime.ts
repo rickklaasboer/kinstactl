@@ -11,6 +11,8 @@ export interface Io {
     env: NodeJS.ProcessEnv;
     fetchFn?: typeof fetch;
     sleep?: (ms: number) => Promise<void>;
+    /** Clock in epoch milliseconds; injectable for the site cache TTL. */
+    now?: () => number;
     prompts: Prompts;
 }
 
@@ -59,6 +61,10 @@ export class Runtime {
             env.CI !== 'true' &&
             !this.json
         );
+    }
+
+    now(): number {
+        return this.io.now ? this.io.now() : Date.now();
     }
 
     credentials(): Credentials {
