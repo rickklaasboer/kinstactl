@@ -68,16 +68,6 @@ export class CompanyUsersRoleCommand implements BaseCommand<Options> {
         });
         if (body === undefined) return;
         const operationId = operationIdOf(body);
-        if (operationId !== null && options.wait === false) {
-            this.output.success(`Started setting ${email} to ${role}`, {
-                operation_id: operationId,
-                status: 'pending',
-            });
-            this.output.info(
-                `Follow with: kinstactl operations wait ${operationId}`,
-            );
-            return;
-        }
         this.output.success(`${email} is now ${role}`, {
             user_id: found.user.id,
             role,

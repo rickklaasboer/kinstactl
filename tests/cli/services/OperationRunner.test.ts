@@ -384,4 +384,41 @@ describe('send', () => {
         );
         expect(polled(unwaited)).toBe(0);
     });
+
+    test('--no-wait with an operation_id reports it and resolves undefined', async () => {
+        const r = await exec(
+            operation,
+            {wait: false},
+            {via: 'send', spec: put},
+        );
+        expect(r.code).toBe(0);
+        expect(r.result).toBeUndefined();
+        expect(polled(r)).toBe(0);
+        expect(r.stdout).toContain('Started Clear cache');
+        expect(r.stderr).toContain(
+            'Follow with: kinstactl operations wait op9',
+        );
+    });
+
+    test('--no-wait --json prints one started document', async () => {
+        const r = await exec(
+            operation,
+            {wait: false},
+            {via: 'send', spec: put, json: true},
+        );
+        expect(JSON.parse(r.stdout)).toMatchObject({
+            operation_id: 'op9',
+            status: 'pending',
+        });
+    });
+
+    test('--no-wait without an operation_id returns the body', async () => {
+        const r = await exec(
+            {'PUT /zones/z1': {body: {message: 'done', status: 200}}},
+            {wait: false},
+            {via: 'send', spec: put},
+        );
+        expect(r.result).toEqual({message: 'done', status: 200});
+        expect(r.stdout).toBe('');
+    });
 });

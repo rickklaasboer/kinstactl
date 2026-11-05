@@ -129,6 +129,29 @@ describe('company users role', () => {
         expect(r.stdout).toContain('jan@example.com is now company-billing');
     });
 
+    test('--no-wait reports the started operation without polling', async () => {
+        const r = await runCli(
+            [
+                'company',
+                'users',
+                'role',
+                'jan@example.com',
+                'company-billing',
+                '--no-wait',
+            ],
+            {routes: role},
+        );
+        expect(r.code).toBe(0);
+        expect(
+            r.calls.some((c) => c.url.pathname.includes('/operations')),
+        ).toBe(false);
+        expect(r.stdout).toContain('Started Set jan@example.com to');
+        expect(r.stderr).toContain(
+            'Follow with: kinstactl operations wait op1',
+        );
+        expect(r.stdout).not.toContain('is now');
+    });
+
     test('completes immediately without an operation_id', async () => {
         const r = await runCli(
             ['company', 'users', 'role', 'jan@example.com', 'company-billing'],

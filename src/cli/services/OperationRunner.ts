@@ -266,8 +266,10 @@ export class OperationRunner {
     /**
      * For endpoints that answer synchronously, or only sometimes start an operation: dry-run,
      * confirmation, then one request. When the body carries an operation_id it is waited on like
-     * run() (unless flags.wait === false); resolves with the response body, or undefined after a
-     * dry run. Prints nothing on success: the caller prints its own result.
+     * run(); with flags.wait === false it prints the same "Started" report as run() instead.
+     * Resolves with the response body, or undefined after a dry run or a "Started" report: the
+     * caller then has nothing left to print. Otherwise prints nothing: the caller prints its
+     * own result.
      */
     async send<T>(args: RunOperationArgs): Promise<T | undefined> {
         if (!(await this.prepare(args))) return undefined;
@@ -276,8 +278,19 @@ export class OperationRunner {
         const client = this.clients.client();
         const body = await client.send<T>(spec);
         const id = operationIdOf(body);
-        if (id !== null && flags.wait !== false)
+        if (id !== null) {
+            if (flags.wait === false) {
+                this.output.success(`Started ${title}`, {
+                    operation_id: id,
+                    status: 'pending',
+                });
+                this.output.info(
+                    `Follow with: kinstactl operations wait ${id}`,
+                );
+                return undefined;
+            }
             await this.wait(client.operation(id), title, flags.timeout);
+        }
         return body;
     }
 }
