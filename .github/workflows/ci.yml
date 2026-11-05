@@ -32,6 +32,29 @@ jobs:
             - run: bun install --frozen-lockfile
               working-directory: docs
             - run: bun run docs:build
+            - run: docker build -t kinstactl-docs:ci docs
+            - run: docker run -d --rm -p 127.0.0.1:3005:80 --name docs kinstactl-docs:ci
+            - name: Serve-test the docs image
+              run: |
+                  base=http://127.0.0.1:3005
+                  status() { curl -s --retry 10 --retry-connrefused -o /dev/null -w '%{http_code}' "$base$1"; }
+                  expect_status() {
+                      got="$(status "$1")"
+                      test "$got" = "$2" || { echo "$1: expected $2, got $got"; exit 1; }
+                  }
+                  expect_status / 200
+                  expect_status /getting-started/installation/ 200
+                  headers="$(curl -si --retry 10 --retry-connrefused "$base/getting-started/installation")"
+                  echo "$headers" | head -1 | grep -qE ' (301|308) ' || { echo "no redirect"; echo "$headers"; exit 1; }
+                  echo "$headers" | tr -d '\r' | grep -qi '^location: /getting-started/installation/$' || { echo "wrong Location"; echo "$headers"; exit 1; }
+                  expect_status /llms.txt 200
+                  curl -si "$base/llms.txt" | tr -d '\r' | grep -qi '^content-type: text/plain' || { echo "llms.txt is not text/plain"; exit 1; }
+                  expect_status /for-agents/ 200
+                  curl -s "$base/for-agents/" | grep -q 'kinstactl commands --json' || { echo "for-agents lacks commands --json"; exit 1; }
+                  expect_status /does-not-exist/ 404
+                  curl -s "$base/does-not-exist/" | grep -q '404' || { echo "404 page lacks 404"; exit 1; }
+            - run: "! docker run --rm kinstactl-docs:ci ls /srv/superpowers"
+            - run: docker stop docs
     package:
         runs-on: ubuntu-latest
         steps:
