@@ -48,7 +48,7 @@ Without a password the command fails with a `USAGE` error. The password is never
 `--permission` takes `read` or `write`. `--root-directory` restricts the account to a directory:
 
 ```sh
-kinstactl sftp-users add my-site reader --env live --root-directory /wp-content/uploads --permission read --dry-run
+cat password.txt | kinstactl sftp-users add my-site reader --env live --password - --root-directory /wp-content/uploads --permission read --dry-run
 ```
 
 ## sftp-users enable
