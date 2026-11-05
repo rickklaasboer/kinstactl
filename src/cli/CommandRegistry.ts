@@ -96,11 +96,9 @@ export class CommandRegistry {
             command.arguments.forEach((def, i) => {
                 args[camelCase(def.name)] = received[i] as string | undefined;
             });
-            const options = received[command.arguments.length] as Record<
-                string,
-                unknown
-            >;
-            await command.execute(args, options);
+            const options = received[command.arguments.length];
+            // Commander's parsed options are untyped; each command declares their shape.
+            await command.execute(args, options as never);
         });
         return leaf;
     }

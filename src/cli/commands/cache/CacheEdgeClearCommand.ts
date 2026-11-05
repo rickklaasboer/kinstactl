@@ -14,8 +14,14 @@ import {
     siteArgument,
 } from '../BaseCommand';
 
+type Options = {
+    env?: string;
+    url?: string;
+    subdirectories?: boolean;
+} & ActionFlags;
+
 @injectable()
-export class CacheEdgeClearCommand implements BaseCommand {
+export class CacheEdgeClearCommand implements BaseCommand<Options> {
     readonly name = 'cache edge clear';
     readonly description = 'Clear the edge cache of an environment';
     readonly arguments: ArgumentDef[] = [siteArgument()];
@@ -41,26 +47,20 @@ export class CacheEdgeClearCommand implements BaseCommand {
         private readonly operations: OperationRunner,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
-        const opts = options as unknown as {
-            env?: string;
-            url?: string;
-            subdirectories?: boolean;
-        } & ActionFlags;
-        const target = await this.resolver.resolveTarget(args.site, opts.env, {
-            write: true,
-        });
+    async execute(args: CommandArgs, options: Options): Promise<void> {
+        const target = await this.resolver.resolveTarget(
+            args.site,
+            options.env,
+            {write: true},
+        );
         await this.operations.run({
             title: 'Clear edge cache',
             spec: clearEdgeCache(target.env.id, {
-                url: opts.url,
-                clearSubdirectories: opts.subdirectories,
+                url: options.url,
+                clearSubdirectories: options.subdirectories,
             }),
             target,
-            flags: opts,
+            flags: options,
         });
     }
 }

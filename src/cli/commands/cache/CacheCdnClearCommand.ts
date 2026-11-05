@@ -20,8 +20,10 @@ import {
 
 type EnvironmentsResponse = components['schemas']['GetEnvironments-Response'];
 
+type Options = {env?: string} & ActionFlags;
+
 @injectable()
-export class CacheCdnClearCommand implements BaseCommand {
+export class CacheCdnClearCommand implements BaseCommand<Options> {
     readonly name = 'cache cdn clear';
     readonly description = 'Clear the CDN cache of an environment';
     readonly arguments: ArgumentDef[] = [siteArgument()];
@@ -44,14 +46,12 @@ export class CacheCdnClearCommand implements BaseCommand {
         private readonly clients: ClientProvider,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
-        const opts = options as unknown as {env?: string} & ActionFlags;
-        const target = await this.resolver.resolveTarget(args.site, opts.env, {
-            write: true,
-        });
+    async execute(args: CommandArgs, options: Options): Promise<void> {
+        const target = await this.resolver.resolveTarget(
+            args.site,
+            options.env,
+            {write: true},
+        );
         const res = await this.clients
             .client()
             .send<EnvironmentsResponse>(listEnvironments(target.site.id));
@@ -69,7 +69,7 @@ export class CacheCdnClearCommand implements BaseCommand {
             title: 'Clear CDN cache',
             spec: clearCdnCache(target.env.id, env.cdn_cache_id),
             target,
-            flags: opts,
+            flags: options,
         });
     }
 }

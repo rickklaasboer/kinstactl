@@ -30,8 +30,16 @@ function parseLines(v: string): number {
     return n;
 }
 
+type Options = {
+    env?: string;
+    lines: number;
+    search?: string;
+    from?: string;
+    to?: string;
+};
+
 @injectable()
-export class LogsCommand implements BaseCommand {
+export class LogsCommand implements BaseCommand<Options> {
     readonly name = 'logs';
     readonly description =
         'Read the error, access or cache log of an environment';
@@ -83,13 +91,10 @@ export class LogsCommand implements BaseCommand {
         private readonly output: Output,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
+    async execute(args: CommandArgs, options: Options): Promise<void> {
         const {site, env} = await this.resolver.resolveTarget(
             args.site,
-            options.env as string | undefined,
+            options.env,
             {write: false},
         );
         const body = await this.clients
@@ -97,10 +102,10 @@ export class LogsCommand implements BaseCommand {
             .send<components['schemas']['GetLogsResponseSchema']>(
                 getLogs(env.id, {
                     fileName: FILE_NAMES[args.type as string]!,
-                    lines: options.lines as number,
-                    search: options.search as string | undefined,
-                    from: options.from as string | undefined,
-                    to: options.to as string | undefined,
+                    lines: options.lines,
+                    search: options.search,
+                    from: options.from,
+                    to: options.to,
                 }),
             );
         const text = body?.environment?.container_info?.logs;

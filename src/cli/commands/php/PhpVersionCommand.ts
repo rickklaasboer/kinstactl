@@ -20,8 +20,10 @@ import type {
 
 type EnvironmentsResponse = components['schemas']['GetEnvironments-Response'];
 
+type Options = {env?: string; autoUpdate: boolean} & ActionFlags;
+
 @injectable()
-export class PhpVersionCommand implements BaseCommand {
+export class PhpVersionCommand implements BaseCommand<Options> {
     readonly name = 'php version';
     readonly description =
         'Show the PHP version of an environment, or change it';
@@ -62,21 +64,14 @@ export class PhpVersionCommand implements BaseCommand {
         private readonly output: Output,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
-        const opts = options as unknown as {
-            env?: string;
-            autoUpdate: boolean;
-        } & ActionFlags;
+    async execute(args: CommandArgs, options: Options): Promise<void> {
         const version = args.version;
         if (version === undefined) {
-            if (opts.autoUpdate === false)
+            if (options.autoUpdate === false)
                 throw new CliError('USAGE', '--no-auto-update needs a version');
             const target = await this.resolver.resolveTarget(
                 args.site,
-                opts.env,
+                options.env,
                 {write: false},
             );
             const res = await this.clients
@@ -104,18 +99,20 @@ export class PhpVersionCommand implements BaseCommand {
             );
             return;
         }
-        const target = await this.resolver.resolveTarget(args.site, opts.env, {
-            write: true,
-        });
+        const target = await this.resolver.resolveTarget(
+            args.site,
+            options.env,
+            {write: true},
+        );
         await this.operations.run({
             title: `Change PHP version to ${version}`,
             spec: modifyPhpVersion(
                 target.env.id,
                 version,
-                opts.autoUpdate === false ? true : undefined,
+                options.autoUpdate === false ? true : undefined,
             ),
             target,
-            flags: opts,
+            flags: options,
         });
     }
 }

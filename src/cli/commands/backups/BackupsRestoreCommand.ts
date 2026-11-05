@@ -16,8 +16,10 @@ import type {
 } from '../BaseCommand';
 import {BackupService, formatTime, parseBackupId} from './BackupService';
 
+type Options = {env?: string; notify?: string} & ActionFlags;
+
 @injectable()
-export class BackupsRestoreCommand implements BaseCommand {
+export class BackupsRestoreCommand implements BaseCommand<Options> {
     readonly name = 'backups restore';
     readonly description = 'Restore a backup, replacing the environment';
     readonly arguments: ArgumentDef[] = [
@@ -56,25 +58,20 @@ export class BackupsRestoreCommand implements BaseCommand {
         private readonly operations: OperationRunner,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
+    async execute(args: CommandArgs, options: Options): Promise<void> {
         const id = parseBackupId(args.backupId as string);
         const target = await this.resolver.resolveTarget(
             args.site,
-            options.env as string | undefined,
+            options.env,
             {write: true},
         );
         const backup = await this.backups.findBackup(target, id);
-        const userId = await this.backups.resolveNotifiedUser(
-            options.notify as string | undefined,
-        );
+        const userId = await this.backups.resolveNotifiedUser(options.notify);
         await this.operations.run({
             title: `Restore backup ${id} to ${target.site.name} (${target.env.name})`,
             spec: restoreBackup(target.env.id, id, userId),
             target,
-            flags: options as unknown as ActionFlags,
+            flags: options,
             confirm: {
                 action: `Restore backup ${id} (${formatTime(backup.created_at)})`,
                 level: 'confirm',

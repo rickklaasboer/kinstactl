@@ -16,8 +16,10 @@ import type {
 } from '../BaseCommand';
 import {BackupService, formatTime, parseBackupId} from './BackupService';
 
+type Options = {env?: string} & ActionFlags;
+
 @injectable()
-export class BackupsDeleteCommand implements BaseCommand {
+export class BackupsDeleteCommand implements BaseCommand<Options> {
     readonly name = 'backups delete';
     readonly description = 'Delete a backup';
     readonly arguments: ArgumentDef[] = [
@@ -51,14 +53,11 @@ export class BackupsDeleteCommand implements BaseCommand {
         private readonly operations: OperationRunner,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
+    async execute(args: CommandArgs, options: Options): Promise<void> {
         const id = parseBackupId(args.backupId as string);
         const target = await this.resolver.resolveTarget(
             args.site,
-            options.env as string | undefined,
+            options.env,
             {write: true},
         );
         const backup = await this.backups.findBackup(target, id);
@@ -66,7 +65,7 @@ export class BackupsDeleteCommand implements BaseCommand {
             title: `Delete backup ${id} from ${target.site.name} (${target.env.name})`,
             spec: deleteBackup(id),
             target,
-            flags: options as unknown as ActionFlags,
+            flags: options,
             confirm: {
                 action: `Delete backup ${id} (${formatTime(backup.created_at)})`,
                 level: 'confirm',

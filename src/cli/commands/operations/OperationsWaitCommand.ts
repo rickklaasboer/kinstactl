@@ -9,8 +9,10 @@ import type {
     OptionDef,
 } from '../BaseCommand';
 
+type Options = {timeout?: number};
+
 @injectable()
-export class OperationsWaitCommand implements BaseCommand {
+export class OperationsWaitCommand implements BaseCommand<Options> {
     readonly name = 'operations wait';
     readonly description = 'Wait until an operation has finished';
     readonly arguments: ArgumentDef[] = [
@@ -35,15 +37,12 @@ export class OperationsWaitCommand implements BaseCommand {
         private readonly output: Output,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
+    async execute(args: CommandArgs, options: Options): Promise<void> {
         const id = args.id as string;
         await this.operations.wait(
             this.clients.client().operation(id),
             `Operation ${id}`,
-            options.timeout as number | undefined,
+            options.timeout,
         );
         this.output.success(`Operation ${id} completed`, {
             operation_id: id,

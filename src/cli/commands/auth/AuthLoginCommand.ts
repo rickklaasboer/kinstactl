@@ -21,8 +21,10 @@ interface ValidateResponse {
     expires_at: string | null;
 }
 
+type Options = {apiKey?: string};
+
 @injectable()
-export class AuthLoginCommand implements BaseCommand {
+export class AuthLoginCommand implements BaseCommand<Options> {
     readonly name = 'auth login';
     readonly description = 'Validate an API key and store it in a profile';
     readonly arguments: ArgumentDef[] = [];
@@ -49,11 +51,8 @@ export class AuthLoginCommand implements BaseCommand {
         @inject(IO) private readonly io: Io,
     ) {}
 
-    async execute(
-        _args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
-        let apiKey = options.apiKey as string | undefined;
+    async execute(_args: CommandArgs, options: Options): Promise<void> {
+        let apiKey = options.apiKey;
         if (apiKey === '-') {
             if (!this.io.stdin)
                 throw new CliError(

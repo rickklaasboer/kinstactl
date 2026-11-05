@@ -31,7 +31,12 @@ export function siteArgument(
 /** Positional values by the camelCase of their name ('backup-id' becomes 'backupId'). */
 export type CommandArgs = Record<string, string | undefined>;
 
-export interface BaseCommand {
+/**
+ * `O` is the shape of the parsed options; each command declares its own. The
+ * default `never` makes plain `BaseCommand` the type that holds any command:
+ * a method taking `Options` is assignable to one taking `never`.
+ */
+export interface BaseCommand<O extends object = never> {
     /** Full path, e.g. 'logs' or 'cache edge clear'. */
     readonly name: string;
     readonly description: string;
@@ -42,10 +47,7 @@ export interface BaseCommand {
     readonly examples: string[];
     readonly endpoints: EndpointKey[];
     readonly destructive?: Destructive;
-    execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> | void;
+    execute(args: CommandArgs, options: O): Promise<void> | void;
 }
 
 export type CommandClass = new (...deps: never[]) => BaseCommand;

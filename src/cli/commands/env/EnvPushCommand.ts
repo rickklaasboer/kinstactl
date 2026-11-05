@@ -15,17 +15,17 @@ import {
     siteArgument,
 } from '../BaseCommand';
 
-interface PushOptions extends ActionFlags {
+type Options = {
     from?: string;
     to?: string;
     db: boolean;
     files: boolean;
     searchReplace: boolean;
     path?: string[];
-}
+} & ActionFlags;
 
 @injectable()
-export class EnvPushCommand implements BaseCommand {
+export class EnvPushCommand implements BaseCommand<Options> {
     readonly name = 'env push';
     readonly description =
         'Push the database and/or files of one environment to another';
@@ -63,11 +63,7 @@ export class EnvPushCommand implements BaseCommand {
         private readonly operations: OperationRunner,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
-        const opts = options as unknown as PushOptions;
+    async execute(args: CommandArgs, opts: Options): Promise<void> {
         const site = await this.resolver.resolveSite(args.site, {fresh: true});
         const from = await this.resolver.resolveEnv(site, opts.from, {
             flag: '--from',

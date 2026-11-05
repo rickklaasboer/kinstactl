@@ -11,8 +11,10 @@ import {
 } from '../BaseCommand';
 import {BackupService, formatTime} from './BackupService';
 
+type Options = {env?: string; type?: string};
+
 @injectable()
-export class BackupsListCommand implements BaseCommand {
+export class BackupsListCommand implements BaseCommand<Options> {
     readonly name = 'backups list';
     readonly description = 'List the backups of an environment, newest first';
     readonly arguments: ArgumentDef[] = [siteArgument('site name or ID')];
@@ -41,13 +43,10 @@ export class BackupsListCommand implements BaseCommand {
         private readonly output: Output,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
+    async execute(args: CommandArgs, options: Options): Promise<void> {
         const target = await this.resolver.resolveTarget(
             args.site,
-            options.env as string | undefined,
+            options.env,
             {write: false},
         );
         const rows = (await this.backups.fetchBackups(target.env.id))

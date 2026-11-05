@@ -15,8 +15,10 @@ import {
     siteArgument,
 } from '../BaseCommand';
 
+type Options = {env?: string; tag?: string} & ActionFlags;
+
 @injectable()
-export class BackupsCreateCommand implements BaseCommand {
+export class BackupsCreateCommand implements BaseCommand<Options> {
     readonly name = 'backups create';
     readonly description = 'Create a manual backup';
     readonly arguments: ArgumentDef[] = [siteArgument('site name or ID')];
@@ -41,23 +43,17 @@ export class BackupsCreateCommand implements BaseCommand {
         private readonly operations: OperationRunner,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
+    async execute(args: CommandArgs, options: Options): Promise<void> {
         const target = await this.resolver.resolveTarget(
             args.site,
-            options.env as string | undefined,
+            options.env,
             {write: true},
         );
         await this.operations.run({
             title: `Create backup of ${target.site.name} (${target.env.name})`,
-            spec: createManualBackup(
-                target.env.id,
-                options.tag as string | undefined,
-            ),
+            spec: createManualBackup(target.env.id, options.tag),
             target,
-            flags: options as unknown as ActionFlags,
+            flags: options,
         });
     }
 }

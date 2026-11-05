@@ -13,8 +13,10 @@ import type {
 
 type ListResponse = components['schemas']['getSites-Response'];
 
+type Options = {refresh?: boolean};
+
 @injectable()
-export class SitesListCommand implements BaseCommand {
+export class SitesListCommand implements BaseCommand<Options> {
     readonly name = 'sites list';
     readonly description = 'List the sites of the company';
     readonly arguments: ArgumentDef[] = [];
@@ -34,10 +36,7 @@ export class SitesListCommand implements BaseCommand {
         private readonly clients: ClientProvider,
     ) {}
 
-    async execute(
-        _args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
+    async execute(_args: CommandArgs, options: Options): Promise<void> {
         if (this.output.json) {
             // JSON is the raw API array, which the site cache does not hold.
             const client = this.clients.client();
@@ -47,7 +46,7 @@ export class SitesListCommand implements BaseCommand {
             this.output.table(res.company.sites, [], res.company.sites);
             return;
         }
-        const rows = await this.sites.load({fresh: !!options.refresh});
+        const rows = await this.sites.load({fresh: options.refresh === true});
         this.output.table(rows, [
             {header: 'NAME', value: (s) => s.name},
             {header: 'DISPLAY NAME', value: (s) => s.displayName},

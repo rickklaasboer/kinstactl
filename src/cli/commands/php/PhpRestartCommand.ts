@@ -14,8 +14,10 @@ import {
     siteArgument,
 } from '../BaseCommand';
 
+type Options = {env?: string} & ActionFlags;
+
 @injectable()
-export class PhpRestartCommand implements BaseCommand {
+export class PhpRestartCommand implements BaseCommand<Options> {
     readonly name = 'php restart';
     readonly description = 'Restart the PHP engine of an environment';
     readonly arguments: ArgumentDef[] = [siteArgument()];
@@ -36,19 +38,17 @@ export class PhpRestartCommand implements BaseCommand {
         private readonly operations: OperationRunner,
     ) {}
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
-        const opts = options as unknown as {env?: string} & ActionFlags;
-        const target = await this.resolver.resolveTarget(args.site, opts.env, {
-            write: true,
-        });
+    async execute(args: CommandArgs, options: Options): Promise<void> {
+        const target = await this.resolver.resolveTarget(
+            args.site,
+            options.env,
+            {write: true},
+        );
         await this.operations.run({
             title: 'Restart PHP',
             spec: restartPhp(target.env.id),
             target,
-            flags: opts,
+            flags: options,
         });
     }
 }

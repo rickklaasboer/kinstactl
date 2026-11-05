@@ -17,11 +17,13 @@ import type {
 import {hasUpdate, type WpItemKind} from './WpItemKind';
 import {WpItemService} from './WpItemService';
 
+type Options = {env?: string; all?: boolean} & ActionFlags;
+
 /** Updates one plugin or theme, or all with an update; the subclass picks the kind. */
 // The cast: injectable()'s type rejects abstract classes. The decorator is
 // still needed so TypeScript emits design:paramtypes, which subclasses inherit.
 @(injectable() as ClassDecorator)
-export abstract class WpItemUpdateCommand implements BaseCommand {
+export abstract class WpItemUpdateCommand implements BaseCommand<Options> {
     protected abstract readonly kind: WpItemKind;
 
     constructor(
@@ -76,15 +78,11 @@ export abstract class WpItemUpdateCommand implements BaseCommand {
         return [list, update, bulk];
     }
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
+    async execute(args: CommandArgs, options: Options): Promise<void> {
         const {kind} = this;
         const {noun, command} = kind;
         const name = args.name;
         const all = options.all === true;
-        const flags = options as unknown as ActionFlags;
 
         if (name === undefined && !all)
             throw new CliError('USAGE', `no ${noun} given`, [
@@ -97,7 +95,7 @@ export abstract class WpItemUpdateCommand implements BaseCommand {
             );
         const target = await this.resolver.resolveTarget(
             args.site,
-            options.env as string | undefined,
+            options.env,
             {write: true},
         );
         const items = await this.items.fetch(kind, target.env.id);
@@ -120,7 +118,7 @@ export abstract class WpItemUpdateCommand implements BaseCommand {
                 title: `Update ${noun} ${name}`,
                 spec: kind.update(target.env.id, name, item.update_version),
                 target,
-                flags,
+                flags: options,
             });
             return;
         }
@@ -136,7 +134,7 @@ export abstract class WpItemUpdateCommand implements BaseCommand {
             title: `Update ${names.length} ${command}`,
             spec: kind.bulk(target.env.id, names),
             target,
-            flags,
+            flags: options,
         });
     }
 }

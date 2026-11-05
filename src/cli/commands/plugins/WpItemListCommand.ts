@@ -12,11 +12,13 @@ import {
 import {hasUpdate, type WpItemKind} from './WpItemKind';
 import {WpItemService} from './WpItemService';
 
+type Options = {env?: string; updates?: boolean};
+
 /** Lists the plugins or themes of an environment; the subclass picks the kind. */
 // The cast: injectable()'s type rejects abstract classes. The decorator is
 // still needed so TypeScript emits design:paramtypes, which subclasses inherit.
 @(injectable() as ClassDecorator)
-export abstract class WpItemListCommand implements BaseCommand {
+export abstract class WpItemListCommand implements BaseCommand<Options> {
     protected abstract readonly kind: WpItemKind;
 
     constructor(
@@ -58,13 +60,10 @@ export abstract class WpItemListCommand implements BaseCommand {
         return [this.kind.endpoints.list];
     }
 
-    async execute(
-        args: CommandArgs,
-        options: Record<string, unknown>,
-    ): Promise<void> {
+    async execute(args: CommandArgs, options: Options): Promise<void> {
         const {env} = await this.resolver.resolveTarget(
             args.site,
-            options.env as string | undefined,
+            options.env,
             {write: false},
         );
         const all = await this.items.fetch(this.kind, env.id);
