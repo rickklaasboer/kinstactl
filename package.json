@@ -1,6 +1,6 @@
 {
     "name": "kinstactl",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "description": "Command line client and typed TypeScript client for the Kinsta API",
     "keywords": [
         "kinsta",
