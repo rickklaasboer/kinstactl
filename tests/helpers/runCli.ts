@@ -3,7 +3,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {type ConfigFile, saveConfig} from '@/cli/config';
 import {run} from '@/cli/program';
-import type {Io} from '@/cli/runtime';
+import type {Io} from '@/cli/io';
 import type {Prompts} from '@/cli/prompts';
 import {type FakeCall, type FakeRoute, fakeKinsta} from './fakeKinsta';
 

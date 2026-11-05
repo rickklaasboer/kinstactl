@@ -1,7 +1,8 @@
 import {describe, expect, test} from 'bun:test';
 import {toCliError} from '@/cli/errors';
 import {runOperation} from '@/cli/progress';
-import {Runtime, type Io} from '@/cli/runtime';
+import type {Io} from '@/cli/io';
+import {Runtime} from '@/cli/runtime';
 import type {RequestSpec} from '@/client/request';
 import {type FakeRoute, fakeKinsta} from '../helpers/fakeKinsta';
 

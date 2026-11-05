@@ -2,8 +2,8 @@ import {expect, test} from 'bun:test';
 import {readFileSync} from 'node:fs';
 import type {Command} from 'commander';
 import {parse} from 'yaml';
-import {buildProgram, getMeta} from '@/cli/program';
-import {Runtime, type Io} from '@/cli/runtime';
+import type {Io} from '@/cli/io';
+import {buildProgram, createProgramContainer, getMeta} from '@/cli/program';
 import {ALL_ENDPOINTS} from '@/client/endpoints';
 import type {EndpointKey} from '@/client/request';
 
@@ -150,7 +150,7 @@ function claimedByCommands(): Set<EndpointKey> {
         for (const k of getMeta(cmd)?.endpoints ?? []) claimed.add(k);
         cmd.commands.forEach(walk);
     };
-    walk(buildProgram(new Runtime(io)));
+    walk(buildProgram(createProgramContainer(io)));
     return claimed;
 }
 

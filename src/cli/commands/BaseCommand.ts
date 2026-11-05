@@ -1,0 +1,46 @@
+import type {EndpointKey} from '@/client/request';
+
+export type Destructive = 'confirm' | 'irreversible';
+
+export interface ArgumentDef {
+    name: string;
+    required: boolean;
+    description: string;
+    choices?: readonly string[];
+    default?: string;
+}
+
+export interface OptionDef {
+    flags: string;
+    description: string;
+    parse?: (value: string) => unknown;
+    default?: unknown;
+}
+
+/** Positional values by the camelCase of their name ('backup-id' becomes 'backupId'). */
+export type CommandArgs = Record<string, string | undefined>;
+
+export interface BaseCommand {
+    /** Full path, e.g. 'logs' or 'cache edge clear'. */
+    readonly name: string;
+    readonly description: string;
+    readonly arguments: ArgumentDef[];
+    /** In help order; action flags last. */
+    readonly options: OptionDef[];
+    /** Without the '$ ' prefix, e.g. 'kinstactl cache clear klant-x --env live'. */
+    readonly examples: string[];
+    readonly endpoints: EndpointKey[];
+    readonly destructive?: Destructive;
+    execute(
+        args: CommandArgs,
+        options: Record<string, unknown>,
+    ): Promise<void> | void;
+}
+
+export type CommandClass = new (...deps: never[]) => BaseCommand;
+
+/** A command group such as 'cache' or 'cache edge'. */
+export interface GroupDef {
+    path: string;
+    description: string;
+}

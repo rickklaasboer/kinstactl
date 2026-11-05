@@ -1,17 +1,18 @@
 import {Command, CommanderError} from 'commander';
 import type {EndpointKey} from '@/client/request';
-import {registerAuth} from './commands/auth';
-import {registerBackups} from './commands/backups';
-import {registerCache} from './commands/cache';
-import {registerCommands} from './commands/commands';
-import {registerEnv} from './commands/env';
-import {registerLogs} from './commands/logs';
-import {registerOperations} from './commands/operations';
-import {registerPhp} from './commands/php';
-import {registerPlugins} from './commands/plugins';
-import {registerSites} from './commands/sites';
+import type {DependencyContainer} from 'tsyringe';
+import {
+    CommandRegistry,
+    GLOBAL_OPTIONS,
+    ROOT_DESCRIPTION,
+    toOption,
+} from './CommandRegistry';
+import type {BaseCommand, CommandClass} from './commands/BaseCommand';
+import {COMMANDS, GROUPS, type LegacyEntry} from './commands/index';
+import {createContainer} from './container';
 import {toCliError} from './errors';
-import {Runtime, type Io} from './runtime';
+import type {Io} from './io';
+import {Runtime} from './runtime';
 
 export interface CommandMeta {
     endpoints: EndpointKey[];
@@ -30,10 +31,28 @@ export function getMeta(cmd: Command): CommandMeta | undefined {
     return metas.get(cmd);
 }
 
-export function buildProgram(rt: Runtime): Command {
+function isLegacy(entry: CommandClass | LegacyEntry): entry is LegacyEntry {
+    return 'legacy' in entry;
+}
+
+export function createProgramContainer(io: Io): DependencyContainer {
+    const container = createContainer(io);
+    const classes = COMMANDS.filter(
+        (entry): entry is CommandClass => !isLegacy(entry),
+    );
+    container.registerInstance(
+        CommandRegistry,
+        new CommandRegistry(container, classes, GROUPS),
+    );
+    return container;
+}
+
+export function buildProgram(container: DependencyContainer): Command {
+    const rt = container.resolve(Runtime);
+    const registry = container.resolve(CommandRegistry);
     const program = new Command('kinstactl');
     program
-        .description('Command line client for the Kinsta API')
+        .description(ROOT_DESCRIPTION)
         .exitOverride()
         .showSuggestionAfterError(true)
         .configureOutput({
@@ -43,22 +62,23 @@ export function buildProgram(rt: Runtime): Command {
             outputError: () => {},
             getOutHasColors: () => rt.output.color,
             getErrHasColors: () => rt.output.color,
-        })
-        .option('--profile <name>', 'config profile to use')
-        .option('--json', 'print machine-readable JSON')
-        .option('--no-input', 'never prompt; fail instead')
-        .hook('preAction', () => rt.configure(program.opts()));
+        });
+    for (const def of GLOBAL_OPTIONS) program.addOption(toOption(def));
+    program.hook('preAction', () => rt.configure(program.opts()));
 
-    registerAuth(program, rt);
-    registerCommands(program, rt);
-    registerOperations(program, rt);
-    registerLogs(program, rt);
-    registerSites(program, rt);
-    registerEnv(program, rt);
-    registerCache(program, rt);
-    registerPhp(program, rt);
-    registerPlugins(program, rt);
-    registerBackups(program, rt);
+    const resolved = registry.commands();
+    let next = 0;
+    for (const entry of COMMANDS) {
+        if (isLegacy(entry)) {
+            entry.legacy(program, rt);
+            continue;
+        }
+        const command = resolved[next++] as BaseCommand;
+        meta(registry.attach(program, command), {
+            endpoints: command.endpoints,
+            destructive: command.destructive,
+        });
+    }
     return program;
 }
 
@@ -68,10 +88,11 @@ function isEpipe(e: unknown): boolean {
 
 /** Runs the CLI and returns the exit code. */
 export async function run(argv: string[], io: Io): Promise<number> {
-    const rt = new Runtime(io);
+    const container = createProgramContainer(io);
+    const rt = container.resolve(Runtime);
     // Parse errors happen before the preAction hook, and must still honor --json.
     rt.json = argv.includes('--json');
-    const program = buildProgram(rt);
+    const program = buildProgram(container);
     try {
         await program.parseAsync(argv, {from: 'user'});
         return 0;

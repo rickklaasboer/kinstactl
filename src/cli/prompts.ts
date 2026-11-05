@@ -6,6 +6,7 @@ import {
     select,
     text,
 } from '@clack/prompts';
+import type {InjectionToken} from 'tsyringe';
 import {CliError} from './errors';
 
 export interface PromptOption<T> {
@@ -21,6 +22,8 @@ export interface Prompts {
     confirm(message: string): Promise<boolean>;
     text(message: string, opts?: {secret?: boolean}): Promise<string>;
 }
+
+export const PROMPTS: InjectionToken<Prompts> = Symbol('Prompts');
 
 function answer<T>(v: T | symbol): T {
     if (isCancel(v)) throw new CliError('CONFIRMATION_DECLINED', 'Cancelled');

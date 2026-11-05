@@ -1,7 +1,8 @@
 import {describe, expect, test} from 'bun:test';
 import {confirmDestructive} from '@/cli/confirm';
 import {CliError} from '@/cli/errors';
-import {Runtime, type Io} from '@/cli/runtime';
+import type {Io} from '@/cli/io';
+import {Runtime} from '@/cli/runtime';
 import type {Prompts} from '@/cli/prompts';
 
 const site = {

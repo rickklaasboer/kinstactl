@@ -26,6 +26,7 @@
         }
     },
     "javascript": {
+        "parser": { "unsafeParameterDecoratorsEnabled": true },
         "formatter": {
             "quoteStyle": "single",
             "semicolons": "always",

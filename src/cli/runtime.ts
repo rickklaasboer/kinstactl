@@ -1,22 +1,9 @@
+import {inject, Lifecycle, scoped} from 'tsyringe';
 import {KinstaClient} from '@/client/KinstaClient';
 import {type Credentials, resolveCredentials} from './config';
+import {IO, type Io} from './io';
 import {Output} from './output';
 import type {Prompts} from './prompts';
-
-export interface Io {
-    stdout: (s: string) => void;
-    stderr: (s: string) => void;
-    /** True when both stdin and stdout are TTYs. */
-    isTTY: boolean;
-    env: NodeJS.ProcessEnv;
-    fetchFn?: typeof fetch;
-    sleep?: (ms: number) => Promise<void>;
-    /** Clock in epoch milliseconds; injectable for the site cache TTL. */
-    now?: () => number;
-    prompts: Prompts;
-    /** Reads all of stdin; used for `--api-key -`. */
-    stdin?: () => Promise<string>;
-}
 
 export interface GlobalOptions {
     json?: boolean;
@@ -25,6 +12,7 @@ export interface GlobalOptions {
     profile?: string;
 }
 
+@scoped(Lifecycle.ContainerScoped)
 export class Runtime {
     json = false;
     interactive: boolean;
@@ -35,7 +23,7 @@ export class Runtime {
     private cachedCredentials?: Credentials;
     private cachedClient?: KinstaClient;
 
-    constructor(readonly io: Io) {
+    constructor(@inject(IO) readonly io: Io) {
         this.prompts = io.prompts;
         this.sleep = io.sleep;
         this.interactive = this.computeInteractive(true);
