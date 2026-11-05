@@ -147,6 +147,70 @@ export function removeExceptionRule(
     };
 }
 
+export interface RedirectRulesQuery {
+    limit?: number;
+    offset?: number;
+    key?: 'domain' | 'from' | 'to' | 'type';
+    order?: 'ascend' | 'descend';
+    searchQuery?: string;
+    regexSearch?: boolean;
+}
+
+export function listRedirectRules(
+    envId: string,
+    query: RedirectRulesQuery = {},
+): RequestSpec {
+    const q: Record<string, string> = {};
+    if (query.limit !== undefined) q.limit = String(query.limit);
+    if (query.offset !== undefined) q.offset = String(query.offset);
+    if (query.key !== undefined) q.key = query.key;
+    if (query.order !== undefined) q.order = query.order;
+    if (query.searchQuery !== undefined) q.search_query = query.searchQuery;
+    if (query.regexSearch !== undefined)
+        q.regex_search = query.regexSearch ? 'true' : 'false';
+    return {
+        endpoint: 'GET /sites/environments/{env_id}/redirect-rules',
+        method: 'GET',
+        path: `${envPath(envId)}/redirect-rules`,
+        query: q,
+    };
+}
+
+export interface RedirectRule {
+    domain: string | null;
+    from: string;
+    to: string;
+    type: 'permanent' | 'redirect';
+    // Location fields of a stored rule; the API wants them echoed back.
+    traffic_from_city?: string | null;
+    traffic_from_country?: string | null;
+    traffic_from_country_name?: string | null;
+    displayed_location?: string | null;
+}
+
+export type RedirectRulesUpdate =
+    | {action_type: 'NEW'; new_value: RedirectRule}
+    | {
+          action_type: 'UPDATE';
+          rules_to_update: RedirectRule[];
+          new_value: RedirectRule;
+      }
+    | {action_type: 'DELETE'; rules_to_update: RedirectRule[]}
+    | {action_type: 'DELETE_ALL'};
+
+// The pagination fields of GetRedirectRulesRequest are not sent.
+export function updateRedirectRules(
+    envId: string,
+    update: RedirectRulesUpdate,
+): RequestSpec {
+    return {
+        endpoint: 'POST /sites/environments/{env_id}/redirect-rules',
+        method: 'POST',
+        path: `${envPath(envId)}/redirect-rules`,
+        body: update,
+    };
+}
+
 export const ENDPOINTS: EndpointKey[] = [
     'GET /sites/environments/{env_id}/force-https-status',
     'POST /sites/environments/{env_id}/force-https-status',
@@ -159,4 +223,6 @@ export const ENDPOINTS: EndpointKey[] = [
     'GET /sites/environments/{env_id}/bot-protection/exception-rules',
     'POST /sites/environments/{env_id}/bot-protection/exception-rules',
     'DELETE /sites/environments/{env_id}/bot-protection/exception-rules',
+    'GET /sites/environments/{env_id}/redirect-rules',
+    'POST /sites/environments/{env_id}/redirect-rules',
 ];

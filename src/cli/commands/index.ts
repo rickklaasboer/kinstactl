@@ -62,7 +62,12 @@ import {SecurityBotProtectionExceptionsDeleteCommand} from './security/SecurityB
 import {SecurityBotProtectionExceptionsListCommand} from './security/SecurityBotProtectionExceptionsListCommand';
 import {SecurityBotProtectionLevelCommand} from './security/SecurityBotProtectionLevelCommand';
 import {SecurityBotProtectionWpAutomationsCommand} from './security/SecurityBotProtectionWpAutomationsCommand';
+import {SecurityDeniedIpsCommand} from './security/SecurityDeniedIpsCommand';
 import {SecurityForceHttpsCommand} from './security/SecurityForceHttpsCommand';
+import {SecurityRedirectsAddCommand} from './security/SecurityRedirectsAddCommand';
+import {SecurityRedirectsDeleteCommand} from './security/SecurityRedirectsDeleteCommand';
+import {SecurityRedirectsListCommand} from './security/SecurityRedirectsListCommand';
+import {SecurityRedirectsUpdateCommand} from './security/SecurityRedirectsUpdateCommand';
 import {SftpUsersAddCommand} from './sftp-users/SftpUsersAddCommand';
 import {SftpUsersDeleteCommand} from './sftp-users/SftpUsersDeleteCommand';
 import {SftpUsersDisableCommand} from './sftp-users/SftpUsersDisableCommand';
@@ -173,6 +178,11 @@ export const COMMANDS: CommandClass[] = [
     SecurityBotProtectionExceptionsListCommand,
     SecurityBotProtectionExceptionsAddCommand,
     SecurityBotProtectionExceptionsDeleteCommand,
+    SecurityDeniedIpsCommand,
+    SecurityRedirectsListCommand,
+    SecurityRedirectsAddCommand,
+    SecurityRedirectsUpdateCommand,
+    SecurityRedirectsDeleteCommand,
     AnalyticsCommand,
     CompanyUsersListCommand,
     CompanyUsersGetCommand,
@@ -219,6 +229,7 @@ export const GROUPS: GroupDef[] = [
         path: 'security bot-protection exceptions',
         description: 'Bot protection exception rules',
     },
+    {path: 'security redirects', description: 'Redirect rules'},
     {path: 'company', description: 'Company-wide settings and inventories'},
     {path: 'company users', description: 'Company users and roles'},
 ];

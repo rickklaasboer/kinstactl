@@ -2,9 +2,9 @@ import {injectable} from 'tsyringe';
 import {getSshAllowedIps, setSshAllowedIps} from '@/client/endpoints/ssh';
 import type {components} from '@/client/generated/openapi';
 import type {EndpointKey} from '@/client/request';
-import {CliError} from '../../errors';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
+import {editList} from '../../services/listEdit';
 import {
     type ActionFlags,
     actionOptions,
@@ -75,21 +75,12 @@ export class SshAllowlistCommand implements BaseCommand<Options> {
             return;
         }
 
-        const add = options.add ?? [];
-        const remove = options.remove ?? [];
-        const present = add.filter((ip) => current.includes(ip));
-        if (present.length > 0)
-            throw new CliError(
-                'USAGE',
-                `Already in the allowlist: ${present.join(', ')}`,
-            );
-        const unknown = remove.filter((ip) => !current.includes(ip));
-        if (unknown.length > 0)
-            throw new CliError(
-                'USAGE',
-                `Not in the allowlist: ${unknown.join(', ')}`,
-            );
-        const next = [...current.filter((ip) => !remove.includes(ip)), ...add];
+        const next = editList(
+            current,
+            options.add ?? [],
+            options.remove ?? [],
+            'the allowlist',
+        );
 
         const sent = await this.operations.send({
             title: 'Update SSH allowlist',

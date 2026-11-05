@@ -24,12 +24,7 @@ function specOperations(): Set<EndpointKey> {
 }
 
 // Not yet implemented; plan 2 drives this to empty.
-const PENDING = new Set<EndpointKey>([
-    'GET /sites/tools/denied-ips',
-    'PUT /sites/tools/denied-ips',
-    'GET /sites/environments/{env_id}/redirect-rules',
-    'POST /sites/environments/{env_id}/redirect-rules',
-]);
+const PENDING = new Set<EndpointKey>([]);
 
 test('every spec operation is implemented or pending', () => {
     const missing = [...specOperations()].filter(

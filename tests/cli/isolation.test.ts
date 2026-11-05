@@ -12,6 +12,7 @@ import {CompanyUserService} from '@/cli/commands/company/CompanyUserService';
 import {DnsZoneService} from '@/cli/commands/dns/DnsZoneService';
 import {DomainService} from '@/cli/commands/domains/DomainService';
 import {WpItemService} from '@/cli/commands/plugins/WpItemService';
+import {RedirectRuleService} from '@/cli/commands/security/RedirectRuleService';
 import {ConfigService} from '@/cli/services/ConfigService';
 import {ConfirmService} from '@/cli/services/ConfirmService';
 import {OperationRunner} from '@/cli/services/OperationRunner';
@@ -85,6 +86,7 @@ test('every scoped service is run-scoped', () => {
         DomainService,
         DnsZoneService,
         CompanyUserService,
+        RedirectRuleService,
     ];
     const a = createContainer(io());
     const b = createContainer(io());

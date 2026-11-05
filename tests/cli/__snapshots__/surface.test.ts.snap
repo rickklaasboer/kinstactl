@@ -4182,6 +4182,316 @@ exports[`commands --json is unchanged 1`] = `
           "options": [],
           "path": "security bot-protection",
         },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Show or change the denied IPs of an environment",
+          "destructive": "confirm",
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/tools/denied-ips",
+            "PUT /sites/tools/denied-ips",
+          ],
+          "name": "denied-ips",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "IP addresses to deny",
+              "flags": "--add <ip...>",
+            },
+            {
+              "description": "IP addresses to allow again",
+              "flags": "--remove <ip...>",
+            },
+            {
+              "description": "remove every denied IP",
+              "flags": "--clear",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "skip the confirmation prompt",
+              "flags": "--yes",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "security denied-ips",
+        },
+        {
+          "arguments": [],
+          "commands": [
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "List the redirect rules of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/redirect-rules",
+              ],
+              "name": "list",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "number of rules to show",
+                  "flags": "--limit <n>",
+                },
+                {
+                  "description": "number of rules to skip",
+                  "flags": "--offset <n>",
+                },
+                {
+                  "description": "only rules matching this text",
+                  "flags": "--search <text>",
+                },
+                {
+                  "description": "treat --search as a regex",
+                  "flags": "--regex",
+                },
+                {
+                  "description": "sort by domain, from, to, type",
+                  "flags": "--sort <key>",
+                },
+                {
+                  "description": "sort descending",
+                  "flags": "--desc",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "security redirects list",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "description": "path to redirect from",
+                  "name": "from",
+                  "required": true,
+                },
+                {
+                  "description": "path or URL to redirect to",
+                  "name": "to",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Add a redirect rule",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "POST /sites/environments/{env_id}/redirect-rules",
+              ],
+              "name": "add",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "permanent (301) or redirect (302)",
+                  "flags": "--type <type>",
+                },
+                {
+                  "description": "only redirect this domain (default: all domains)",
+                  "flags": "--domain <domain>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "security redirects add",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "description": "the from path of the rule to change",
+                  "name": "from",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Change a redirect rule",
+              "destructive": "confirm",
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/redirect-rules",
+                "POST /sites/environments/{env_id}/redirect-rules",
+              ],
+              "name": "update",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "new target path or URL",
+                  "flags": "--to <to>",
+                },
+                {
+                  "description": "new type: permanent (301) or redirect (302)",
+                  "flags": "--type <type>",
+                },
+                {
+                  "description": "select the rule of this domain when several share from",
+                  "flags": "--domain <domain>",
+                },
+                {
+                  "description": "move the rule to this domain",
+                  "flags": "--new-domain <domain>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "skip the confirmation prompt",
+                  "flags": "--yes",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "security redirects update",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "description": "the from path of the rule to delete",
+                  "name": "from",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Delete a redirect rule, or all of them",
+              "destructive": "confirm",
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/redirect-rules",
+                "POST /sites/environments/{env_id}/redirect-rules",
+              ],
+              "name": "delete",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "select the rule of this domain when several share from",
+                  "flags": "--domain <domain>",
+                },
+                {
+                  "description": "delete every redirect rule",
+                  "flags": "--all",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "skip the confirmation prompt",
+                  "flags": "--yes",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "security redirects delete",
+            },
+          ],
+          "description": "Redirect rules",
+          "destructive": null,
+          "endpoints": [],
+          "name": "redirects",
+          "options": [],
+          "path": "security redirects",
+        },
       ],
       "description": "Security settings of an environment",
       "destructive": null,
@@ -4767,6 +5077,12 @@ security  Security settings of an environment
       list [site]  List the bot protection exception rules of an environment
       add <site> <type> <action> <value>  Add a bot protection exception rule
       delete <site> <rule-id>  Delete a bot protection exception rule
+  denied-ips [site]  Show or change the denied IPs of an environment
+  redirects  Redirect rules
+    list [site]  List the redirect rules of an environment
+    add <site> <from> <to>  Add a redirect rule
+    update <site> <from>  Change a redirect rule
+    delete <site> [from]  Delete a redirect rule, or all of them
 analytics <metric> [site]  Traffic, bandwidth, disk and bot analytics of an environment
 company  Company-wide settings and inventories
   users  Company users and roles
@@ -7408,6 +7724,9 @@ Commands:
   force-https [options] <site> [mode]  Show or change how an environment forces
                                        HTTPS (all, primary, off)
   bot-protection                       Bot protection
+  denied-ips [options] [site]          Show or change the denied IPs of an
+                                       environment
+  redirects                            Redirect rules
   help [command]                       display help for command
 "
 ,
@@ -7673,6 +7992,184 @@ Examples:
 exports[`help of every command and group is unchanged 107`] = `
 {
   "code": 0,
+  "path": "security denied-ips",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security denied-ips [options] [site]
+
+Show or change the denied IPs of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --add <ip...>        IP addresses to deny
+  --remove <ip...>     IP addresses to allow again
+  --clear              remove every denied IP
+  --dry-run            print the resolved target and request; change nothing
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security denied-ips klant-x --env live
+  $ kinstactl security denied-ips klant-x --add 203.0.113.7 --yes
+  $ kinstactl security denied-ips klant-x --clear --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 108`] = `
+{
+  "code": 0,
+  "path": "security redirects",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security redirects [options] [command]
+
+Redirect rules
+
+Options:
+  -h, --help                        display help for command
+
+Commands:
+  list [options] [site]             List the redirect rules of an environment
+  add [options] <site> <from> <to>  Add a redirect rule
+  update [options] <site> <from>    Change a redirect rule
+  delete [options] <site> [from]    Delete a redirect rule, or all of them
+  help [command]                    display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 109`] = `
+{
+  "code": 0,
+  "path": "security redirects list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security redirects list [options] [site]
+
+List the redirect rules of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --limit <n>          number of rules to show (default: 10)
+  --offset <n>         number of rules to skip
+  --search <text>      only rules matching this text
+  --regex              treat --search as a regex
+  --sort <key>         sort by domain, from, to, type
+  --desc               sort descending
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security redirects list klant-x --env live
+  $ kinstactl security redirects list klant-x --search /blog --sort from --desc
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 110`] = `
+{
+  "code": 0,
+  "path": "security redirects add",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security redirects add [options] <site> <from> <to>
+
+Add a redirect rule
+
+Arguments:
+  site                 site name, display name or ID
+  from                 path to redirect from
+  to                   path or URL to redirect to
+
+Options:
+  --env <environment>  environment name or ID
+  --type <type>        permanent (301) or redirect (302) (default: "permanent")
+  --domain <domain>    only redirect this domain (default: all domains)
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security redirects add klant-x /old /new --env live
+  $ kinstactl security redirects add klant-x /old https://example.com/new --type redirect --domain example.com
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 111`] = `
+{
+  "code": 0,
+  "path": "security redirects update",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security redirects update [options] <site> <from>
+
+Change a redirect rule
+
+Arguments:
+  site                   site name, display name or ID
+  from                   the from path of the rule to change
+
+Options:
+  --env <environment>    environment name or ID
+  --to <to>              new target path or URL
+  --type <type>          new type: permanent (301) or redirect (302)
+  --domain <domain>      select the rule of this domain when several share from
+  --new-domain <domain>  move the rule to this domain
+  --dry-run              print the resolved target and request; change nothing
+  --yes                  skip the confirmation prompt
+  -h, --help             display help for command
+
+Examples:
+  $ kinstactl security redirects update klant-x /old --to /newer --yes
+  $ kinstactl security redirects update klant-x /old --domain example.com --type redirect --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 112`] = `
+{
+  "code": 0,
+  "path": "security redirects delete",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security redirects delete [options] <site> [from]
+
+Delete a redirect rule, or all of them
+
+Arguments:
+  site                 site name, display name or ID
+  from                 the from path of the rule to delete
+
+Options:
+  --env <environment>  environment name or ID
+  --domain <domain>    select the rule of this domain when several share from
+  --all                delete every redirect rule
+  --dry-run            print the resolved target and request; change nothing
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security redirects delete klant-x /old --env live --yes
+  $ kinstactl security redirects delete klant-x --all --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 113`] = `
+{
+  "code": 0,
   "path": "analytics",
   "stderr": "",
   "stdout": 
@@ -7713,7 +8210,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 108`] = `
+exports[`help of every command and group is unchanged 114`] = `
 {
   "code": 0,
   "path": "company",
@@ -7741,7 +8238,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 109`] = `
+exports[`help of every command and group is unchanged 115`] = `
 {
   "code": 0,
   "path": "company users",
@@ -7765,7 +8262,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 110`] = `
+exports[`help of every command and group is unchanged 116`] = `
 {
   "code": 0,
   "path": "company users list",
@@ -7786,7 +8283,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 111`] = `
+exports[`help of every command and group is unchanged 117`] = `
 {
   "code": 0,
   "path": "company users get",
@@ -7809,7 +8306,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 112`] = `
+exports[`help of every command and group is unchanged 118`] = `
 {
   "code": 0,
   "path": "company users role",
@@ -7837,7 +8334,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 113`] = `
+exports[`help of every command and group is unchanged 119`] = `
 {
   "code": 0,
   "path": "company users site-role",
@@ -7865,7 +8362,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 114`] = `
+exports[`help of every command and group is unchanged 120`] = `
 {
   "code": 0,
   "path": "company api-keys",
@@ -7885,7 +8382,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 115`] = `
+exports[`help of every command and group is unchanged 121`] = `
 {
   "code": 0,
   "path": "company regions",
@@ -7905,7 +8402,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 116`] = `
+exports[`help of every command and group is unchanged 122`] = `
 {
   "code": 0,
   "path": "company activity",
@@ -7934,7 +8431,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 117`] = `
+exports[`help of every command and group is unchanged 123`] = `
 {
   "code": 0,
   "path": "company plugins",
@@ -7957,7 +8454,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 118`] = `
+exports[`help of every command and group is unchanged 124`] = `
 {
   "code": 0,
   "path": "company themes",

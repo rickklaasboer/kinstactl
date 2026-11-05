@@ -105,7 +105,66 @@ describe('security', () => {
             body: {exception_rule_id: 'ip:skip:192.0.2.1'},
         });
     });
-    test('ENDPOINTS lists the 11 builders', () => {
-        expect(security.ENDPOINTS).toHaveLength(11);
+    test('ENDPOINTS lists the 13 builders', () => {
+        expect(security.ENDPOINTS).toHaveLength(13);
+    });
+});
+
+describe('redirect rules', () => {
+    test('listRedirectRules sends only the defined query values', () => {
+        expect(security.listRedirectRules('e 1')).toEqual({
+            endpoint: 'GET /sites/environments/{env_id}/redirect-rules',
+            method: 'GET',
+            path: `${enc}/redirect-rules`,
+            query: {},
+        });
+        expect(
+            security.listRedirectRules('e1', {
+                regexSearch: true,
+                searchQuery: 'x',
+            }).query,
+        ).toEqual({regex_search: 'true', search_query: 'x'});
+    });
+    test('listRedirectRules maps every option', () => {
+        expect(
+            security.listRedirectRules('e1', {
+                limit: 100,
+                offset: 5,
+                key: 'from',
+                order: 'descend',
+                regexSearch: false,
+            }).query,
+        ).toEqual({
+            limit: '100',
+            offset: '5',
+            key: 'from',
+            order: 'descend',
+            regex_search: 'false',
+        });
+    });
+    test('updateRedirectRules sends NEW without pagination fields', () => {
+        const rule = {
+            domain: null,
+            from: '/a',
+            to: '/b',
+            type: 'permanent',
+        } as const;
+        expect(
+            security.updateRedirectRules('e 1', {
+                action_type: 'NEW',
+                new_value: rule,
+            }),
+        ).toEqual({
+            endpoint: 'POST /sites/environments/{env_id}/redirect-rules',
+            method: 'POST',
+            path: `${enc}/redirect-rules`,
+            body: {action_type: 'NEW', new_value: rule},
+        });
+    });
+    test('updateRedirectRules sends DELETE_ALL with no rules', () => {
+        expect(
+            security.updateRedirectRules('e1', {action_type: 'DELETE_ALL'})
+                .body,
+        ).toEqual({action_type: 'DELETE_ALL'});
     });
 });

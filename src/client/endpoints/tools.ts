@@ -142,6 +142,28 @@ export function searchAndReplace(
     };
 }
 
+export function listDeniedIps(envId: string): RequestSpec {
+    return {
+        endpoint: 'GET /sites/tools/denied-ips',
+        method: 'GET',
+        path: '/sites/tools/denied-ips',
+        query: {environment_id: envId},
+    };
+}
+
+export function setDeniedIps(envId: string, ips: string[]): RequestSpec {
+    const body: Schemas['UpdateDeniedIPsRequestBody'] = {
+        environment_id: envId,
+        ip_list: ips,
+    };
+    return {
+        endpoint: 'PUT /sites/tools/denied-ips',
+        method: 'PUT',
+        path: '/sites/tools/denied-ips',
+        body,
+    };
+}
+
 export const ENDPOINTS: EndpointKey[] = [
     'POST /sites/tools/clear-cache',
     'POST /sites/tools/restart-php',
@@ -151,4 +173,6 @@ export const ENDPOINTS: EndpointKey[] = [
     'PUT /sites/edge-caching/status',
     'PUT /sites/cdn/image-optimization',
     'POST /sites/tools/search-and-replace',
+    'GET /sites/tools/denied-ips',
+    'PUT /sites/tools/denied-ips',
 ];
