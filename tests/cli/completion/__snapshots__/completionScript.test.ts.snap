@@ -547,7 +547,7 @@ _kinstactl_options() {
         'security redirects delete')
             reply=('--env:environment name or ID' '--domain:select the rule of this domain when several share from' '--all:delete every redirect rule' '--dry-run:print the resolved target and request; change nothing' '--yes:skip the confirmation prompt' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
         'analytics')
-            reply=('--env:environment name or ID' '--span:time span: 24h, 7d, 30d, 60d' '--from:start date (instead of --span)' '--to:end date' '--time-zone:UTC offset for diskspace, e.g. 02:00 (default: local time zone)' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+            reply=('--env:environment name or ID' '--span:time span: 24h, 7d, 30d, 60d (default: 7d)' '--from:start date (instead of --span)' '--to:end date' '--time-zone:UTC offset for diskspace, e.g. 02:00 (default: local time zone)' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
         'company users role')
             reply=('--dry-run:print the resolved target and request; change nothing' '--no-wait:return the operation ID instead of waiting' '--timeout:give up waiting after this many minutes (default 30)' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
         'company users site-role')
@@ -2414,7 +2414,7 @@ complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l dry-
 complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l yes -d 'skip the confirmation prompt'
 complete -c kinstactl -n '__kinstactl_at_arg "security redirects delete" 1' -a '(kinstactl completion sites 2>/dev/null)'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 3) 2>/dev/null)' -d 'environment name or ID'
-complete -c kinstactl -n '__kinstactl_under "analytics"' -l span -r -d 'time span: 24h, 7d, 30d, 60d'
+complete -c kinstactl -n '__kinstactl_under "analytics"' -l span -r -d 'time span: 24h, 7d, 30d, 60d (default: 7d)'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l from -r -d 'start date (instead of --span)'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l to -r -d 'end date'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l time-zone -r -d 'UTC offset for diskspace, e.g. 02:00 (default: local time zone)'
