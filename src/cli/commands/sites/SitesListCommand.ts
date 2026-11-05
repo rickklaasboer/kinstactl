@@ -1,6 +1,7 @@
 import {injectable} from 'tsyringe';
 import {listSites} from '@/client/endpoints/sites';
 import type {components} from '@/client/generated/openapi';
+import type {EndpointKey} from '@/client/request';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
 import {SiteCache} from '../../services/SiteCache';
@@ -28,7 +29,7 @@ export class SitesListCommand implements BaseCommand<Options> {
         'kinstactl sites list --refresh',
         'kinstactl sites list --json',
     ];
-    readonly endpoints = ['GET /sites' as const];
+    readonly endpoints: EndpointKey[] = ['GET /sites'];
 
     constructor(
         private readonly output: Output,

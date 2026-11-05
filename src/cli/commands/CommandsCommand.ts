@@ -1,4 +1,5 @@
 import {injectable} from 'tsyringe';
+import type {EndpointKey} from '@/client/request';
 import {type CommandNode, CommandRegistry} from '../CommandRegistry';
 import {Output} from '../output';
 import type {ArgumentDef, BaseCommand, OptionDef} from './BaseCommand';
@@ -20,7 +21,7 @@ export class CommandsCommand implements BaseCommand {
     readonly arguments: ArgumentDef[] = [];
     readonly options: OptionDef[] = [];
     readonly examples = ['kinstactl commands', 'kinstactl commands --json'];
-    readonly endpoints = [];
+    readonly endpoints: EndpointKey[] = [];
 
     constructor(
         private readonly registry: CommandRegistry,

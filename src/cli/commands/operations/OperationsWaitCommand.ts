@@ -1,4 +1,5 @@
 import {injectable} from 'tsyringe';
+import type {EndpointKey} from '@/client/request';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
 import {OperationRunner, parseMinutes} from '../../services/OperationRunner';
@@ -29,7 +30,7 @@ export class OperationsWaitCommand implements BaseCommand<Options> {
         'kinstactl operations wait 0e7b2d61-example',
         'kinstactl operations wait 0e7b2d61-example --timeout 10',
     ];
-    readonly endpoints = ['GET /operations/{operation_id}' as const];
+    readonly endpoints: EndpointKey[] = ['GET /operations/{operation_id}'];
 
     constructor(
         private readonly clients: ClientProvider,

@@ -1,5 +1,6 @@
 import {injectable} from 'tsyringe';
 import {restartPhp} from '@/client/endpoints/tools';
+import type {EndpointKey} from '@/client/request';
 import {
     type ActionFlags,
     actionOptions,
@@ -29,9 +30,7 @@ export class PhpRestartCommand implements BaseCommand<Options> {
         'kinstactl php restart klant-x --env live',
         'kinstactl php restart klant-x --env live --dry-run',
     ];
-    readonly endpoints: BaseCommand['endpoints'] = [
-        'POST /sites/tools/restart-php',
-    ];
+    readonly endpoints: EndpointKey[] = ['POST /sites/tools/restart-php'];
 
     constructor(
         private readonly resolver: SiteResolver,

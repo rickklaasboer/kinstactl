@@ -1,5 +1,6 @@
 import {injectable} from 'tsyringe';
 import {validate} from '@/client/endpoints/account';
+import type {EndpointKey} from '@/client/request';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
 import {ConfigService} from '../../services/ConfigService';
@@ -23,7 +24,7 @@ export class AuthStatusCommand implements BaseCommand {
         'kinstactl auth status',
         'kinstactl auth status --json',
     ];
-    readonly endpoints = ['GET /validate' as const];
+    readonly endpoints: EndpointKey[] = ['GET /validate'];
 
     constructor(
         private readonly config: ConfigService,

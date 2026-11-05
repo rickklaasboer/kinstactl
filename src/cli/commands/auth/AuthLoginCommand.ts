@@ -1,5 +1,6 @@
 import {inject, injectable} from 'tsyringe';
 import {validate} from '@/client/endpoints/account';
+import type {EndpointKey} from '@/client/request';
 import {CliError} from '../../errors';
 import {IO, type Io} from '../../io';
 import {Output} from '../../output';
@@ -40,7 +41,7 @@ export class AuthLoginCommand implements BaseCommand<Options> {
         'kinstactl auth login --profile work --api-key -  < key.txt',
         'kinstactl auth login --profile work --api-key <key>',
     ];
-    readonly endpoints = ['GET /validate' as const];
+    readonly endpoints: EndpointKey[] = ['GET /validate'];
 
     constructor(
         private readonly ctx: RunContext,

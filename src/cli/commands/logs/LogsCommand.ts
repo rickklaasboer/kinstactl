@@ -2,6 +2,7 @@ import {InvalidArgumentError} from 'commander';
 import {injectable} from 'tsyringe';
 import {getLogs, type LogsOptions} from '@/client/endpoints/logs';
 import type {components} from '@/client/generated/openapi';
+import type {EndpointKey} from '@/client/request';
 import {CliError} from '../../errors';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
@@ -83,7 +84,9 @@ export class LogsCommand implements BaseCommand<Options> {
         'kinstactl logs klant-x access --env live --lines 200 --search wp-login',
         'kinstactl logs klant-x cache --env live --json',
     ];
-    readonly endpoints = ['GET /sites/environments/{env_id}/logs' as const];
+    readonly endpoints: EndpointKey[] = [
+        'GET /sites/environments/{env_id}/logs',
+    ];
 
     constructor(
         private readonly clients: ClientProvider,

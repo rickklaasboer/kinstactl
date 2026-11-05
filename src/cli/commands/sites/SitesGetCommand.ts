@@ -1,6 +1,7 @@
 import {injectable} from 'tsyringe';
 import {getSite} from '@/client/endpoints/sites';
 import type {components} from '@/client/generated/openapi';
+import type {EndpointKey} from '@/client/request';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
 import {SiteResolver} from '../../services/SiteResolver';
@@ -24,10 +25,7 @@ export class SitesGetCommand implements BaseCommand {
         'kinstactl sites get klant-x',
         'kinstactl sites get klant-x --json',
     ];
-    readonly endpoints = [
-        'GET /sites' as const,
-        'GET /sites/{site_id}' as const,
-    ];
+    readonly endpoints: EndpointKey[] = ['GET /sites', 'GET /sites/{site_id}'];
 
     constructor(
         private readonly output: Output,

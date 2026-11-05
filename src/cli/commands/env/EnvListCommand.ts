@@ -1,6 +1,7 @@
 import {injectable} from 'tsyringe';
 import {listEnvironments} from '@/client/endpoints/environments';
 import type {components} from '@/client/generated/openapi';
+import type {EndpointKey} from '@/client/request';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
 import {SiteResolver} from '../../services/SiteResolver';
@@ -24,9 +25,9 @@ export class EnvListCommand implements BaseCommand {
         'kinstactl env list klant-x',
         'kinstactl env list klant-x --json',
     ];
-    readonly endpoints = [
-        'GET /sites' as const,
-        'GET /sites/{site_id}/environments' as const,
+    readonly endpoints: EndpointKey[] = [
+        'GET /sites',
+        'GET /sites/{site_id}/environments',
     ];
 
     constructor(

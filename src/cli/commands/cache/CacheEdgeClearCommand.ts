@@ -1,5 +1,6 @@
 import {injectable} from 'tsyringe';
 import {clearEdgeCache} from '@/client/endpoints/tools';
+import type {EndpointKey} from '@/client/request';
 import {
     type ActionFlags,
     actionOptions,
@@ -38,9 +39,7 @@ export class CacheEdgeClearCommand implements BaseCommand<Options> {
         'kinstactl cache edge clear klant-x --env live',
         'kinstactl cache edge clear klant-x --env live --url https://example.com/blog/ --subdirectories',
     ];
-    readonly endpoints: BaseCommand['endpoints'] = [
-        'POST /sites/edge-caching/clear',
-    ];
+    readonly endpoints: EndpointKey[] = ['POST /sites/edge-caching/clear'];
 
     constructor(
         private readonly resolver: SiteResolver,

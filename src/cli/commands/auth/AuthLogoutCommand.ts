@@ -1,4 +1,5 @@
 import {injectable} from 'tsyringe';
+import type {EndpointKey} from '@/client/request';
 import {CliError} from '../../errors';
 import {Output} from '../../output';
 import {ConfigService} from '../../services/ConfigService';
@@ -14,7 +15,7 @@ export class AuthLogoutCommand implements BaseCommand {
         'kinstactl auth logout',
         'kinstactl auth logout --profile work',
     ];
-    readonly endpoints = [];
+    readonly endpoints: EndpointKey[] = [];
 
     constructor(
         private readonly config: ConfigService,

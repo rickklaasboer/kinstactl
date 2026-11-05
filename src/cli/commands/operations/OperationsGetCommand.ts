@@ -1,5 +1,6 @@
 import {injectable} from 'tsyringe';
 import {getOperation} from '@/client/endpoints/operations';
+import type {EndpointKey} from '@/client/request';
 import {CliError} from '../../errors';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
@@ -22,7 +23,7 @@ export class OperationsGetCommand implements BaseCommand {
         'kinstactl operations get 0e7b2d61-example',
         'kinstactl operations get 0e7b2d61-example --json',
     ];
-    readonly endpoints = ['GET /operations/{operation_id}' as const];
+    readonly endpoints: EndpointKey[] = ['GET /operations/{operation_id}'];
 
     constructor(
         private readonly clients: ClientProvider,

@@ -2,6 +2,7 @@ import {injectable} from 'tsyringe';
 import {listEnvironments} from '@/client/endpoints/environments';
 import {clearCdnCache} from '@/client/endpoints/tools';
 import type {components} from '@/client/generated/openapi';
+import type {EndpointKey} from '@/client/request';
 import {CliError} from '../../errors';
 import {ClientProvider} from '../../services/ClientProvider';
 import {
@@ -35,7 +36,7 @@ export class CacheCdnClearCommand implements BaseCommand<Options> {
         'kinstactl cache cdn clear klant-x --env live',
         'kinstactl cache cdn clear klant-x --env live --dry-run',
     ];
-    readonly endpoints: BaseCommand['endpoints'] = [
+    readonly endpoints: EndpointKey[] = [
         'GET /sites/{site_id}/environments',
         'POST /sites/cdn/clear-cache',
     ];

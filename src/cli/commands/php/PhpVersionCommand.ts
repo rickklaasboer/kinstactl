@@ -2,6 +2,7 @@ import {injectable} from 'tsyringe';
 import {listEnvironments} from '@/client/endpoints/environments';
 import {modifyPhpVersion} from '@/client/endpoints/tools';
 import type {components} from '@/client/generated/openapi';
+import type {EndpointKey} from '@/client/request';
 import {CliError} from '../../errors';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
@@ -52,7 +53,7 @@ export class PhpVersionCommand implements BaseCommand<Options> {
         'kinstactl php version klant-x 8.3 --env staging',
         'kinstactl php version klant-x 8.3 --env staging --no-auto-update --dry-run',
     ];
-    readonly endpoints: BaseCommand['endpoints'] = [
+    readonly endpoints: EndpointKey[] = [
         'GET /sites/{site_id}/environments',
         'PUT /sites/tools/modify-php-version',
     ];

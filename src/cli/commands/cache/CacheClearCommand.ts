@@ -1,5 +1,6 @@
 import {injectable} from 'tsyringe';
 import {clearCache} from '@/client/endpoints/tools';
+import type {EndpointKey} from '@/client/request';
 import {
     type ActionFlags,
     actionOptions,
@@ -29,9 +30,7 @@ export class CacheClearCommand implements BaseCommand<Options> {
         'kinstactl cache clear klant-x --env live',
         'kinstactl cache clear klant-x --env staging --dry-run',
     ];
-    readonly endpoints: BaseCommand['endpoints'] = [
-        'POST /sites/tools/clear-cache',
-    ];
+    readonly endpoints: EndpointKey[] = ['POST /sites/tools/clear-cache'];
 
     constructor(
         private readonly resolver: SiteResolver,

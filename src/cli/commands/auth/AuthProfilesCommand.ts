@@ -1,4 +1,5 @@
 import {injectable} from 'tsyringe';
+import type {EndpointKey} from '@/client/request';
 import {Output} from '../../output';
 import {ConfigService} from '../../services/ConfigService';
 import type {ArgumentDef, BaseCommand, OptionDef} from '../BaseCommand';
@@ -13,7 +14,7 @@ export class AuthProfilesCommand implements BaseCommand {
         'kinstactl auth profiles',
         'kinstactl auth profiles --json',
     ];
-    readonly endpoints = [];
+    readonly endpoints: EndpointKey[] = [];
 
     constructor(
         private readonly config: ConfigService,

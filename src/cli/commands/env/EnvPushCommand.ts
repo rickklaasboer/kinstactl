@@ -1,5 +1,6 @@
 import {injectable} from 'tsyringe';
 import {pushEnvironment} from '@/client/endpoints/environments';
+import type {EndpointKey} from '@/client/request';
 import {CliError} from '../../errors';
 import {
     type ActionFlags,
@@ -11,6 +12,7 @@ import {
     type ArgumentDef,
     type BaseCommand,
     type CommandArgs,
+    type Destructive,
     type OptionDef,
     siteArgument,
 } from '../BaseCommand';
@@ -52,11 +54,11 @@ export class EnvPushCommand implements BaseCommand<Options> {
         'kinstactl env push klant-x --from staging --to live',
         'kinstactl env push klant-x --from staging --to live --no-db --path wp-content/themes --yes',
     ];
-    readonly endpoints = [
-        'GET /sites' as const,
-        'PUT /sites/{site_id}/environments' as const,
+    readonly endpoints: EndpointKey[] = [
+        'GET /sites',
+        'PUT /sites/{site_id}/environments',
     ];
-    readonly destructive = 'confirm' as const;
+    readonly destructive: Destructive = 'confirm';
 
     constructor(
         private readonly resolver: SiteResolver,
