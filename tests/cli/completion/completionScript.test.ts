@@ -107,6 +107,39 @@ describe.each(SHELLS)('%s completion script', (shell) => {
         expect(script).toContain("'backups restore:--from-env'");
     });
 
+    test(`${shell} script resolves the site word at the site argument's position`, () => {
+        // analytics <metric> [site]: site is the second positional;
+        // env push <site>: the first.
+        const needles: Record<string, [string, string]> = {
+            zsh: ['positionals[2]', 'positionals[1]'],
+            bash: ['positionals[1]', 'positionals[0]'],
+            fish: ['__kinstactl_arg 3)', '__kinstactl_arg 3)'],
+        };
+        const [second, first] = needles[shell] as [string, string];
+        const envLine = (path: string, flag: string): string => {
+            const lines = script.split('\n');
+            const i = lines.findIndex((l) =>
+                shell === 'fish'
+                    ? l.includes(`under "${path}"`) && l.includes(`-l ${flag} `)
+                    : l.includes(`'${path}:--${flag}'`),
+            );
+            if (i < 0) throw new Error(`no env completion for ${path}`);
+            if (shell === 'fish') return lines[i]!;
+            // The arm runs from its pattern to the closing `;;`.
+            const end = lines.findIndex((l, j) => j >= i && l.endsWith(';;'));
+            return lines.slice(i, end + 1).join('\n');
+        };
+        const analytics = envLine('analytics', 'env');
+        const push = envLine('env push', 'to');
+        expect(analytics).toContain('completion envs');
+        expect(analytics).toContain(second);
+        expect(push).toContain(first);
+        if (shell !== 'fish') {
+            expect(analytics).not.toContain(first);
+            expect(push).not.toContain(second);
+        }
+    });
+
     test(`${shell} script is unchanged`, () => {
         expect(script).toMatchSnapshot();
     });
@@ -121,7 +154,7 @@ test('zsh script defines _kinstactl and registers it', () => {
     expect(script).toContain('$(kinstactl completion sites 2>/dev/null)');
     expect(script).toContain(
         // biome-ignore lint/suspicious/noTemplateCurlyInString: zsh syntax
-        '$(kinstactl completion envs ${site} 2>/dev/null)',
+        '$(kinstactl completion envs ${positionals[1]} 2>/dev/null)',
     );
     expect(script).toContain('cache:Clear the caches of a site environment');
 });
@@ -143,3 +176,36 @@ test('fish script starts with complete -c kinstactl -f and describes options', (
     expect(script).toContain('-l env -x');
     expect(script).toContain("-d 'environment name or ID'");
 });
+
+describe.each(SHELLS)(
+    '%s completion of a leaf without a site argument',
+    (shell) => {
+        test('does not list environments', () => {
+            const leaf: CommandNode = {
+                name: 'orphan',
+                path: 'orphan',
+                description: 'leaf without a site argument',
+                arguments: [],
+                options: [
+                    {flags: '--env <environment>', description: 'environment'},
+                ],
+                destructive: null,
+                endpoints: [],
+                commands: [],
+            };
+            const root: CommandNode = {
+                name: 'kinstactl',
+                path: '',
+                description: 'root',
+                arguments: [],
+                options: [],
+                destructive: null,
+                endpoints: [],
+                commands: [leaf],
+            };
+            expect(completionScript(shell, root)).not.toContain(
+                'completion envs',
+            );
+        });
+    },
+);

@@ -830,78 +830,140 @@ _kinstactl_argument() {
 
 _kinstactl_value() {
     case "$1:$2" in
-        'logs:--env'|\\
-        'sites clone:--env'|\\
+        'logs:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'sites clone:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
         'env push:--from'|\\
-        'env push:--to'|\\
-        'env clone:--from'|\\
-        'env delete:--env'|\\
-        'env php-allocation:--env'|\\
-        'env webroot:--env'|\\
-        'env files:--env'|\\
-        'cache clear:--env'|\\
-        'cache edge clear:--env'|\\
-        'cache edge enable:--env'|\\
-        'cache edge disable:--env'|\\
-        'cache cdn clear:--env'|\\
-        'cache cdn image-optimization:--env'|\\
-        'php restart:--env'|\\
-        'php version:--env'|\\
-        'plugins list:--env'|\\
-        'plugins update:--env'|\\
-        'themes list:--env'|\\
-        'themes update:--env'|\\
-        'backups restore:--from-env'|\\
-        'backups downloadable list:--env'|\\
-        'backups downloadable create:--env'|\\
-        'backups downloadable quota:--env'|\\
-        'domains list:--env'|\\
-        'domains add:--env'|\\
-        'domains remove:--env'|\\
-        'domains primary:--env'|\\
-        'domains verification:--env'|\\
-        'wp run:--env'|\\
-        'wp login:--env'|\\
-        'wp user create:--env'|\\
-        'wp user exists:--env'|\\
-        'db login:--env'|\\
-        'search-replace:--env'|\\
-        'ssh status:--env'|\\
-        'ssh enable:--env'|\\
-        'ssh disable:--env'|\\
-        'ssh config:--env'|\\
-        'ssh allowlist:--env'|\\
-        'ssh password get:--env'|\\
-        'ssh password generate:--env'|\\
-        'ssh password enable:--env'|\\
-        'ssh password disable:--env'|\\
-        'ssh password expiration:--env'|\\
-        'sftp-users list:--env'|\\
-        'sftp-users add:--env'|\\
-        'sftp-users enable:--env'|\\
-        'sftp-users disable:--env'|\\
-        'sftp-users delete:--env'|\\
-        'security force-https:--env'|\\
-        'security bot-protection level:--env'|\\
-        'security bot-protection ai-crawlers:--env'|\\
-        'security bot-protection wp-automations:--env'|\\
-        'security bot-protection exceptions list:--env'|\\
-        'security bot-protection exceptions add:--env'|\\
-        'security bot-protection exceptions delete:--env'|\\
-        'security denied-ips:--env'|\\
-        'security redirects list:--env'|\\
-        'security redirects add:--env'|\\
-        'security redirects update:--env'|\\
-        'security redirects delete:--env'|\\
+        'env push:--to')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'env clone:--from')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'env delete:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'env php-allocation:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'env webroot:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'env files:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'cache clear:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'cache edge clear:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'cache edge enable:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'cache edge disable:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'cache cdn clear:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'cache cdn image-optimization:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'php restart:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'php version:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'plugins list:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'plugins update:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'themes list:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'themes update:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'backups restore:--from-env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'backups downloadable list:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'backups downloadable create:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'backups downloadable quota:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'domains list:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'domains add:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'domains remove:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'domains primary:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'domains verification:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'wp run:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'wp login:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'wp user create:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'wp user exists:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'db login:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'search-replace:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh status:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh enable:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh disable:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh config:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh allowlist:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh password get:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh password generate:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh password enable:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh password disable:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'ssh password expiration:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'sftp-users list:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'sftp-users add:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'sftp-users enable:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'sftp-users disable:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'sftp-users delete:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security force-https:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security bot-protection level:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security bot-protection ai-crawlers:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security bot-protection wp-automations:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security bot-protection exceptions list:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security bot-protection exceptions add:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security bot-protection exceptions delete:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security denied-ips:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security redirects list:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security redirects add:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security redirects update:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
+        'security redirects delete:--env')
+            compadd -- $(kinstactl completion envs \${positionals[1]} 2>/dev/null) ;;
         'analytics:--env')
-            compadd -- $(kinstactl completion envs \${site} 2>/dev/null) ;;
+            compadd -- $(kinstactl completion envs \${positionals[2]} 2>/dev/null) ;;
         *)
             _message 'value' ;;
     esac
 }
 
 _kinstactl() {
-    local cmdpath='' word prev i site
+    local cmdpath='' word prev i
     local -a reply positionals kids flags
     for (( i = 2; i < CURRENT; i++ )); do
         word=\${words[i]}
@@ -917,7 +979,6 @@ _kinstactl() {
             positionals+=($word)
         fi
     done
-    site=\${positionals[1]}
     prev=\${words[CURRENT-1]}
     _kinstactl_valueflags "$cmdpath"
     if (( \${reply[(Ie)$prev]} )); then
@@ -1612,76 +1673,138 @@ _kinstactl_argument() {
 
 _kinstactl_value() {
     case "$1:$2" in
-        'logs:--env'|\\
-        'sites clone:--env'|\\
+        'logs:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'sites clone:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
         'env push:--from'|\\
-        'env push:--to'|\\
-        'env clone:--from'|\\
-        'env delete:--env'|\\
-        'env php-allocation:--env'|\\
-        'env webroot:--env'|\\
-        'env files:--env'|\\
-        'cache clear:--env'|\\
-        'cache edge clear:--env'|\\
-        'cache edge enable:--env'|\\
-        'cache edge disable:--env'|\\
-        'cache cdn clear:--env'|\\
-        'cache cdn image-optimization:--env'|\\
-        'php restart:--env'|\\
-        'php version:--env'|\\
-        'plugins list:--env'|\\
-        'plugins update:--env'|\\
-        'themes list:--env'|\\
-        'themes update:--env'|\\
-        'backups restore:--from-env'|\\
-        'backups downloadable list:--env'|\\
-        'backups downloadable create:--env'|\\
-        'backups downloadable quota:--env'|\\
-        'domains list:--env'|\\
-        'domains add:--env'|\\
-        'domains remove:--env'|\\
-        'domains primary:--env'|\\
-        'domains verification:--env'|\\
-        'wp run:--env'|\\
-        'wp login:--env'|\\
-        'wp user create:--env'|\\
-        'wp user exists:--env'|\\
-        'db login:--env'|\\
-        'search-replace:--env'|\\
-        'ssh status:--env'|\\
-        'ssh enable:--env'|\\
-        'ssh disable:--env'|\\
-        'ssh config:--env'|\\
-        'ssh allowlist:--env'|\\
-        'ssh password get:--env'|\\
-        'ssh password generate:--env'|\\
-        'ssh password enable:--env'|\\
-        'ssh password disable:--env'|\\
-        'ssh password expiration:--env'|\\
-        'sftp-users list:--env'|\\
-        'sftp-users add:--env'|\\
-        'sftp-users enable:--env'|\\
-        'sftp-users disable:--env'|\\
-        'sftp-users delete:--env'|\\
-        'security force-https:--env'|\\
-        'security bot-protection level:--env'|\\
-        'security bot-protection ai-crawlers:--env'|\\
-        'security bot-protection wp-automations:--env'|\\
-        'security bot-protection exceptions list:--env'|\\
-        'security bot-protection exceptions add:--env'|\\
-        'security bot-protection exceptions delete:--env'|\\
-        'security denied-ips:--env'|\\
-        'security redirects list:--env'|\\
-        'security redirects add:--env'|\\
-        'security redirects update:--env'|\\
-        'security redirects delete:--env'|\\
+        'env push:--to')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'env clone:--from')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'env delete:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'env php-allocation:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'env webroot:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'env files:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'cache clear:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'cache edge clear:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'cache edge enable:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'cache edge disable:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'cache cdn clear:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'cache cdn image-optimization:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'php restart:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'php version:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'plugins list:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'plugins update:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'themes list:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'themes update:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'backups restore:--from-env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'backups downloadable list:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'backups downloadable create:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'backups downloadable quota:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'domains list:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'domains add:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'domains remove:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'domains primary:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'domains verification:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'wp run:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'wp login:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'wp user create:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'wp user exists:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'db login:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'search-replace:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh status:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh enable:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh disable:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh config:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh allowlist:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh password get:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh password generate:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh password enable:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh password disable:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'ssh password expiration:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users list:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users add:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users enable:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users disable:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users delete:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security force-https:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security bot-protection level:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security bot-protection ai-crawlers:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security bot-protection wp-automations:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security bot-protection exceptions list:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security bot-protection exceptions add:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security bot-protection exceptions delete:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security denied-ips:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security redirects list:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security redirects add:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security redirects update:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
+        'security redirects delete:--env')
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[0]} 2>/dev/null)" -- "$cur")) ;;
         'analytics:--env')
-            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${site} 2>/dev/null)" -- "$cur")) ;;
+            COMPREPLY=($(compgen -W "$(kinstactl completion envs \${positionals[1]} 2>/dev/null)" -- "$cur")) ;;
     esac
 }
 
 _kinstactl() {
-    local cur prev cmdpath='' word i site kids flags
+    local cur prev cmdpath='' word i kids flags
     local -a positionals=()
     cur=\${COMP_WORDS[COMP_CWORD]}
     prev=\${COMP_WORDS[COMP_CWORD-1]}
@@ -1698,7 +1821,6 @@ _kinstactl() {
             positionals+=("$word")
         fi
     done
-    site=\${positionals[0]}
     flags=$(_kinstactl_valueflags "$cmdpath")
     if [[ " $flags " == *" $prev "* ]]; then
         _kinstactl_value "$cmdpath" "$prev"
@@ -2291,7 +2413,7 @@ complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l all 
 complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l dry-run -d 'print the resolved target and request; change nothing'
 complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l yes -d 'skip the confirmation prompt'
 complete -c kinstactl -n '__kinstactl_at_arg "security redirects delete" 1' -a '(kinstactl completion sites 2>/dev/null)'
-complete -c kinstactl -n '__kinstactl_under "analytics"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 2) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "analytics"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 3) 2>/dev/null)' -d 'environment name or ID'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l span -r -d 'time span: 24h, 7d, 30d, 60d'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l from -r -d 'start date (instead of --span)'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l to -r -d 'end date'
