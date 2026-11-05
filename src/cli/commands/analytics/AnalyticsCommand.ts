@@ -28,7 +28,7 @@ type SpanKey = keyof typeof SPANS;
 
 type Options = {
     env?: string;
-    span: SpanKey;
+    span?: SpanKey;
     from?: string;
     to?: string;
     timeZone?: string;
@@ -68,9 +68,8 @@ export class AnalyticsCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
         {
             flags: '--span <span>',
-            description: `time span: ${Object.keys(SPANS).join(', ')}`,
+            description: `time span: ${Object.keys(SPANS).join(', ')} (default: 7d)`,
             parse: parseSpan,
-            default: '7d',
         },
         {
             flags: '--from <date>',
@@ -112,6 +111,12 @@ export class AnalyticsCommand implements BaseCommand<Options> {
                 'USAGE',
                 '--time-zone only applies to the diskspace metric',
             );
+        const hasRange = options.from !== undefined || options.to !== undefined;
+        if (hasRange && options.span !== undefined)
+            throw new CliError(
+                'USAGE',
+                '--span cannot be combined with --from or --to',
+            );
         if (metric.path === 'diskspace' && options.span === '24h')
             throw new CliError(
                 'USAGE',
@@ -125,7 +130,7 @@ export class AnalyticsCommand implements BaseCommand<Options> {
         );
         const {companyId} = this.config.credentials();
         const query: AnalyticsQuery = {
-            timeSpan: SPANS[options.span],
+            ...(!hasRange && {timeSpan: SPANS[options.span ?? '7d']}),
             from: options.from,
             to: options.to,
         };

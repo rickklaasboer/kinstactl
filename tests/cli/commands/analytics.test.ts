@@ -134,6 +134,49 @@ describe('analytics', () => {
         const q = analyticsCall(r.calls).url.searchParams;
         expect(q.get('from')).toBe('2026-10-01');
         expect(q.get('to')).toBe('2026-10-31');
+        expect(q.has('time_span')).toBe(false);
+    });
+
+    test.each(['--from', '--to'])(
+        '--span together with %s is a usage error before any request',
+        async (flag) => {
+            const r = await runCli(
+                [
+                    'analytics',
+                    'visits',
+                    'klant-x',
+                    '--env',
+                    'live',
+                    '--span',
+                    '30d',
+                    flag,
+                    '2026-10-01',
+                ],
+                {routes: routes('visits', series)},
+            );
+            expect(r.code).toBe(2);
+            expect(r.stderr).toContain('--span');
+            expect(r.calls).toHaveLength(0);
+        },
+    );
+
+    test('--to alone sends no time_span', async () => {
+        const r = await runCli(
+            [
+                'analytics',
+                'visits',
+                'klant-x',
+                '--env',
+                'live',
+                '--to',
+                '2026-10-31',
+            ],
+            {routes: routes('visits', series)},
+        );
+        expect(r.code).toBe(0);
+        const q = analyticsCall(r.calls).url.searchParams;
+        expect(q.get('to')).toBe('2026-10-31');
+        expect(q.has('time_span')).toBe(false);
     });
 
     test('diskspace sends time_zone and rejects 24h', async () => {

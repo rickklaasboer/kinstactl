@@ -4564,7 +4564,7 @@ exports[`commands --json is unchanged 1`] = `
           "flags": "--env <environment>",
         },
         {
-          "description": "time span: 24h, 7d, 30d, 60d",
+          "description": "time span: 24h, 7d, 30d, 60d (default: 7d)",
           "flags": "--span <span>",
         },
         {
@@ -8336,7 +8336,7 @@ Arguments:
 
 Options:
   --env <environment>   environment name or ID
-  --span <span>         time span: 24h, 7d, 30d, 60d (default: "7d")
+  --span <span>         time span: 24h, 7d, 30d, 60d (default: 7d)
   --from <date>         start date (instead of --span)
   --to <date>           end date
   --time-zone <offset>  UTC offset for diskspace, e.g. 02:00 (default: local
