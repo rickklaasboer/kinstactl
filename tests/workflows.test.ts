@@ -77,6 +77,30 @@ test('npm publishes to npmjs.com with provenance', () => {
     expect(releaseSource).not.toContain('npm.pkg.github.com');
 });
 
+test('every job after release checks out the released tag', () => {
+    for (const [name, job] of Object.entries<{
+        steps: {uses?: string; with?: Record<string, string>}[];
+    }>(release.jobs)) {
+        if (name === 'release') continue;
+        for (const step of job.steps) {
+            if (step.uses?.startsWith('actions/checkout')) {
+                expect(step.with?.ref).toBe(
+                    `v\${{ needs.release.outputs.version }}`,
+                );
+            }
+        }
+    }
+});
+
+test('the npm token is only exposed to the npm job', () => {
+    for (const [name, job] of Object.entries(release.jobs)) {
+        expect([name, JSON.stringify(job).includes('NPM_TOKEN')]).toEqual([
+            name,
+            name === 'npm',
+        ]);
+    }
+});
+
 test('ci runs the package smoke', () => {
     expect(runs(ci.jobs.package)).toContain('bun run smoke:package');
 });
