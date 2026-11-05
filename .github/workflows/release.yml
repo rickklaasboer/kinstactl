@@ -140,7 +140,8 @@ jobs:
                     echo "Expected version $VERSION, got $actual" >&2
                     exit 1
                   fi
-                  head="$("./bin/$ARTIFACT" commands --json | head -c 19)"
+                  commands="$("./bin/$ARTIFACT" commands --json)"
+                  head="${commands:0:19}"
                   if [ "$head" != '{"name":"kinstactl"' ]; then
                     echo "Unexpected commands output start: $head" >&2
                     exit 1
