@@ -1,0 +1,2211 @@
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
+
+exports[`commands --json is unchanged 1`] = `
+{
+  "arguments": [],
+  "commands": [
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "Validate an API key and store it in a profile",
+          "destructive": null,
+          "endpoints": [
+            "GET /validate",
+          ],
+          "name": "login",
+          "options": [
+            {
+              "description": "API key (required when not interactive); "-" reads it from stdin. A literal key ends up in your shell history: prefer "--api-key -" or KINSTA_API_KEY",
+              "flags": "--api-key <key>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "auth login",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "Show the active credentials and validate them against Kinsta",
+          "destructive": null,
+          "endpoints": [
+            "GET /validate",
+          ],
+          "name": "status",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "auth status",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "Remove a stored profile",
+          "destructive": null,
+          "endpoints": [],
+          "name": "logout",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "auth logout",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "List stored profiles",
+          "destructive": null,
+          "endpoints": [],
+          "name": "profiles",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "auth profiles",
+        },
+      ],
+      "description": "Manage stored credentials",
+      "destructive": null,
+      "endpoints": [],
+      "name": "auth",
+      "options": [],
+      "path": "auth",
+    },
+    {
+      "arguments": [],
+      "commands": [],
+      "description": "List all commands, their options and the API endpoints they use",
+      "destructive": null,
+      "endpoints": [],
+      "name": "commands",
+      "options": [
+        {
+          "description": "config profile to use",
+          "flags": "--profile <name>",
+        },
+        {
+          "description": "print machine-readable JSON",
+          "flags": "--json",
+        },
+        {
+          "description": "never prompt; fail instead",
+          "flags": "--no-input",
+        },
+      ],
+      "path": "commands",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "operation ID",
+              "name": "id",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Show the current status of an operation",
+          "destructive": null,
+          "endpoints": [
+            "GET /operations/{operation_id}",
+          ],
+          "name": "get",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "operations get",
+        },
+        {
+          "arguments": [
+            {
+              "description": "operation ID",
+              "name": "id",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Wait until an operation has finished",
+          "destructive": null,
+          "endpoints": [
+            "GET /operations/{operation_id}",
+          ],
+          "name": "wait",
+          "options": [
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "operations wait",
+        },
+      ],
+      "description": "Inspect and follow long-running Kinsta operations",
+      "destructive": null,
+      "endpoints": [],
+      "name": "operations",
+      "options": [],
+      "path": "operations",
+    },
+    {
+      "arguments": [
+        {
+          "description": "site name, display name or ID",
+          "name": "site",
+          "required": true,
+        },
+        {
+          "description": "log type",
+          "name": "type",
+          "required": false,
+        },
+      ],
+      "commands": [],
+      "description": "Read the error, access or cache log of an environment",
+      "destructive": null,
+      "endpoints": [
+        "GET /sites/environments/{env_id}/logs",
+      ],
+      "name": "logs",
+      "options": [
+        {
+          "description": "environment name or ID",
+          "flags": "--env <environment>",
+        },
+        {
+          "description": "number of lines (max 20000)",
+          "flags": "--lines <n>",
+        },
+        {
+          "description": "only lines containing this text",
+          "flags": "--search <text>",
+        },
+        {
+          "description": "only lines from this date and time",
+          "flags": "--from <datetime>",
+        },
+        {
+          "description": "only lines up to this date and time",
+          "flags": "--to <datetime>",
+        },
+        {
+          "description": "config profile to use",
+          "flags": "--profile <name>",
+        },
+        {
+          "description": "print machine-readable JSON",
+          "flags": "--json",
+        },
+        {
+          "description": "never prompt; fail instead",
+          "flags": "--no-input",
+        },
+      ],
+      "path": "logs",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "List the sites of the company",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+          ],
+          "name": "list",
+          "options": [
+            {
+              "description": "bypass the local site cache",
+              "flags": "--refresh",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "sites list",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Show the details of a site",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/{site_id}",
+          ],
+          "name": "get",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "sites get",
+        },
+      ],
+      "description": "List and inspect Kinsta sites",
+      "destructive": null,
+      "endpoints": [],
+      "name": "sites",
+      "options": [],
+      "path": "sites",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "List the environments of a site",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/{site_id}/environments",
+          ],
+          "name": "list",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "env list",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Push the database and/or files of one environment to another",
+          "destructive": "confirm",
+          "endpoints": [
+            "GET /sites",
+            "PUT /sites/{site_id}/environments",
+          ],
+          "name": "push",
+          "options": [
+            {
+              "description": "source environment",
+              "flags": "--from <env>",
+            },
+            {
+              "description": "target environment (gets overwritten)",
+              "flags": "--to <env>",
+            },
+            {
+              "description": "do not push the database",
+              "flags": "--no-db",
+            },
+            {
+              "description": "do not push files",
+              "flags": "--no-files",
+            },
+            {
+              "description": "do not run search and replace on the database",
+              "flags": "--no-search-replace",
+            },
+            {
+              "description": "push only these paths instead of all files",
+              "flags": "--path <path...>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "skip the confirmation prompt",
+              "flags": "--yes",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "env push",
+        },
+      ],
+      "description": "List and manage environments of a site",
+      "destructive": null,
+      "endpoints": [],
+      "name": "env",
+      "options": [],
+      "path": "env",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Clear the site cache of an environment",
+          "destructive": null,
+          "endpoints": [
+            "POST /sites/tools/clear-cache",
+          ],
+          "name": "clear",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "cache clear",
+        },
+        {
+          "arguments": [],
+          "commands": [
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Clear the edge cache of an environment",
+              "destructive": null,
+              "endpoints": [
+                "POST /sites/edge-caching/clear",
+              ],
+              "name": "clear",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "clear only this URL",
+                  "flags": "--url <url>",
+                },
+                {
+                  "description": "also clear the subdirectories of --url",
+                  "flags": "--subdirectories",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "cache edge clear",
+            },
+          ],
+          "description": "Edge cache",
+          "destructive": null,
+          "endpoints": [],
+          "name": "edge",
+          "options": [],
+          "path": "cache edge",
+        },
+        {
+          "arguments": [],
+          "commands": [
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Clear the CDN cache of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites/{site_id}/environments",
+                "POST /sites/cdn/clear-cache",
+              ],
+              "name": "clear",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "cache cdn clear",
+            },
+          ],
+          "description": "CDN cache",
+          "destructive": null,
+          "endpoints": [],
+          "name": "cdn",
+          "options": [],
+          "path": "cache cdn",
+        },
+      ],
+      "description": "Clear the caches of a site environment",
+      "destructive": null,
+      "endpoints": [],
+      "name": "cache",
+      "options": [],
+      "path": "cache",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Restart the PHP engine of an environment",
+          "destructive": null,
+          "endpoints": [
+            "POST /sites/tools/restart-php",
+          ],
+          "name": "restart",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "php restart",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "PHP version to switch to, e.g. 8.3",
+              "name": "version",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Show the PHP version of an environment, or change it",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites/{site_id}/environments",
+            "PUT /sites/tools/modify-php-version",
+          ],
+          "name": "version",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "opt out of automatic PHP updates",
+              "flags": "--no-auto-update",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "php version",
+        },
+      ],
+      "description": "Manage the PHP engine of a site environment",
+      "destructive": null,
+      "endpoints": [],
+      "name": "php",
+      "options": [],
+      "path": "php",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name or ID",
+              "name": "site",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "List the plugins of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites/environments/{env_id}/wp-plugins",
+          ],
+          "name": "list",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <env>",
+            },
+            {
+              "description": "only plugins with an update available",
+              "flags": "--updates",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "plugins list",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "plugin name",
+              "name": "name",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Update one plugin, or all plugins with an update",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites/environments/{env_id}/wp-plugins",
+            "PUT /sites/environments/{env_id}/plugins",
+            "PUT /sites/environments/{env_id}/plugins/bulk-update",
+          ],
+          "name": "update",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <env>",
+            },
+            {
+              "description": "update every plugin that has an update",
+              "flags": "--all",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "plugins update",
+        },
+      ],
+      "description": "List and update WordPress plugins",
+      "destructive": null,
+      "endpoints": [],
+      "name": "plugins",
+      "options": [],
+      "path": "plugins",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name or ID",
+              "name": "site",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "List the themes of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites/environments/{env_id}/wp-themes",
+          ],
+          "name": "list",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <env>",
+            },
+            {
+              "description": "only themes with an update available",
+              "flags": "--updates",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "themes list",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "theme name",
+              "name": "name",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Update one theme, or all themes with an update",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites/environments/{env_id}/wp-themes",
+            "PUT /sites/environments/{env_id}/themes",
+            "PUT /sites/environments/{env_id}/themes/bulk-update",
+          ],
+          "name": "update",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <env>",
+            },
+            {
+              "description": "update every theme that has an update",
+              "flags": "--all",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "themes update",
+        },
+      ],
+      "description": "List and update WordPress themes",
+      "destructive": null,
+      "endpoints": [],
+      "name": "themes",
+      "options": [],
+      "path": "themes",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name or ID",
+              "name": "site",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "List the backups of an environment, newest first",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites/environments/{env_id}/backups",
+          ],
+          "name": "list",
+          "options": [
+            {
+              "description": "environment (default: the only one)",
+              "flags": "--env <name>",
+            },
+            {
+              "description": "only this backup type, e.g. manual, scheduled or system",
+              "flags": "--type <type>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "backups list",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name or ID",
+              "name": "site",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Create a manual backup",
+          "destructive": null,
+          "endpoints": [
+            "POST /sites/environments/{env_id}/manual-backups",
+          ],
+          "name": "create",
+          "options": [
+            {
+              "description": "environment (default: the only one)",
+              "flags": "--env <name>",
+            },
+            {
+              "description": "label for the backup",
+              "flags": "--tag <text>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "backups create",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "backup ID, see: backups list",
+              "name": "backup-id",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Restore a backup, replacing the environment",
+          "destructive": "confirm",
+          "endpoints": [
+            "GET /sites/environments/{env_id}/backups",
+            "GET /company/{id}/users",
+            "POST /sites/environments/{target_env_id}/backups/restore",
+          ],
+          "name": "restore",
+          "options": [
+            {
+              "description": "environment to restore to (default: the only one)",
+              "flags": "--env <name>",
+            },
+            {
+              "description": "company user to notify when the restore finishes",
+              "flags": "--notify <email>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "skip the confirmation prompt",
+              "flags": "--yes",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "backups restore",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "backup ID, see: backups list",
+              "name": "backup-id",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Delete a backup",
+          "destructive": "confirm",
+          "endpoints": [
+            "GET /sites/environments/{env_id}/backups",
+            "DELETE /sites/environments/backups/{backup_id}",
+          ],
+          "name": "delete",
+          "options": [
+            {
+              "description": "environment (default: the only one)",
+              "flags": "--env <name>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "skip the confirmation prompt",
+              "flags": "--yes",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "backups delete",
+        },
+      ],
+      "description": "List, create, restore and delete backups",
+      "destructive": null,
+      "endpoints": [],
+      "name": "backups",
+      "options": [],
+      "path": "backups",
+    },
+  ],
+  "description": "Command line client for the Kinsta API",
+  "destructive": null,
+  "endpoints": [],
+  "name": "kinstactl",
+  "options": [
+    {
+      "description": "config profile to use",
+      "flags": "--profile <name>",
+    },
+    {
+      "description": "print machine-readable JSON",
+      "flags": "--json",
+    },
+    {
+      "description": "never prompt; fail instead",
+      "flags": "--no-input",
+    },
+  ],
+  "path": "",
+}
+`;
+
+exports[`commands list is unchanged 1`] = `
+"auth  Manage stored credentials
+  login  Validate an API key and store it in a profile
+  status  Show the active credentials and validate them against Kinsta
+  logout  Remove a stored profile
+  profiles  List stored profiles
+commands  List all commands, their options and the API endpoints they use
+operations  Inspect and follow long-running Kinsta operations
+  get <id>  Show the current status of an operation
+  wait <id>  Wait until an operation has finished
+logs <site> [type]  Read the error, access or cache log of an environment
+sites  List and inspect Kinsta sites
+  list  List the sites of the company
+  get <site>  Show the details of a site
+env  List and manage environments of a site
+  list <site>  List the environments of a site
+  push <site>  Push the database and/or files of one environment to another
+cache  Clear the caches of a site environment
+  clear <site>  Clear the site cache of an environment
+  edge  Edge cache
+    clear <site>  Clear the edge cache of an environment
+  cdn  CDN cache
+    clear <site>  Clear the CDN cache of an environment
+php  Manage the PHP engine of a site environment
+  restart <site>  Restart the PHP engine of an environment
+  version <site> [version]  Show the PHP version of an environment, or change it
+plugins  List and update WordPress plugins
+  list <site>  List the plugins of an environment
+  update <site> [name]  Update one plugin, or all plugins with an update
+themes  List and update WordPress themes
+  list <site>  List the themes of an environment
+  update <site> [name]  Update one theme, or all themes with an update
+backups  List, create, restore and delete backups
+  list <site>  List the backups of an environment, newest first
+  create <site>  Create a manual backup
+  restore <site> <backup-id>  Restore a backup, replacing the environment
+  delete <site> <backup-id>  Delete a backup
+"
+`;
+
+exports[`help of every command and group is unchanged 1`] = `
+{
+  "code": 0,
+  "path": "",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl [options] [command]
+
+Command line client for the Kinsta API
+
+Options:
+  --profile <name>              config profile to use
+  --json                        print machine-readable JSON
+  --no-input                    never prompt; fail instead
+  -h, --help                    display help for command
+
+Commands:
+  auth                          Manage stored credentials
+  commands                      List all commands, their options and the API
+                                endpoints they use
+  operations                    Inspect and follow long-running Kinsta
+                                operations
+  logs [options] <site> [type]  Read the error, access or cache log of an
+                                environment
+  sites                         List and inspect Kinsta sites
+  env                           List and manage environments of a site
+  cache                         Clear the caches of a site environment
+  php                           Manage the PHP engine of a site environment
+  plugins                       List and update WordPress plugins
+  themes                        List and update WordPress themes
+  backups                       List, create, restore and delete backups
+  help [command]                display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 2`] = `
+{
+  "code": 0,
+  "path": "auth",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl auth [options] [command]
+
+Manage stored credentials
+
+Options:
+  -h, --help       display help for command
+
+Commands:
+  login [options]  Validate an API key and store it in a profile
+  status           Show the active credentials and validate them against Kinsta
+  logout           Remove a stored profile
+  profiles         List stored profiles
+  help [command]   display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 3`] = `
+{
+  "code": 0,
+  "path": "auth login",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl auth login [options]
+
+Validate an API key and store it in a profile
+
+Options:
+  --api-key <key>  API key (required when not interactive); "-" reads it from
+                   stdin. A literal key ends up in your shell history: prefer
+                   "--api-key -" or KINSTA_API_KEY
+  -h, --help       display help for command
+
+Examples:
+  $ kinstactl auth login
+  $ kinstactl auth login --profile work --api-key -  < key.txt
+  $ kinstactl auth login --profile work --api-key <key>
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 4`] = `
+{
+  "code": 0,
+  "path": "auth status",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl auth status [options]
+
+Show the active credentials and validate them against Kinsta
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl auth status
+  $ kinstactl auth status --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 5`] = `
+{
+  "code": 0,
+  "path": "auth logout",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl auth logout [options]
+
+Remove a stored profile
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl auth logout
+  $ kinstactl auth logout --profile work
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 6`] = `
+{
+  "code": 0,
+  "path": "auth profiles",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl auth profiles [options]
+
+List stored profiles
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl auth profiles
+  $ kinstactl auth profiles --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 7`] = `
+{
+  "code": 0,
+  "path": "commands",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl commands [options]
+
+List all commands, their options and the API endpoints they use
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl commands
+  $ kinstactl commands --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 8`] = `
+{
+  "code": 0,
+  "path": "operations",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl operations [options] [command]
+
+Inspect and follow long-running Kinsta operations
+
+Options:
+  -h, --help           display help for command
+
+Commands:
+  get <id>             Show the current status of an operation
+  wait [options] <id>  Wait until an operation has finished
+  help [command]       display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 9`] = `
+{
+  "code": 0,
+  "path": "operations get",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl operations get [options] <id>
+
+Show the current status of an operation
+
+Arguments:
+  id          operation ID
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl operations get 0e7b2d61-example
+  $ kinstactl operations get 0e7b2d61-example --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 10`] = `
+{
+  "code": 0,
+  "path": "operations wait",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl operations wait [options] <id>
+
+Wait until an operation has finished
+
+Arguments:
+  id                   operation ID
+
+Options:
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl operations wait 0e7b2d61-example
+  $ kinstactl operations wait 0e7b2d61-example --timeout 10
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 11`] = `
+{
+  "code": 0,
+  "path": "logs",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl logs [options] <site> [type]
+
+Read the error, access or cache log of an environment
+
+Arguments:
+  site                 site name, display name or ID
+  type                 log type (choices: "error", "access", "cache", default:
+                       "error")
+
+Options:
+  --env <environment>  environment name or ID
+  --lines <n>          number of lines (max 20000) (default: 1000)
+  --search <text>      only lines containing this text
+  --from <datetime>    only lines from this date and time
+  --to <datetime>      only lines up to this date and time
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl logs klant-x --env live
+  $ kinstactl logs klant-x access --env live --lines 200 --search wp-login
+  $ kinstactl logs klant-x cache --env live --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 12`] = `
+{
+  "code": 0,
+  "path": "sites",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sites [options] [command]
+
+List and inspect Kinsta sites
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  list [options]  List the sites of the company
+  get <site>      Show the details of a site
+  help [command]  display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 13`] = `
+{
+  "code": 0,
+  "path": "sites list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sites list [options]
+
+List the sites of the company
+
+Options:
+  --refresh   bypass the local site cache
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl sites list
+  $ kinstactl sites list --refresh
+  $ kinstactl sites list --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 14`] = `
+{
+  "code": 0,
+  "path": "sites get",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sites get [options] <site>
+
+Show the details of a site
+
+Arguments:
+  site        site name, display name or ID
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl sites get klant-x
+  $ kinstactl sites get klant-x --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 15`] = `
+{
+  "code": 0,
+  "path": "env",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl env [options] [command]
+
+List and manage environments of a site
+
+Options:
+  -h, --help             display help for command
+
+Commands:
+  list <site>            List the environments of a site
+  push [options] <site>  Push the database and/or files of one environment to
+                         another
+  help [command]         display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 16`] = `
+{
+  "code": 0,
+  "path": "env list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl env list [options] <site>
+
+List the environments of a site
+
+Arguments:
+  site        site name, display name or ID
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl env list klant-x
+  $ kinstactl env list klant-x --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 17`] = `
+{
+  "code": 0,
+  "path": "env push",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl env push [options] <site>
+
+Push the database and/or files of one environment to another
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --from <env>         source environment
+  --to <env>           target environment (gets overwritten)
+  --no-db              do not push the database
+  --no-files           do not push files
+  --no-search-replace  do not run search and replace on the database
+  --path <path...>     push only these paths instead of all files
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl env push klant-x --from staging --to live
+  $ kinstactl env push klant-x --from staging --to live --no-db --path wp-content/themes --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 18`] = `
+{
+  "code": 0,
+  "path": "cache",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl cache [options] [command]
+
+Clear the caches of a site environment
+
+Options:
+  -h, --help              display help for command
+
+Commands:
+  clear [options] <site>  Clear the site cache of an environment
+  edge                    Edge cache
+  cdn                     CDN cache
+  help [command]          display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 19`] = `
+{
+  "code": 0,
+  "path": "cache clear",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl cache clear [options] <site>
+
+Clear the site cache of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl cache clear klant-x --env live
+  $ kinstactl cache clear klant-x --env staging --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 20`] = `
+{
+  "code": 0,
+  "path": "cache edge",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl cache edge [options] [command]
+
+Edge cache
+
+Options:
+  -h, --help              display help for command
+
+Commands:
+  clear [options] <site>  Clear the edge cache of an environment
+  help [command]          display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 21`] = `
+{
+  "code": 0,
+  "path": "cache edge clear",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl cache edge clear [options] <site>
+
+Clear the edge cache of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --url <url>          clear only this URL
+  --subdirectories     also clear the subdirectories of --url
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl cache edge clear klant-x --env live
+  $ kinstactl cache edge clear klant-x --env live --url https://example.com/blog/ --subdirectories
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 22`] = `
+{
+  "code": 0,
+  "path": "cache cdn",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl cache cdn [options] [command]
+
+CDN cache
+
+Options:
+  -h, --help              display help for command
+
+Commands:
+  clear [options] <site>  Clear the CDN cache of an environment
+  help [command]          display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 23`] = `
+{
+  "code": 0,
+  "path": "cache cdn clear",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl cache cdn clear [options] <site>
+
+Clear the CDN cache of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl cache cdn clear klant-x --env live
+  $ kinstactl cache cdn clear klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 24`] = `
+{
+  "code": 0,
+  "path": "php",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl php [options] [command]
+
+Manage the PHP engine of a site environment
+
+Options:
+  -h, --help                          display help for command
+
+Commands:
+  restart [options] <site>            Restart the PHP engine of an environment
+  version [options] <site> [version]  Show the PHP version of an environment, or
+                                      change it
+  help [command]                      display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 25`] = `
+{
+  "code": 0,
+  "path": "php restart",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl php restart [options] <site>
+
+Restart the PHP engine of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl php restart klant-x --env live
+  $ kinstactl php restart klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 26`] = `
+{
+  "code": 0,
+  "path": "php version",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl php version [options] <site> [version]
+
+Show the PHP version of an environment, or change it
+
+Arguments:
+  site                 site name, display name or ID
+  version              PHP version to switch to, e.g. 8.3
+
+Options:
+  --env <environment>  environment name or ID
+  --no-auto-update     opt out of automatic PHP updates
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl php version klant-x --env live
+  $ kinstactl php version klant-x 8.3 --env staging
+  $ kinstactl php version klant-x 8.3 --env staging --no-auto-update --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 27`] = `
+{
+  "code": 0,
+  "path": "plugins",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl plugins [options] [command]
+
+List and update WordPress plugins
+
+Options:
+  -h, --help                      display help for command
+
+Commands:
+  list [options] <site>           List the plugins of an environment
+  update [options] <site> [name]  Update one plugin, or all plugins with an
+                                  update
+  help [command]                  display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 28`] = `
+{
+  "code": 0,
+  "path": "plugins list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl plugins list [options] <site>
+
+List the plugins of an environment
+
+Arguments:
+  site         site name or ID
+
+Options:
+  --env <env>  environment name or ID
+  --updates    only plugins with an update available
+  -h, --help   display help for command
+
+Examples:
+  $ kinstactl plugins list klant-x --env live
+  $ kinstactl plugins list klant-x --env live --updates
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 29`] = `
+{
+  "code": 0,
+  "path": "plugins update",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl plugins update [options] <site> [name]
+
+Update one plugin, or all plugins with an update
+
+Arguments:
+  site                 site name or ID
+  name                 plugin name
+
+Options:
+  --env <env>          environment name or ID
+  --all                update every plugin that has an update
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl plugins update klant-x akismet --env live
+  $ kinstactl plugins update klant-x --all --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 30`] = `
+{
+  "code": 0,
+  "path": "themes",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl themes [options] [command]
+
+List and update WordPress themes
+
+Options:
+  -h, --help                      display help for command
+
+Commands:
+  list [options] <site>           List the themes of an environment
+  update [options] <site> [name]  Update one theme, or all themes with an update
+  help [command]                  display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 31`] = `
+{
+  "code": 0,
+  "path": "themes list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl themes list [options] <site>
+
+List the themes of an environment
+
+Arguments:
+  site         site name or ID
+
+Options:
+  --env <env>  environment name or ID
+  --updates    only themes with an update available
+  -h, --help   display help for command
+
+Examples:
+  $ kinstactl themes list klant-x --env live
+  $ kinstactl themes list klant-x --env live --updates
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 32`] = `
+{
+  "code": 0,
+  "path": "themes update",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl themes update [options] <site> [name]
+
+Update one theme, or all themes with an update
+
+Arguments:
+  site                 site name or ID
+  name                 theme name
+
+Options:
+  --env <env>          environment name or ID
+  --all                update every theme that has an update
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl themes update klant-x twentytwentyfour --env live
+  $ kinstactl themes update klant-x --all --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 33`] = `
+{
+  "code": 0,
+  "path": "backups",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl backups [options] [command]
+
+List, create, restore and delete backups
+
+Options:
+  -h, --help                            display help for command
+
+Commands:
+  list [options] <site>                 List the backups of an environment,
+                                        newest first
+  create [options] <site>               Create a manual backup
+  restore [options] <site> <backup-id>  Restore a backup, replacing the
+                                        environment
+  delete [options] <site> <backup-id>   Delete a backup
+  help [command]                        display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 34`] = `
+{
+  "code": 0,
+  "path": "backups list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl backups list [options] <site>
+
+List the backups of an environment, newest first
+
+Arguments:
+  site           site name or ID
+
+Options:
+  --env <name>   environment (default: the only one)
+  --type <type>  only this backup type, e.g. manual, scheduled or system
+  -h, --help     display help for command
+
+Examples:
+  $ kinstactl backups list klant-x
+  $ kinstactl backups list klant-x --env staging --type manual
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 35`] = `
+{
+  "code": 0,
+  "path": "backups create",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl backups create [options] <site>
+
+Create a manual backup
+
+Arguments:
+  site                 site name or ID
+
+Options:
+  --env <name>         environment (default: the only one)
+  --tag <text>         label for the backup
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl backups create klant-x
+  $ kinstactl backups create klant-x --env live --tag "before plugin update"
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 36`] = `
+{
+  "code": 0,
+  "path": "backups restore",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl backups restore [options] <site> <backup-id>
+
+Restore a backup, replacing the environment
+
+Arguments:
+  site                 site name or ID
+  backup-id            backup ID, see: backups list
+
+Options:
+  --env <name>         environment to restore to (default: the only one)
+  --notify <email>     company user to notify when the restore finishes
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl backups restore klant-x 123456789 --notify rick@example.com
+  $ kinstactl backups restore klant-x 123456789 --env staging --notify rick@example.com --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 37`] = `
+{
+  "code": 0,
+  "path": "backups delete",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl backups delete [options] <site> <backup-id>
+
+Delete a backup
+
+Arguments:
+  site                 site name or ID
+  backup-id            backup ID, see: backups list
+
+Options:
+  --env <name>         environment (default: the only one)
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl backups delete klant-x 123456789
+  $ kinstactl backups delete klant-x 123456789 --env staging --yes
+"
+,
+}
+`;
