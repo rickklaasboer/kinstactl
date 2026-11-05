@@ -232,8 +232,28 @@ describe('ssh password', () => {
         });
         expect(r.code).toBe(0);
         expect(r.stdout).toContain(
-            'New SFTP password generated; show it with: kinstactl ssh password get klant-x',
+            'New SFTP password generated; show it with: kinstactl ssh password get klant-x --env live',
         );
+    });
+
+    test('generate prints one json document', async () => {
+        const r = await runCli(
+            ['ssh', 'password', 'generate', 'klant-x', '--json'],
+            {
+                routes: {
+                    ...sites,
+                    'POST /sites/environments/env-live/ssh/generate-password': {
+                        body: {result: null},
+                    },
+                },
+            },
+        );
+        expect(r.code).toBe(0);
+        expect(JSON.parse(r.stdout)).toEqual({
+            site: 'klant-x',
+            environment: 'live',
+            generated: true,
+        });
     });
 
     test('enable and disable send is_enabled', async () => {

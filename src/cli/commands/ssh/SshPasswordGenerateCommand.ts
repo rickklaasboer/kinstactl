@@ -53,7 +53,12 @@ export class SshPasswordGenerateCommand implements BaseCommand<Options> {
         });
         if (res === undefined) return;
         this.output.success(
-            `New SFTP password generated; show it with: kinstactl ssh password get ${target.site.name}`,
+            `New SFTP password generated; show it with: kinstactl ssh password get ${target.site.name} --env ${target.env.name}`,
+            {
+                site: target.site.name,
+                environment: target.env.name,
+                generated: true,
+            },
         );
     }
 }
