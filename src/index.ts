@@ -17,3 +17,4 @@ export * as logs from './client/endpoints/logs';
 export * as plugins from './client/endpoints/plugins';
 export * as dns from './client/endpoints/dns';
 export * as wp from './client/endpoints/wp';
+export * as security from './client/endpoints/security';

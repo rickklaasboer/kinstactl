@@ -3023,6 +3023,441 @@ exports[`commands --json is unchanged 1`] = `
       ],
       "path": "search-replace",
     },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "choices": [
+                "all",
+                "primary",
+                "off",
+              ],
+              "description": "all: redirect every domain, primary: redirect to the primary domain, off: do not force HTTPS",
+              "name": "mode",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Show or change how an environment forces HTTPS (all, primary, off)",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/environments/{env_id}/force-https-status",
+            "POST /sites/environments/{env_id}/force-https-status",
+          ],
+          "name": "force-https",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "security force-https",
+        },
+        {
+          "arguments": [],
+          "commands": [
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "choices": [
+                    "block-malicious-traffic",
+                    "block-automations",
+                    "challenge-bots",
+                    "challenge-everyone",
+                  ],
+                  "description": "new value; omit to show the current one",
+                  "name": "value",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Show or set the bot protection level of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/bot-protection/level",
+                "PUT /sites/environments/{env_id}/bot-protection/level",
+              ],
+              "name": "level",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "security bot-protection level",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "choices": [
+                    "block",
+                    "allow",
+                  ],
+                  "description": "new value; omit to show the current one",
+                  "name": "value",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Show or set whether AI crawlers are blocked",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/bot-protection/ai-crawlers",
+                "PUT /sites/environments/{env_id}/bot-protection/ai-crawlers",
+              ],
+              "name": "ai-crawlers",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "security bot-protection ai-crawlers",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "choices": [
+                    "allow",
+                    "block",
+                  ],
+                  "description": "new value; omit to show the current one",
+                  "name": "value",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Show or set whether WordPress automations are allowed",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/bot-protection/wp-automations",
+                "PUT /sites/environments/{env_id}/bot-protection/wp-automations",
+              ],
+              "name": "wp-automations",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "security bot-protection wp-automations",
+            },
+            {
+              "arguments": [],
+              "commands": [
+                {
+                  "arguments": [
+                    {
+                      "description": "site name, display name or ID",
+                      "name": "site",
+                      "required": false,
+                    },
+                  ],
+                  "commands": [],
+                  "description": "List the bot protection exception rules of an environment",
+                  "destructive": null,
+                  "endpoints": [
+                    "GET /sites",
+                    "GET /sites/environments/{env_id}/bot-protection/exception-rules",
+                  ],
+                  "name": "list",
+                  "options": [
+                    {
+                      "description": "environment name or ID",
+                      "flags": "--env <environment>",
+                    },
+                    {
+                      "description": "config profile to use",
+                      "flags": "--profile <name>",
+                    },
+                    {
+                      "description": "print machine-readable JSON",
+                      "flags": "--json",
+                    },
+                    {
+                      "description": "never prompt; fail instead",
+                      "flags": "--no-input",
+                    },
+                  ],
+                  "path": "security bot-protection exceptions list",
+                },
+                {
+                  "arguments": [
+                    {
+                      "description": "site name, display name or ID",
+                      "name": "site",
+                      "required": true,
+                    },
+                    {
+                      "choices": [
+                        "ip",
+                        "path",
+                        "user_agent",
+                        "country",
+                      ],
+                      "description": "what the rule matches on",
+                      "name": "type",
+                      "required": true,
+                    },
+                    {
+                      "choices": [
+                        "skip",
+                        "challenge",
+                        "block",
+                      ],
+                      "description": "what to do with matching traffic",
+                      "name": "action",
+                      "required": true,
+                    },
+                    {
+                      "description": "the value to match, e.g. an IP address",
+                      "name": "value",
+                      "required": true,
+                    },
+                  ],
+                  "commands": [],
+                  "description": "Add a bot protection exception rule",
+                  "destructive": null,
+                  "endpoints": [
+                    "GET /sites",
+                    "POST /sites/environments/{env_id}/bot-protection/exception-rules",
+                  ],
+                  "name": "add",
+                  "options": [
+                    {
+                      "description": "environment name or ID",
+                      "flags": "--env <environment>",
+                    },
+                    {
+                      "description": "print the resolved target and request; change nothing",
+                      "flags": "--dry-run",
+                    },
+                    {
+                      "description": "return the operation ID instead of waiting",
+                      "flags": "--no-wait",
+                    },
+                    {
+                      "description": "give up waiting after this many minutes (default 30)",
+                      "flags": "--timeout <minutes>",
+                    },
+                    {
+                      "description": "config profile to use",
+                      "flags": "--profile <name>",
+                    },
+                    {
+                      "description": "print machine-readable JSON",
+                      "flags": "--json",
+                    },
+                    {
+                      "description": "never prompt; fail instead",
+                      "flags": "--no-input",
+                    },
+                  ],
+                  "path": "security bot-protection exceptions add",
+                },
+                {
+                  "arguments": [
+                    {
+                      "description": "site name, display name or ID",
+                      "name": "site",
+                      "required": true,
+                    },
+                    {
+                      "description": "rule ID, see: security bot-protection exceptions list",
+                      "name": "rule-id",
+                      "required": true,
+                    },
+                  ],
+                  "commands": [],
+                  "description": "Delete a bot protection exception rule",
+                  "destructive": "confirm",
+                  "endpoints": [
+                    "GET /sites",
+                    "DELETE /sites/environments/{env_id}/bot-protection/exception-rules",
+                  ],
+                  "name": "delete",
+                  "options": [
+                    {
+                      "description": "environment name or ID",
+                      "flags": "--env <environment>",
+                    },
+                    {
+                      "description": "print the resolved target and request; change nothing",
+                      "flags": "--dry-run",
+                    },
+                    {
+                      "description": "return the operation ID instead of waiting",
+                      "flags": "--no-wait",
+                    },
+                    {
+                      "description": "give up waiting after this many minutes (default 30)",
+                      "flags": "--timeout <minutes>",
+                    },
+                    {
+                      "description": "skip the confirmation prompt",
+                      "flags": "--yes",
+                    },
+                    {
+                      "description": "config profile to use",
+                      "flags": "--profile <name>",
+                    },
+                    {
+                      "description": "print machine-readable JSON",
+                      "flags": "--json",
+                    },
+                    {
+                      "description": "never prompt; fail instead",
+                      "flags": "--no-input",
+                    },
+                  ],
+                  "path": "security bot-protection exceptions delete",
+                },
+              ],
+              "description": "Bot protection exception rules",
+              "destructive": null,
+              "endpoints": [],
+              "name": "exceptions",
+              "options": [],
+              "path": "security bot-protection exceptions",
+            },
+          ],
+          "description": "Bot protection",
+          "destructive": null,
+          "endpoints": [],
+          "name": "bot-protection",
+          "options": [],
+          "path": "security bot-protection",
+        },
+      ],
+      "description": "Security settings of an environment",
+      "destructive": null,
+      "endpoints": [],
+      "name": "security",
+      "options": [],
+      "path": "security",
+    },
   ],
   "description": "Command line client for the Kinsta API",
   "destructive": null,
@@ -3123,6 +3558,16 @@ wp  WordPress tools of an environment
 db  Database tools of an environment
   login [site]  Create a phpMyAdmin login link
 search-replace <site> <search> <replace>  Search and replace in the database (dry run unless --apply)
+security  Security settings of an environment
+  force-https <site> [mode]  Show or change how an environment forces HTTPS (all, primary, off)
+  bot-protection  Bot protection
+    level <site> [value]  Show or set the bot protection level of an environment
+    ai-crawlers <site> [value]  Show or set whether AI crawlers are blocked
+    wp-automations <site> [value]  Show or set whether WordPress automations are allowed
+    exceptions  Bot protection exception rules
+      list [site]  List the bot protection exception rules of an environment
+      add <site> <type> <action> <value>  Add a bot protection exception rule
+      delete <site> <rule-id>  Delete a bot protection exception rule
 "
 `;
 
@@ -3159,6 +3604,7 @@ Commands:
   wp                                                  WordPress tools of an environment
   db                                                  Database tools of an environment
   search-replace [options] <site> <search> <replace>  Search and replace in the database (dry run unless --apply)
+  security                                            Security settings of an environment
   help [command]                                      display help for command
 "
 ,
@@ -5213,6 +5659,285 @@ Options:
 Examples:
   $ kinstactl search-replace klant-x http://old.example https://new.example --env live
   $ kinstactl search-replace klant-x http://old.example https://new.example --env live --apply --clear-cache --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 78`] = `
+{
+  "code": 0,
+  "path": "security",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security [options] [command]
+
+Security settings of an environment
+
+Options:
+  -h, --help                           display help for command
+
+Commands:
+  force-https [options] <site> [mode]  Show or change how an environment forces
+                                       HTTPS (all, primary, off)
+  bot-protection                       Bot protection
+  help [command]                       display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 79`] = `
+{
+  "code": 0,
+  "path": "security force-https",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security force-https [options] <site> [mode]
+
+Show or change how an environment forces HTTPS (all, primary, off)
+
+Arguments:
+  site                 site name, display name or ID
+  mode                 all: redirect every domain, primary: redirect to the
+                       primary domain, off: do not force HTTPS (choices: "all",
+                       "primary", "off")
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security force-https klant-x --env live
+  $ kinstactl security force-https klant-x primary --env live
+  $ kinstactl security force-https klant-x off --env staging --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 80`] = `
+{
+  "code": 0,
+  "path": "security bot-protection",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security bot-protection [options] [command]
+
+Bot protection
+
+Options:
+  -h, --help                               display help for command
+
+Commands:
+  level [options] <site> [value]           Show or set the bot protection level of an environment
+  ai-crawlers [options] <site> [value]     Show or set whether AI crawlers are blocked
+  wp-automations [options] <site> [value]  Show or set whether WordPress automations are allowed
+  exceptions                               Bot protection exception rules
+  help [command]                           display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 81`] = `
+{
+  "code": 0,
+  "path": "security bot-protection level",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security bot-protection level [options] <site> [value]
+
+Show or set the bot protection level of an environment
+
+Arguments:
+  site                 site name, display name or ID
+  value                new value; omit to show the current one (choices:
+                       "block-malicious-traffic", "block-automations",
+                       "challenge-bots", "challenge-everyone")
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security bot-protection level klant-x --env live
+  $ kinstactl security bot-protection level klant-x block-malicious-traffic --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 82`] = `
+{
+  "code": 0,
+  "path": "security bot-protection ai-crawlers",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security bot-protection ai-crawlers [options] <site> [value]
+
+Show or set whether AI crawlers are blocked
+
+Arguments:
+  site                 site name, display name or ID
+  value                new value; omit to show the current one (choices:
+                       "block", "allow")
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security bot-protection ai-crawlers klant-x --env live
+  $ kinstactl security bot-protection ai-crawlers klant-x block --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 83`] = `
+{
+  "code": 0,
+  "path": "security bot-protection wp-automations",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security bot-protection wp-automations [options] <site> [value]
+
+Show or set whether WordPress automations are allowed
+
+Arguments:
+  site                 site name, display name or ID
+  value                new value; omit to show the current one (choices:
+                       "allow", "block")
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security bot-protection wp-automations klant-x --env live
+  $ kinstactl security bot-protection wp-automations klant-x allow --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 84`] = `
+{
+  "code": 0,
+  "path": "security bot-protection exceptions",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security bot-protection exceptions [options] [command]
+
+Bot protection exception rules
+
+Options:
+  -h, --help                                    display help for command
+
+Commands:
+  list [options] [site]                         List the bot protection exception rules of an environment
+  add [options] <site> <type> <action> <value>  Add a bot protection exception rule
+  delete [options] <site> <rule-id>             Delete a bot protection exception rule
+  help [command]                                display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 85`] = `
+{
+  "code": 0,
+  "path": "security bot-protection exceptions list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security bot-protection exceptions list [options] [site]
+
+List the bot protection exception rules of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security bot-protection exceptions list klant-x --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 86`] = `
+{
+  "code": 0,
+  "path": "security bot-protection exceptions add",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security bot-protection exceptions add [options] <site> <type> <action> <value>
+
+Add a bot protection exception rule
+
+Arguments:
+  site                 site name, display name or ID
+  type                 what the rule matches on (choices: "ip", "path",
+                       "user_agent", "country")
+  action               what to do with matching traffic (choices: "skip",
+                       "challenge", "block")
+  value                the value to match, e.g. an IP address
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security bot-protection exceptions add klant-x ip skip 192.0.2.1 --env live
+  $ kinstactl security bot-protection exceptions add klant-x country block NL --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 87`] = `
+{
+  "code": 0,
+  "path": "security bot-protection exceptions delete",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl security bot-protection exceptions delete [options] <site> <rule-id>
+
+Delete a bot protection exception rule
+
+Arguments:
+  site                 site name, display name or ID
+  rule-id              rule ID, see: security bot-protection exceptions list
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl security bot-protection exceptions delete klant-x ip:skip:192.0.2.1 --env live --yes
 "
 ,
 }

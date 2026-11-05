@@ -46,6 +46,13 @@ import {PluginsUpdateCommand} from './plugins/PluginsUpdateCommand';
 import {ThemesListCommand} from './plugins/ThemesListCommand';
 import {ThemesUpdateCommand} from './plugins/ThemesUpdateCommand';
 import {SearchReplaceCommand} from './search-replace/SearchReplaceCommand';
+import {SecurityBotProtectionAiCrawlersCommand} from './security/SecurityBotProtectionAiCrawlersCommand';
+import {SecurityBotProtectionExceptionsAddCommand} from './security/SecurityBotProtectionExceptionsAddCommand';
+import {SecurityBotProtectionExceptionsDeleteCommand} from './security/SecurityBotProtectionExceptionsDeleteCommand';
+import {SecurityBotProtectionExceptionsListCommand} from './security/SecurityBotProtectionExceptionsListCommand';
+import {SecurityBotProtectionLevelCommand} from './security/SecurityBotProtectionLevelCommand';
+import {SecurityBotProtectionWpAutomationsCommand} from './security/SecurityBotProtectionWpAutomationsCommand';
+import {SecurityForceHttpsCommand} from './security/SecurityForceHttpsCommand';
 import {SitesCloneCommand} from './sites/SitesCloneCommand';
 import {SitesCreateCommand} from './sites/SitesCreateCommand';
 import {SitesDeleteCommand} from './sites/SitesDeleteCommand';
@@ -117,6 +124,13 @@ export const COMMANDS: CommandClass[] = [
     WpUserExistsCommand,
     DbLoginCommand,
     SearchReplaceCommand,
+    SecurityForceHttpsCommand,
+    SecurityBotProtectionLevelCommand,
+    SecurityBotProtectionAiCrawlersCommand,
+    SecurityBotProtectionWpAutomationsCommand,
+    SecurityBotProtectionExceptionsListCommand,
+    SecurityBotProtectionExceptionsAddCommand,
+    SecurityBotProtectionExceptionsDeleteCommand,
 ];
 
 export const GROUPS: GroupDef[] = [
@@ -141,4 +155,10 @@ export const GROUPS: GroupDef[] = [
     {path: 'wp', description: 'WordPress tools of an environment'},
     {path: 'wp user', description: 'WordPress admin users'},
     {path: 'db', description: 'Database tools of an environment'},
+    {path: 'security', description: 'Security settings of an environment'},
+    {path: 'security bot-protection', description: 'Bot protection'},
+    {
+        path: 'security bot-protection exceptions',
+        description: 'Bot protection exception rules',
+    },
 ];

@@ -6,6 +6,7 @@ import {ENDPOINTS as environments} from './environments';
 import {ENDPOINTS as logs} from './logs';
 import {ENDPOINTS as operations} from './operations';
 import {ENDPOINTS as plugins} from './plugins';
+import {ENDPOINTS as security} from './security';
 import {ENDPOINTS as sites} from './sites';
 import {ENDPOINTS as tools} from './tools';
 import {ENDPOINTS as wp} from './wp';
@@ -23,4 +24,5 @@ export const ALL_ENDPOINTS: EndpointKey[] = [
     ...domains,
     ...dns,
     ...wp,
+    ...security,
 ];
