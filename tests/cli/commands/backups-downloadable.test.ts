@@ -97,6 +97,35 @@ describe('backups downloadable create', () => {
         ]);
     });
 
+    test('create --json prints one document with the operation id and link', async () => {
+        const r = await runCli(
+            [
+                'backups',
+                'downloadable',
+                'create',
+                'klant-x',
+                '--env',
+                'live',
+                '--json',
+            ],
+            {
+                routes: {
+                    ...SITES_ROUTES,
+                    [POST_ROUTE]: started('op1'),
+                    ...done('op1'),
+                    [LIST_ROUTE]: {body: LIST},
+                },
+            },
+        );
+        expect(r.code).toBe(0);
+        expect(JSON.parse(r.stdout)).toEqual({
+            operation_id: 'op1',
+            status: 'completed',
+            download_link: 'https://dl.example.com/new.zip',
+            expires_at: EXPIRES,
+        });
+    });
+
     test('create --no-wait prints the operation id and does not list', async () => {
         const r = await runCli(
             [

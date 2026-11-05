@@ -60,6 +60,7 @@ export class BackupsDownloadableCreateCommand implements BaseCommand<Options> {
             spec: createDownloadableBackup(target.env.id),
             target,
             flags: options,
+            quiet: true,
         });
         // No result: dry run or --no-wait, so there is no finished archive to show.
         if (result === undefined) return;
@@ -82,6 +83,8 @@ export class BackupsDownloadableCreateCommand implements BaseCommand<Options> {
         const link = newest.download_link ?? '(still generating)';
         this.output.data(
             {
+                operation_id: result.operationId,
+                status: 'completed',
                 download_link: newest.download_link,
                 expires_at: newest.expires_at,
             },
