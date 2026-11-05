@@ -193,7 +193,11 @@ test('checkExample rejects an unknown flag and an unknown command', () => {
 });
 
 test('every kinstactl example in the docs and the readme is a real command with real flags', () => {
-    const files = [...markdownFiles(DOCS_DIR), 'README.md'];
+    const files = [
+        ...markdownFiles(DOCS_DIR),
+        'README.md',
+        'skills/kinstactl/SKILL.md',
+    ];
     const failures: string[] = [];
     for (const file of files) {
         for (const {line, text} of exampleLines(readFileSync(file, 'utf8'))) {

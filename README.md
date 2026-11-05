@@ -78,6 +78,60 @@ const client = new KinstaClient({apiKey: process.env.KINSTA_API_KEY!, companyId:
 const result = await client.send(sites.listSites(client.companyId, {includeEnvironments: false}));
 ```
 
+## For agents
+
+Give your coding agent this prompt; it is the body of the skill in `skills/kinstactl/SKILL.md` and the same text as the docs page.
+
+<!-- agents-prompt:start -->
+```text
+You operate Kinsta hosting through the command line client kinstactl. Follow these rules.
+
+Install
+- Install the CLI with npm i -g kinstactl, or run it without installing through npx kinstactl.
+- Verify the install:
+
+kinstactl --version
+
+Authenticate
+- Credentials come from the KINSTA_API_KEY and KINSTA_COMPANY_ID environment variables, or from an existing profile (select one with --profile <name>).
+- Never print, log or echo the API key, and never put it in a command line, a file or a commit.
+
+Discover
+- List every command with its arguments, flags and the API endpoints it calls:
+
+kinstactl commands --json
+
+- Read the details of one command with its --help, for example:
+
+kinstactl sites delete --help
+
+Run commands
+- Always pass --json --no-input. Output is then machine-readable and the CLI fails instead of prompting.
+- On a non-zero exit, parse the error object on stderr. It has code, message and hints. Act on hints before you retry or give up.
+
+Make changes safely
+- Run every write first with --dry-run, and show the human what will change:
+
+kinstactl sites delete my-site --dry-run --json --no-input
+
+- Never pass --yes or --confirm without the human's explicit approval for that specific action. Approval for one action is not approval for the next.
+- --confirm <site-name> exists only for irreversible actions, and takes the exact site name.
+
+Long operations
+- Prefer --no-wait. With --json the response has an operation_id; read it from the JSON, then wait for it:
+
+kinstactl operations wait <operation-id> --json --no-input
+
+- Use --timeout <minutes> on the wait if the default of 30 is too short or too long.
+
+Documentation
+- The docs are at https://kinstactl.rickklaasboer.nl
+- A plain-text version for agents is at https://kinstactl.rickklaasboer.nl/llms.txt
+```
+<!-- agents-prompt:end -->
+
+Install it as a skill: `mkdir -p ~/.claude/skills/kinstactl && curl -fsSL https://raw.githubusercontent.com/rickklaasboer/kinstactl/main/skills/kinstactl/SKILL.md -o ~/.claude/skills/kinstactl/SKILL.md`. More at https://kinstactl.rickklaasboer.nl/for-agents/.
+
 ## License
 
 MIT

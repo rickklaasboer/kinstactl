@@ -1,0 +1,45 @@
+---
+title: For agents
+description: Give a coding agent a prompt and a skill so it can operate Kinsta through kinstactl safely.
+---
+
+import {Code} from '@astrojs/starlight/components';
+import skill from '../../../../skills/kinstactl/SKILL.md?raw';
+import {promptBody} from '../../../../scripts/agents-prompt';
+
+Coding agents can run kinstactl without a terminal session. This page has the prompt to hand them and a skill file that carries the same text.
+
+## Why the CLI is agent-safe
+
+- Without a TTY the CLI never prompts. With `--no-input` it fails instead of asking.
+- Errors are JSON on stderr with a `code`, a `message` and `hints` that say what to do next.
+- Every write supports `--dry-run`, which prints the resolved target and request and changes nothing.
+- Irreversible actions need `--confirm <site-name>`, so an agent cannot trigger them by accident.
+- `kinstactl commands --json` lists every command, argument, flag and the API endpoints it calls.
+- The docs are published as plain text in [llms.txt](/llms.txt).
+
+## The prompt
+
+Paste this into your agent's instructions. Use the copy button in the corner of the block.
+
+<Code code={promptBody(skill)} lang="text" title="Prompt for your agent" />
+
+## Install as a skill
+
+The prompt is the body of a Claude Code skill. Install it once and the agent loads it when you ask for Kinsta work:
+
+```sh
+mkdir -p ~/.claude/skills/kinstactl && curl -fsSL https://raw.githubusercontent.com/rickklaasboer/kinstactl/main/skills/kinstactl/SKILL.md -o ~/.claude/skills/kinstactl/SKILL.md
+```
+
+## llms.txt
+
+The site publishes three files for language models:
+
+- [llms.txt](https://kinstactl.rickklaasboer.nl/llms.txt): an index with links to every page.
+- [llms-small.txt](https://kinstactl.rickklaasboer.nl/llms-small.txt): the docs in condensed form.
+- [llms-full.txt](https://kinstactl.rickklaasboer.nl/llms-full.txt): the complete docs in one file.
+
+## Not an MCP server
+
+kinstactl is a CLI, not an MCP server; the typed client in the package makes it cheap to add one later.

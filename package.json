@@ -48,6 +48,7 @@
         "prepack": "bun run build",
         "build:bin": "bun scripts/build-binaries.ts",
         "smoke:package": "bash scripts/smoke-package.sh",
+        "sync:agents-prompt": "bun scripts/agents-prompt.ts",
         "docs:build": "cd docs && bun run build",
         "docs:dev": "cd docs && bun run dev"
     },

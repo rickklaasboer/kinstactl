@@ -20,8 +20,6 @@ export default defineConfig({
                 baseUrl:
                     'https://github.com/rickklaasboer/kinstactl/edit/main/docs/',
             },
-            // Task 7 adds the for-agents entry once that page exists; an
-            // unknown slug fails the build.
             sidebar: [
                 {
                     label: 'Getting started',
@@ -29,6 +27,7 @@ export default defineConfig({
                 },
                 {label: 'Scripting and CI', slug: 'scripting-and-ci'},
                 {label: 'Using the client as a library', slug: 'library'},
+                {label: 'For agents', slug: 'for-agents'},
                 {
                     label: 'Commands',
                     items: [{autogenerate: {directory: 'commands'}}],
