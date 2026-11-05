@@ -5661,7 +5661,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl sites clone my-site "My Site" --env live
+  $ kinstactl sites clone my-site "My Other Site" --env live
 "
 ,
 }
