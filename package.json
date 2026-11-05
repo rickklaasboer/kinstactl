@@ -28,7 +28,7 @@
         "!dist/bin"
     ],
     "engines": {
-        "node": ">=22",
+        "node": ">=22.12",
         "bun": ">=1.3.0"
     },
     "publishConfig": {

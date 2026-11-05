@@ -20,8 +20,8 @@ test('the package has no runtime dependencies', () => {
     expect(pkg.dependencies).toBeUndefined();
 });
 
-test('node 22 is the floor', () => {
-    expect(pkg.engines.node).toBe('>=22');
+test('node 22.12 is the floor (require() of an ESM package works unflagged)', () => {
+    expect(pkg.engines.node).toBe('>=22.12');
 });
 
 test('packing builds first', () => {
