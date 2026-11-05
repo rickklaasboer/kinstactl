@@ -1,6 +1,7 @@
 import {Command, CommanderError} from 'commander';
 import type {EndpointKey} from '@/client/request';
 import {registerAuth} from './commands/auth';
+import {registerBackups} from './commands/backups';
 import {registerCache} from './commands/cache';
 import {registerCommands} from './commands/commands';
 import {registerEnv} from './commands/env';
@@ -57,6 +58,7 @@ export function buildProgram(rt: Runtime): Command {
     registerCache(program, rt);
     registerPhp(program, rt);
     registerPlugins(program, rt);
+    registerBackups(program, rt);
     return program;
 }
 

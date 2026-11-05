@@ -136,12 +136,7 @@ test('nothing pending is unknown to the spec', () => {
 
 // Client endpoints no command uses yet; each command task removes the keys it claims.
 const COMMAND_PENDING = new Set<EndpointKey>([
-    'GET /company/{id}/users',
     'PUT /sites/{site_id}/environments',
-    'GET /sites/environments/{env_id}/backups',
-    'POST /sites/environments/{env_id}/manual-backups',
-    'POST /sites/environments/{target_env_id}/backups/restore',
-    'DELETE /sites/environments/backups/{backup_id}',
 ]);
 
 function claimedByCommands(): Set<EndpointKey> {
