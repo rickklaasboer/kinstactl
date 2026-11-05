@@ -19,20 +19,43 @@ const io: Io = {
 
 const tree = createProgramContainer(io).resolve(CommandRegistry).tree();
 
-function find(node: CommandNode, path: string): CommandNode {
-    const found = [node, ...node.commands].find((n) => n.path === path);
-    if (found) return found;
+function search(node: CommandNode, path: string): CommandNode | undefined {
+    if (node.path === path) return node;
     for (const child of node.commands) {
-        try {
-            return find(child, path);
-        } catch {}
+        const found = search(child, path);
+        if (found) return found;
     }
-    throw new Error(`no node ${path}`);
+    return undefined;
+}
+
+function find(node: CommandNode, path: string): CommandNode {
+    const found = search(node, path);
+    if (!found) throw new Error(`no node ${path}`);
+    return found;
 }
 
 function leaves(node: CommandNode): CommandNode[] {
     return node.commands.length ? node.commands.flatMap(leaves) : [node];
 }
+
+// The scripts embed argument choices unquoted (bash `compgen -W`, fish `-a`),
+// so a choice with a space or shell metacharacter would break them.
+test('every argument choice is a plain token', () => {
+    const bad: string[] = [];
+    const walk = (node: CommandNode): void => {
+        for (const a of node.arguments)
+            for (const c of a.choices ?? [])
+                if (!/^[a-z0-9_.:-]+$/i.test(c))
+                    bad.push(`${node.path}: ${a.name} = ${c}`);
+        node.commands.forEach(walk);
+    };
+    walk(tree);
+    expect(bad).toEqual([]);
+});
+
+test('find fails loudly for an unknown path', () => {
+    expect(() => find(tree, 'no such command')).toThrow('no node');
+});
 
 const cacheClear = find(tree, 'cache clear');
 const longFlags = cacheClear.options.map(
