@@ -25,6 +25,7 @@ _kinstactl_children() {
             'db:Database tools of an environment'
             'search-replace:Search and replace in the database (dry run unless --apply)'
             'ssh:SSH and SFTP access of an environment'
+            'sftp-users:Additional SFTP accounts of an environment'
             'security:Security settings of an environment'
             'analytics:Traffic, bandwidth, disk and bot analytics of an environment'
             'company:Company-wide settings and inventories'
@@ -162,10 +163,20 @@ _kinstactl_children() {
             'disable:Disable SSH/SFTP password login of an environment'
             'expiration:Set how long the SSH/SFTP password stays valid'
             ) ;;
+        'sftp-users')
+            reply=(
+            'list:List the additional SFTP accounts of an environment'
+            'add:Add an additional SFTP account to an environment'
+            'enable:Enable the additional SFTP accounts of an environment'
+            'disable:Disable the additional SFTP accounts of an environment'
+            'delete:Delete an additional SFTP account'
+            ) ;;
         'security')
             reply=(
             'force-https:Show or change how an environment forces HTTPS (all, primary, off)'
             'bot-protection:Bot protection'
+            'denied-ips:Show or change the denied IPs of an environment'
+            'redirects:Redirect rules'
             ) ;;
         'security bot-protection')
             reply=(
@@ -179,6 +190,13 @@ _kinstactl_children() {
             'list:List the bot protection exception rules of an environment'
             'add:Add a bot protection exception rule'
             'delete:Delete a bot protection exception rule'
+            ) ;;
+        'security redirects')
+            reply=(
+            'list:List the redirect rules of an environment'
+            'add:Add a redirect rule'
+            'update:Change a redirect rule'
+            'delete:Delete a redirect rule, or all of them'
             ) ;;
         'company')
             reply=(
@@ -327,6 +345,16 @@ _kinstactl_valueflags() {
             reply=(--env --profile) ;;
         'ssh password expiration')
             reply=(--env --profile) ;;
+        'sftp-users list')
+            reply=(--env --profile) ;;
+        'sftp-users add')
+            reply=(--env --password --root-directory --permission --timeout --profile) ;;
+        'sftp-users enable')
+            reply=(--env --timeout --profile) ;;
+        'sftp-users disable')
+            reply=(--env --timeout --profile) ;;
+        'sftp-users delete')
+            reply=(--env --timeout --profile) ;;
         'security force-https')
             reply=(--env --timeout --profile) ;;
         'security bot-protection level')
@@ -341,6 +369,16 @@ _kinstactl_valueflags() {
             reply=(--env --timeout --profile) ;;
         'security bot-protection exceptions delete')
             reply=(--env --timeout --profile) ;;
+        'security denied-ips')
+            reply=(--env --add --remove --profile) ;;
+        'security redirects list')
+            reply=(--env --limit --offset --search --sort --profile) ;;
+        'security redirects add')
+            reply=(--env --type --domain --profile) ;;
+        'security redirects update')
+            reply=(--env --to --type --domain --new-domain --profile) ;;
+        'security redirects delete')
+            reply=(--env --domain --profile) ;;
         'analytics')
             reply=(--env --span --from --to --time-zone --profile) ;;
         'company users role')
@@ -474,6 +512,16 @@ _kinstactl_options() {
             reply=('--env:environment name or ID' '--dry-run:print the resolved target and request; change nothing' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
         'ssh password expiration')
             reply=('--env:environment name or ID' '--dry-run:print the resolved target and request; change nothing' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'sftp-users list')
+            reply=('--env:environment name or ID' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'sftp-users add')
+            reply=('--env:environment name or ID' '--password:"-" reads it from stdin; omitted on a TTY prompts' '--root-directory:directory the account is restricted to' '--permission:access level of the account' '--dry-run:print the resolved target and request; change nothing' '--no-wait:return the operation ID instead of waiting' '--timeout:give up waiting after this many minutes (default 30)' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'sftp-users enable')
+            reply=('--env:environment name or ID' '--dry-run:print the resolved target and request; change nothing' '--no-wait:return the operation ID instead of waiting' '--timeout:give up waiting after this many minutes (default 30)' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'sftp-users disable')
+            reply=('--env:environment name or ID' '--dry-run:print the resolved target and request; change nothing' '--no-wait:return the operation ID instead of waiting' '--timeout:give up waiting after this many minutes (default 30)' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'sftp-users delete')
+            reply=('--env:environment name or ID' '--dry-run:print the resolved target and request; change nothing' '--no-wait:return the operation ID instead of waiting' '--timeout:give up waiting after this many minutes (default 30)' '--yes:skip the confirmation prompt' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
         'security force-https')
             reply=('--env:environment name or ID' '--dry-run:print the resolved target and request; change nothing' '--no-wait:return the operation ID instead of waiting' '--timeout:give up waiting after this many minutes (default 30)' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
         'security bot-protection level')
@@ -488,6 +536,16 @@ _kinstactl_options() {
             reply=('--env:environment name or ID' '--dry-run:print the resolved target and request; change nothing' '--no-wait:return the operation ID instead of waiting' '--timeout:give up waiting after this many minutes (default 30)' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
         'security bot-protection exceptions delete')
             reply=('--env:environment name or ID' '--dry-run:print the resolved target and request; change nothing' '--no-wait:return the operation ID instead of waiting' '--timeout:give up waiting after this many minutes (default 30)' '--yes:skip the confirmation prompt' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'security denied-ips')
+            reply=('--env:environment name or ID' '--add:IP addresses to deny' '--remove:IP addresses to allow again' '--clear:remove every denied IP' '--dry-run:print the resolved target and request; change nothing' '--yes:skip the confirmation prompt' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'security redirects list')
+            reply=('--env:environment name or ID' '--limit:number of rules to show' '--offset:number of rules to skip' '--search:only rules matching this text' '--regex:treat --search as a regex' '--sort:sort by domain, from, to, type' '--desc:sort descending' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'security redirects add')
+            reply=('--env:environment name or ID' '--type:permanent (301) or redirect (302)' '--domain:only redirect this domain (default: all domains)' '--dry-run:print the resolved target and request; change nothing' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'security redirects update')
+            reply=('--env:environment name or ID' '--to:new target path or URL' '--type:new type: permanent (301) or redirect (302)' '--domain:select the rule of this domain when several share from' '--new-domain:move the rule to this domain' '--dry-run:print the resolved target and request; change nothing' '--yes:skip the confirmation prompt' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
+        'security redirects delete')
+            reply=('--env:environment name or ID' '--domain:select the rule of this domain when several share from' '--all:delete every redirect rule' '--dry-run:print the resolved target and request; change nothing' '--yes:skip the confirmation prompt' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
         'analytics')
             reply=('--env:environment name or ID' '--span:time span: 24h, 7d, 30d, 60d' '--from:start date (instead of --span)' '--to:end date' '--time-zone:UTC offset for diskspace, e.g. 02:00 (default: local time zone)' '--profile:config profile to use' '--json:print machine-readable JSON' '--no-input:never prompt; fail instead') ;;
         'company users role')
@@ -685,6 +743,20 @@ _kinstactl_argument() {
             compadd -- $(kinstactl completion sites 2>/dev/null) ;;
         'ssh password expiration:2')
             compadd -- '24h' '7d' '30d' '90d' 'never' ;;
+        'sftp-users list:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'sftp-users add:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'sftp-users add:2')
+            _message 'username' ;;
+        'sftp-users enable:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'sftp-users disable:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'sftp-users delete:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'sftp-users delete:2')
+            _message 'username' ;;
         'security force-https:1')
             compadd -- $(kinstactl completion sites 2>/dev/null) ;;
         'security force-https:2')
@@ -715,6 +787,24 @@ _kinstactl_argument() {
             compadd -- $(kinstactl completion sites 2>/dev/null) ;;
         'security bot-protection exceptions delete:2')
             _message 'rule-id' ;;
+        'security denied-ips:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'security redirects list:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'security redirects add:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'security redirects add:2')
+            _message 'from' ;;
+        'security redirects add:3')
+            _message 'to' ;;
+        'security redirects update:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'security redirects update:2')
+            _message 'from' ;;
+        'security redirects delete:1')
+            compadd -- $(kinstactl completion sites 2>/dev/null) ;;
+        'security redirects delete:2')
+            _message 'from' ;;
         'analytics:1')
             compadd -- 'visits' 'bandwidth' 'cdn-bandwidth' 'diskspace' 'top-countries' 'top-cities' 'top-ips' 'top-asns' 'top-browsers' 'top-hosts' 'top-referrers' 'top-user-agents' 'visits-dispersion' 'response-codes' 'bot-traffic-flow' 'bot-requests' 'bot-protection-results' 'bot-top-breakdown' ;;
         'analytics:2')
@@ -786,6 +876,11 @@ _kinstactl_value() {
         'ssh password enable:--env'|\\
         'ssh password disable:--env'|\\
         'ssh password expiration:--env'|\\
+        'sftp-users list:--env'|\\
+        'sftp-users add:--env'|\\
+        'sftp-users enable:--env'|\\
+        'sftp-users disable:--env'|\\
+        'sftp-users delete:--env'|\\
         'security force-https:--env'|\\
         'security bot-protection level:--env'|\\
         'security bot-protection ai-crawlers:--env'|\\
@@ -793,6 +888,11 @@ _kinstactl_value() {
         'security bot-protection exceptions list:--env'|\\
         'security bot-protection exceptions add:--env'|\\
         'security bot-protection exceptions delete:--env'|\\
+        'security denied-ips:--env'|\\
+        'security redirects list:--env'|\\
+        'security redirects add:--env'|\\
+        'security redirects update:--env'|\\
+        'security redirects delete:--env'|\\
         'analytics:--env')
             compadd -- $(kinstactl completion envs \${site} 2>/dev/null) ;;
         *)
@@ -849,7 +949,7 @@ exports[`bash completion script bash script is unchanged 1`] = `
 _kinstactl_children() {
     case $1 in
         '')
-            echo 'auth commands operations logs sites env cache php plugins themes backups domains dns wp db search-replace ssh security analytics company completion' ;;
+            echo 'auth commands operations logs sites env cache php plugins themes backups domains dns wp db search-replace ssh sftp-users security analytics company completion' ;;
         'auth')
             echo 'login status logout profiles' ;;
         'operations')
@@ -890,12 +990,16 @@ _kinstactl_children() {
             echo 'status enable disable config allowlist password' ;;
         'ssh password')
             echo 'get generate enable disable expiration' ;;
+        'sftp-users')
+            echo 'list add enable disable delete' ;;
         'security')
-            echo 'force-https bot-protection' ;;
+            echo 'force-https bot-protection denied-ips redirects' ;;
         'security bot-protection')
             echo 'level ai-crawlers wp-automations exceptions' ;;
         'security bot-protection exceptions')
             echo 'list add delete' ;;
+        'security redirects')
+            echo 'list add update delete' ;;
         'company')
             echo 'users api-keys regions activity plugins themes' ;;
         'company users')
@@ -1025,6 +1129,16 @@ _kinstactl_valueflags() {
             echo '--env --profile' ;;
         'ssh password expiration')
             echo '--env --profile' ;;
+        'sftp-users list')
+            echo '--env --profile' ;;
+        'sftp-users add')
+            echo '--env --password --root-directory --permission --timeout --profile' ;;
+        'sftp-users enable')
+            echo '--env --timeout --profile' ;;
+        'sftp-users disable')
+            echo '--env --timeout --profile' ;;
+        'sftp-users delete')
+            echo '--env --timeout --profile' ;;
         'security force-https')
             echo '--env --timeout --profile' ;;
         'security bot-protection level')
@@ -1039,6 +1153,16 @@ _kinstactl_valueflags() {
             echo '--env --timeout --profile' ;;
         'security bot-protection exceptions delete')
             echo '--env --timeout --profile' ;;
+        'security denied-ips')
+            echo '--env --add --remove --profile' ;;
+        'security redirects list')
+            echo '--env --limit --offset --search --sort --profile' ;;
+        'security redirects add')
+            echo '--env --type --domain --profile' ;;
+        'security redirects update')
+            echo '--env --to --type --domain --new-domain --profile' ;;
+        'security redirects delete')
+            echo '--env --domain --profile' ;;
         'analytics')
             echo '--env --span --from --to --time-zone --profile' ;;
         'company users role')
@@ -1172,6 +1296,16 @@ _kinstactl_options() {
             echo '--env --dry-run --profile --json --no-input' ;;
         'ssh password expiration')
             echo '--env --dry-run --profile --json --no-input' ;;
+        'sftp-users list')
+            echo '--env --profile --json --no-input' ;;
+        'sftp-users add')
+            echo '--env --password --root-directory --permission --dry-run --no-wait --timeout --profile --json --no-input' ;;
+        'sftp-users enable')
+            echo '--env --dry-run --no-wait --timeout --profile --json --no-input' ;;
+        'sftp-users disable')
+            echo '--env --dry-run --no-wait --timeout --profile --json --no-input' ;;
+        'sftp-users delete')
+            echo '--env --dry-run --no-wait --timeout --yes --profile --json --no-input' ;;
         'security force-https')
             echo '--env --dry-run --no-wait --timeout --profile --json --no-input' ;;
         'security bot-protection level')
@@ -1186,6 +1320,16 @@ _kinstactl_options() {
             echo '--env --dry-run --no-wait --timeout --profile --json --no-input' ;;
         'security bot-protection exceptions delete')
             echo '--env --dry-run --no-wait --timeout --yes --profile --json --no-input' ;;
+        'security denied-ips')
+            echo '--env --add --remove --clear --dry-run --yes --profile --json --no-input' ;;
+        'security redirects list')
+            echo '--env --limit --offset --search --regex --sort --desc --profile --json --no-input' ;;
+        'security redirects add')
+            echo '--env --type --domain --dry-run --profile --json --no-input' ;;
+        'security redirects update')
+            echo '--env --to --type --domain --new-domain --dry-run --yes --profile --json --no-input' ;;
+        'security redirects delete')
+            echo '--env --domain --all --dry-run --yes --profile --json --no-input' ;;
         'analytics')
             echo '--env --span --from --to --time-zone --profile --json --no-input' ;;
         'company users role')
@@ -1383,6 +1527,20 @@ _kinstactl_argument() {
             COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
         'ssh password expiration:2')
             COMPREPLY=($(compgen -W "24h 7d 30d 90d never" -- "$cur")) ;;
+        'sftp-users list:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users add:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users add:2')
+            COMPREPLY=() ;;
+        'sftp-users enable:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users disable:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users delete:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'sftp-users delete:2')
+            COMPREPLY=() ;;
         'security force-https:1')
             COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
         'security force-https:2')
@@ -1412,6 +1570,24 @@ _kinstactl_argument() {
         'security bot-protection exceptions delete:1')
             COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
         'security bot-protection exceptions delete:2')
+            COMPREPLY=() ;;
+        'security denied-ips:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'security redirects list:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'security redirects add:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'security redirects add:2')
+            COMPREPLY=() ;;
+        'security redirects add:3')
+            COMPREPLY=() ;;
+        'security redirects update:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'security redirects update:2')
+            COMPREPLY=() ;;
+        'security redirects delete:1')
+            COMPREPLY=($(compgen -W "$(kinstactl completion sites 2>/dev/null)" -- "$cur")) ;;
+        'security redirects delete:2')
             COMPREPLY=() ;;
         'analytics:1')
             COMPREPLY=($(compgen -W "visits bandwidth cdn-bandwidth diskspace top-countries top-cities top-ips top-asns top-browsers top-hosts top-referrers top-user-agents visits-dispersion response-codes bot-traffic-flow bot-requests bot-protection-results bot-top-breakdown" -- "$cur")) ;;
@@ -1482,6 +1658,11 @@ _kinstactl_value() {
         'ssh password enable:--env'|\\
         'ssh password disable:--env'|\\
         'ssh password expiration:--env'|\\
+        'sftp-users list:--env'|\\
+        'sftp-users add:--env'|\\
+        'sftp-users enable:--env'|\\
+        'sftp-users disable:--env'|\\
+        'sftp-users delete:--env'|\\
         'security force-https:--env'|\\
         'security bot-protection level:--env'|\\
         'security bot-protection ai-crawlers:--env'|\\
@@ -1489,6 +1670,11 @@ _kinstactl_value() {
         'security bot-protection exceptions list:--env'|\\
         'security bot-protection exceptions add:--env'|\\
         'security bot-protection exceptions delete:--env'|\\
+        'security denied-ips:--env'|\\
+        'security redirects list:--env'|\\
+        'security redirects add:--env'|\\
+        'security redirects update:--env'|\\
+        'security redirects delete:--env'|\\
         'analytics:--env')
             COMPREPLY=($(compgen -W "$(kinstactl completion envs \${site} 2>/dev/null)" -- "$cur")) ;;
     esac
@@ -1546,7 +1732,7 @@ function __kinstactl_path
             set skip 0
             continue
         end
-        if contains -- $token --profile --api-key --timeout --env --lines --search --from --to --region --admin-user --admin-email --admin-password --title --language --confirm --threads --memory --path --url --type --tag --from-env --notify --setup-type --ssl-key --ssl-cert --value --ttl --add --remove --email --first-name --last-name --span --time-zone --limit --offset --category --site
+        if contains -- $token --profile --api-key --timeout --env --lines --search --from --to --region --admin-user --admin-email --admin-password --title --language --confirm --threads --memory --path --url --type --tag --from-env --notify --setup-type --ssl-key --ssl-cert --value --ttl --add --remove --email --first-name --last-name --password --root-directory --permission --limit --offset --sort --domain --new-domain --span --time-zone --category --site
             set skip 1
         else if not string match -q -- '-*' $token
             echo $token
@@ -1597,6 +1783,7 @@ complete -c kinstactl -n '__kinstactl_at \\'\\'' -a 'wp' -d 'WordPress tools of 
 complete -c kinstactl -n '__kinstactl_at \\'\\'' -a 'db' -d 'Database tools of an environment'
 complete -c kinstactl -n '__kinstactl_at \\'\\'' -a 'search-replace' -d 'Search and replace in the database (dry run unless --apply)'
 complete -c kinstactl -n '__kinstactl_at \\'\\'' -a 'ssh' -d 'SSH and SFTP access of an environment'
+complete -c kinstactl -n '__kinstactl_at \\'\\'' -a 'sftp-users' -d 'Additional SFTP accounts of an environment'
 complete -c kinstactl -n '__kinstactl_at \\'\\'' -a 'security' -d 'Security settings of an environment'
 complete -c kinstactl -n '__kinstactl_at \\'\\'' -a 'analytics' -d 'Traffic, bandwidth, disk and bot analytics of an environment'
 complete -c kinstactl -n '__kinstactl_at \\'\\'' -a 'company' -d 'Company-wide settings and inventories'
@@ -1673,8 +1860,15 @@ complete -c kinstactl -n '__fish_seen_subcommand_from password; and __kinstactl_
 complete -c kinstactl -n '__fish_seen_subcommand_from password; and __kinstactl_at \\'ssh password\\'' -a 'enable' -d 'Enable SSH/SFTP password login of an environment'
 complete -c kinstactl -n '__fish_seen_subcommand_from password; and __kinstactl_at \\'ssh password\\'' -a 'disable' -d 'Disable SSH/SFTP password login of an environment'
 complete -c kinstactl -n '__fish_seen_subcommand_from password; and __kinstactl_at \\'ssh password\\'' -a 'expiration' -d 'Set how long the SSH/SFTP password stays valid'
+complete -c kinstactl -n '__fish_seen_subcommand_from sftp-users; and __kinstactl_at \\'sftp-users\\'' -a 'list' -d 'List the additional SFTP accounts of an environment'
+complete -c kinstactl -n '__fish_seen_subcommand_from sftp-users; and __kinstactl_at \\'sftp-users\\'' -a 'add' -d 'Add an additional SFTP account to an environment'
+complete -c kinstactl -n '__fish_seen_subcommand_from sftp-users; and __kinstactl_at \\'sftp-users\\'' -a 'enable' -d 'Enable the additional SFTP accounts of an environment'
+complete -c kinstactl -n '__fish_seen_subcommand_from sftp-users; and __kinstactl_at \\'sftp-users\\'' -a 'disable' -d 'Disable the additional SFTP accounts of an environment'
+complete -c kinstactl -n '__fish_seen_subcommand_from sftp-users; and __kinstactl_at \\'sftp-users\\'' -a 'delete' -d 'Delete an additional SFTP account'
 complete -c kinstactl -n '__fish_seen_subcommand_from security; and __kinstactl_at \\'security\\'' -a 'force-https' -d 'Show or change how an environment forces HTTPS (all, primary, off)'
 complete -c kinstactl -n '__fish_seen_subcommand_from security; and __kinstactl_at \\'security\\'' -a 'bot-protection' -d 'Bot protection'
+complete -c kinstactl -n '__fish_seen_subcommand_from security; and __kinstactl_at \\'security\\'' -a 'denied-ips' -d 'Show or change the denied IPs of an environment'
+complete -c kinstactl -n '__fish_seen_subcommand_from security; and __kinstactl_at \\'security\\'' -a 'redirects' -d 'Redirect rules'
 complete -c kinstactl -n '__fish_seen_subcommand_from bot-protection; and __kinstactl_at \\'security bot-protection\\'' -a 'level' -d 'Show or set the bot protection level of an environment'
 complete -c kinstactl -n '__fish_seen_subcommand_from bot-protection; and __kinstactl_at \\'security bot-protection\\'' -a 'ai-crawlers' -d 'Show or set whether AI crawlers are blocked'
 complete -c kinstactl -n '__fish_seen_subcommand_from bot-protection; and __kinstactl_at \\'security bot-protection\\'' -a 'wp-automations' -d 'Show or set whether WordPress automations are allowed'
@@ -1682,6 +1876,10 @@ complete -c kinstactl -n '__fish_seen_subcommand_from bot-protection; and __kins
 complete -c kinstactl -n '__fish_seen_subcommand_from exceptions; and __kinstactl_at \\'security bot-protection exceptions\\'' -a 'list' -d 'List the bot protection exception rules of an environment'
 complete -c kinstactl -n '__fish_seen_subcommand_from exceptions; and __kinstactl_at \\'security bot-protection exceptions\\'' -a 'add' -d 'Add a bot protection exception rule'
 complete -c kinstactl -n '__fish_seen_subcommand_from exceptions; and __kinstactl_at \\'security bot-protection exceptions\\'' -a 'delete' -d 'Delete a bot protection exception rule'
+complete -c kinstactl -n '__fish_seen_subcommand_from redirects; and __kinstactl_at \\'security redirects\\'' -a 'list' -d 'List the redirect rules of an environment'
+complete -c kinstactl -n '__fish_seen_subcommand_from redirects; and __kinstactl_at \\'security redirects\\'' -a 'add' -d 'Add a redirect rule'
+complete -c kinstactl -n '__fish_seen_subcommand_from redirects; and __kinstactl_at \\'security redirects\\'' -a 'update' -d 'Change a redirect rule'
+complete -c kinstactl -n '__fish_seen_subcommand_from redirects; and __kinstactl_at \\'security redirects\\'' -a 'delete' -d 'Delete a redirect rule, or all of them'
 complete -c kinstactl -n '__fish_seen_subcommand_from company; and __kinstactl_at \\'company\\'' -a 'users' -d 'Company users and roles'
 complete -c kinstactl -n '__fish_seen_subcommand_from company; and __kinstactl_at \\'company\\'' -a 'api-keys' -d 'List the API keys of the company'
 complete -c kinstactl -n '__fish_seen_subcommand_from company; and __kinstactl_at \\'company\\'' -a 'regions' -d 'List the regions a site can be created in'
@@ -1994,6 +2192,32 @@ complete -c kinstactl -n '__kinstactl_under "ssh password expiration"' -l env -x
 complete -c kinstactl -n '__kinstactl_under "ssh password expiration"' -l dry-run -d 'print the resolved target and request; change nothing'
 complete -c kinstactl -n '__kinstactl_at_arg "ssh password expiration" 1' -a '(kinstactl completion sites 2>/dev/null)'
 complete -c kinstactl -n '__kinstactl_at_arg "ssh password expiration" 2' -a '24h 7d 30d 90d never'
+complete -c kinstactl -n '__kinstactl_under "sftp-users list"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 3) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_at_arg "sftp-users list" 1' -a '(kinstactl completion sites 2>/dev/null)'
+complete -c kinstactl -n '__kinstactl_under "sftp-users add"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 3) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "sftp-users add"' -l password -r -d '"-" reads it from stdin; omitted on a TTY prompts'
+complete -c kinstactl -n '__kinstactl_under "sftp-users add"' -l root-directory -r -d 'directory the account is restricted to'
+complete -c kinstactl -n '__kinstactl_under "sftp-users add"' -l permission -r -d 'access level of the account'
+complete -c kinstactl -n '__kinstactl_under "sftp-users add"' -l dry-run -d 'print the resolved target and request; change nothing'
+complete -c kinstactl -n '__kinstactl_under "sftp-users add"' -l no-wait -d 'return the operation ID instead of waiting'
+complete -c kinstactl -n '__kinstactl_under "sftp-users add"' -l timeout -r -d 'give up waiting after this many minutes (default 30)'
+complete -c kinstactl -n '__kinstactl_at_arg "sftp-users add" 1' -a '(kinstactl completion sites 2>/dev/null)'
+complete -c kinstactl -n '__kinstactl_under "sftp-users enable"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 3) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "sftp-users enable"' -l dry-run -d 'print the resolved target and request; change nothing'
+complete -c kinstactl -n '__kinstactl_under "sftp-users enable"' -l no-wait -d 'return the operation ID instead of waiting'
+complete -c kinstactl -n '__kinstactl_under "sftp-users enable"' -l timeout -r -d 'give up waiting after this many minutes (default 30)'
+complete -c kinstactl -n '__kinstactl_at_arg "sftp-users enable" 1' -a '(kinstactl completion sites 2>/dev/null)'
+complete -c kinstactl -n '__kinstactl_under "sftp-users disable"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 3) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "sftp-users disable"' -l dry-run -d 'print the resolved target and request; change nothing'
+complete -c kinstactl -n '__kinstactl_under "sftp-users disable"' -l no-wait -d 'return the operation ID instead of waiting'
+complete -c kinstactl -n '__kinstactl_under "sftp-users disable"' -l timeout -r -d 'give up waiting after this many minutes (default 30)'
+complete -c kinstactl -n '__kinstactl_at_arg "sftp-users disable" 1' -a '(kinstactl completion sites 2>/dev/null)'
+complete -c kinstactl -n '__kinstactl_under "sftp-users delete"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 3) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "sftp-users delete"' -l dry-run -d 'print the resolved target and request; change nothing'
+complete -c kinstactl -n '__kinstactl_under "sftp-users delete"' -l no-wait -d 'return the operation ID instead of waiting'
+complete -c kinstactl -n '__kinstactl_under "sftp-users delete"' -l timeout -r -d 'give up waiting after this many minutes (default 30)'
+complete -c kinstactl -n '__kinstactl_under "sftp-users delete"' -l yes -d 'skip the confirmation prompt'
+complete -c kinstactl -n '__kinstactl_at_arg "sftp-users delete" 1' -a '(kinstactl completion sites 2>/dev/null)'
 complete -c kinstactl -n '__kinstactl_under "security force-https"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 3) 2>/dev/null)' -d 'environment name or ID'
 complete -c kinstactl -n '__kinstactl_under "security force-https"' -l dry-run -d 'print the resolved target and request; change nothing'
 complete -c kinstactl -n '__kinstactl_under "security force-https"' -l no-wait -d 'return the operation ID instead of waiting'
@@ -2033,6 +2257,40 @@ complete -c kinstactl -n '__kinstactl_under "security bot-protection exceptions 
 complete -c kinstactl -n '__kinstactl_under "security bot-protection exceptions delete"' -l timeout -r -d 'give up waiting after this many minutes (default 30)'
 complete -c kinstactl -n '__kinstactl_under "security bot-protection exceptions delete"' -l yes -d 'skip the confirmation prompt'
 complete -c kinstactl -n '__kinstactl_at_arg "security bot-protection exceptions delete" 1' -a '(kinstactl completion sites 2>/dev/null)'
+complete -c kinstactl -n '__kinstactl_under "security denied-ips"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 3) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "security denied-ips"' -l add -r -d 'IP addresses to deny'
+complete -c kinstactl -n '__kinstactl_under "security denied-ips"' -l remove -r -d 'IP addresses to allow again'
+complete -c kinstactl -n '__kinstactl_under "security denied-ips"' -l clear -d 'remove every denied IP'
+complete -c kinstactl -n '__kinstactl_under "security denied-ips"' -l dry-run -d 'print the resolved target and request; change nothing'
+complete -c kinstactl -n '__kinstactl_under "security denied-ips"' -l yes -d 'skip the confirmation prompt'
+complete -c kinstactl -n '__kinstactl_at_arg "security denied-ips" 1' -a '(kinstactl completion sites 2>/dev/null)'
+complete -c kinstactl -n '__kinstactl_under "security redirects list"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 4) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "security redirects list"' -l limit -r -d 'number of rules to show'
+complete -c kinstactl -n '__kinstactl_under "security redirects list"' -l offset -r -d 'number of rules to skip'
+complete -c kinstactl -n '__kinstactl_under "security redirects list"' -l search -r -d 'only rules matching this text'
+complete -c kinstactl -n '__kinstactl_under "security redirects list"' -l regex -d 'treat --search as a regex'
+complete -c kinstactl -n '__kinstactl_under "security redirects list"' -l sort -r -d 'sort by domain, from, to, type'
+complete -c kinstactl -n '__kinstactl_under "security redirects list"' -l desc -d 'sort descending'
+complete -c kinstactl -n '__kinstactl_at_arg "security redirects list" 1' -a '(kinstactl completion sites 2>/dev/null)'
+complete -c kinstactl -n '__kinstactl_under "security redirects add"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 4) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "security redirects add"' -l type -r -d 'permanent (301) or redirect (302)'
+complete -c kinstactl -n '__kinstactl_under "security redirects add"' -l domain -r -d 'only redirect this domain (default: all domains)'
+complete -c kinstactl -n '__kinstactl_under "security redirects add"' -l dry-run -d 'print the resolved target and request; change nothing'
+complete -c kinstactl -n '__kinstactl_at_arg "security redirects add" 1' -a '(kinstactl completion sites 2>/dev/null)'
+complete -c kinstactl -n '__kinstactl_under "security redirects update"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 4) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "security redirects update"' -l to -r -d 'new target path or URL'
+complete -c kinstactl -n '__kinstactl_under "security redirects update"' -l type -r -d 'new type: permanent (301) or redirect (302)'
+complete -c kinstactl -n '__kinstactl_under "security redirects update"' -l domain -r -d 'select the rule of this domain when several share from'
+complete -c kinstactl -n '__kinstactl_under "security redirects update"' -l new-domain -r -d 'move the rule to this domain'
+complete -c kinstactl -n '__kinstactl_under "security redirects update"' -l dry-run -d 'print the resolved target and request; change nothing'
+complete -c kinstactl -n '__kinstactl_under "security redirects update"' -l yes -d 'skip the confirmation prompt'
+complete -c kinstactl -n '__kinstactl_at_arg "security redirects update" 1' -a '(kinstactl completion sites 2>/dev/null)'
+complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 4) 2>/dev/null)' -d 'environment name or ID'
+complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l domain -r -d 'select the rule of this domain when several share from'
+complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l all -d 'delete every redirect rule'
+complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l dry-run -d 'print the resolved target and request; change nothing'
+complete -c kinstactl -n '__kinstactl_under "security redirects delete"' -l yes -d 'skip the confirmation prompt'
+complete -c kinstactl -n '__kinstactl_at_arg "security redirects delete" 1' -a '(kinstactl completion sites 2>/dev/null)'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l env -x -a '(kinstactl completion envs (__kinstactl_arg 2) 2>/dev/null)' -d 'environment name or ID'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l span -r -d 'time span: 24h, 7d, 30d, 60d'
 complete -c kinstactl -n '__kinstactl_under "analytics"' -l from -r -d 'start date (instead of --span)'

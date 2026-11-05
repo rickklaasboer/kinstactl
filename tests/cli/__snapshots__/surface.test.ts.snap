@@ -8620,7 +8620,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 113`] = `
+exports[`help of every command and group is unchanged 125`] = `
 {
   "code": 0,
   "path": "completion",
@@ -8645,7 +8645,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 114`] = `
+exports[`help of every command and group is unchanged 126`] = `
 {
   "code": 0,
   "path": "completion zsh",
@@ -8665,7 +8665,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 115`] = `
+exports[`help of every command and group is unchanged 127`] = `
 {
   "code": 0,
   "path": "completion bash",
@@ -8686,7 +8686,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 116`] = `
+exports[`help of every command and group is unchanged 128`] = `
 {
   "code": 0,
   "path": "completion fish",
@@ -8706,7 +8706,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 117`] = `
+exports[`help of every command and group is unchanged 129`] = `
 {
   "code": 0,
   "path": "completion sites",
@@ -8726,7 +8726,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 118`] = `
+exports[`help of every command and group is unchanged 130`] = `
 {
   "code": 0,
   "path": "completion envs",
