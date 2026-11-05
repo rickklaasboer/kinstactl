@@ -58,6 +58,7 @@
         "openapi-typescript": "^7.13.0",
         "picocolors": "^1.1.1",
         "reflect-metadata": "^0.2.2",
+        "release-it": "^21.1.2",
         "tsyringe": "^4.10.0",
         "typescript": "5",
         "yaml": "^2.9.1"
