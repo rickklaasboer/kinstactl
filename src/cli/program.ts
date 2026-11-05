@@ -12,6 +12,7 @@ import {toCliError} from './errors';
 import {IO, type Io} from './io';
 import {Output} from './output';
 import {RunContext} from './services/RunContext';
+import {VERSION} from './version';
 
 export function createProgramContainer(io: Io): DependencyContainer {
     const container = createContainer(io);
@@ -30,6 +31,7 @@ export function buildProgram(container: DependencyContainer): Command {
     const program = new Command('kinstactl');
     program
         .description(ROOT_DESCRIPTION)
+        .version(VERSION, '-V, --version', 'print the kinstactl version')
         .exitOverride()
         .showSuggestionAfterError(true)
         .configureOutput({

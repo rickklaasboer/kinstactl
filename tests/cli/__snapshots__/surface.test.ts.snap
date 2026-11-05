@@ -5251,6 +5251,7 @@ exports[`help of every command and group is unchanged 1`] = `
 Command line client for the Kinsta API
 
 Options:
+  -V, --version                                       print the kinstactl version
   --profile <name>                                    config profile to use
   --json                                              print machine-readable JSON
   --no-input                                          never prompt; fail instead
