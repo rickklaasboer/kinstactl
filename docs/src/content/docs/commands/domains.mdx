@@ -8,9 +8,9 @@ import CommandRef from '../../../components/CommandRef.astro';
 The `domains` commands manage the domains that point at an environment. To manage the DNS records of a zone hosted at Kinsta, see [dns](/commands/dns/).
 
 ```sh
-kinstactl domains list klant-x --env live
-kinstactl domains add klant-x example.com --env live
-kinstactl domains primary klant-x example.com --env live
+kinstactl domains list my-site --env live
+kinstactl domains add my-site example.com --env live
+kinstactl domains primary my-site example.com --env live
 ```
 
 Domains belong to an environment. Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/). `domains add`, `domains remove` and `domains primary` wait for Kinsta to finish by default, and accept `--no-wait`, `--timeout <minutes>` and `--dry-run`; see [operations](/commands/operations/). Where a command takes a `<domain>`, you can give the domain name or its ID; a unique prefix of the name also works.
@@ -20,7 +20,7 @@ Domains belong to an environment. Without `--env`, a site with one environment u
 List the domains of an environment.
 
 ```sh
-kinstactl domains list klant-x --env staging
+kinstactl domains list my-site --env staging
 ```
 
 <CommandRef path="domains list" />
@@ -32,7 +32,7 @@ The table shows the name and ID of each domain, and whether it uses Cloudflare D
 Add a domain to an environment.
 
 ```sh
-kinstactl domains add klant-x example.com --env live
+kinstactl domains add my-site example.com --env live
 ```
 
 <CommandRef path="domains add" />
@@ -47,7 +47,7 @@ By default the domain is added without wildcard support. Two flags widen that:
 To use your own certificate instead of the one Kinsta issues, pass the certificate and its private key as files:
 
 ```sh
-kinstactl domains add klant-x example.com --env live --wildcard --with-www --ssl-cert cert.pem --ssl-key key.pem
+kinstactl domains add my-site example.com --env live --wildcard --with-www --ssl-cert cert.pem --ssl-key key.pem
 ```
 
 `--ssl-cert` and `--ssl-key` must be given together, and both files must be readable and not empty. The key is sent to Kinsta and never echoed back: `--dry-run` shows the request with the key masked as `***`.
@@ -57,7 +57,7 @@ kinstactl domains add klant-x example.com --env live --wildcard --with-www --ssl
 Remove a domain from an environment.
 
 ```sh
-kinstactl domains remove klant-x example.com --env live --yes
+kinstactl domains remove my-site example.com --env live --yes
 ```
 
 <CommandRef path="domains remove" />
@@ -69,7 +69,7 @@ The domain is looked up first, so a typo fails with the list of domains the envi
 Change the primary domain of an environment.
 
 ```sh
-kinstactl domains primary klant-x example.com --env live
+kinstactl domains primary my-site example.com --env live
 ```
 
 <CommandRef path="domains primary" />
@@ -79,7 +79,7 @@ The primary domain is the one the site is served on. Changing it alone needs no 
 With `--search-replace`, Kinsta also rewrites the old URL in the database to the new one. That changes content, so the command then asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`.
 
 ```sh
-kinstactl domains primary klant-x example.com --env live --search-replace --yes
+kinstactl domains primary my-site example.com --env live --search-replace --yes
 ```
 
 ## domains verification
@@ -87,7 +87,7 @@ kinstactl domains primary klant-x example.com --env live --search-replace --yes
 Show the DNS records that verify and point a domain.
 
 ```sh
-kinstactl domains verification klant-x example.com --env live
+kinstactl domains verification my-site example.com --env live
 ```
 
 <CommandRef path="domains verification" />

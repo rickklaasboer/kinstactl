@@ -6,7 +6,7 @@ description: Refer to sites and environments by name, display name or ID.
 Commands take a `<site>` argument and, for environment-specific actions, an `--env <environment>` flag. You use names; kinstactl looks up the IDs.
 
 ```sh
-kinstactl cache clear klant-x --env live
+kinstactl cache clear my-site --env live
 ```
 
 ## Sites

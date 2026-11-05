@@ -8,8 +8,8 @@ import CommandRef from '../../../components/CommandRef.astro';
 `search-replace` replaces text in the database of an environment, for example after moving a site to a new domain. It reports what would change unless you pass `--apply`.
 
 ```sh
-kinstactl search-replace klant-x http://old.example https://new.example --env live
-kinstactl search-replace klant-x http://old.example https://new.example --env live --apply --clear-cache --yes
+kinstactl search-replace my-site http://old.example https://new.example --env live
+kinstactl search-replace my-site http://old.example https://new.example --env live --apply --clear-cache --yes
 ```
 
 ## search-replace
@@ -17,7 +17,7 @@ kinstactl search-replace klant-x http://old.example https://new.example --env li
 Search and replace in the database.
 
 ```sh
-kinstactl search-replace klant-x http://old.example https://new.example --env live
+kinstactl search-replace my-site http://old.example https://new.example --env live
 ```
 
 <CommandRef path="search-replace" />
@@ -25,7 +25,7 @@ kinstactl search-replace klant-x http://old.example https://new.example --env li
 Without `--apply` the replacement is not performed: Kinsta only reports the matches, and the command asks for no confirmation. Run it this way first and check the result. Add `--apply` to make the change. That changes content, so the command then asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`, otherwise it fails with `CONFIRMATION_REQUIRED` (exit code 5).
 
 ```sh
-kinstactl search-replace klant-x http://old.example https://new.example --env live --apply --yes
+kinstactl search-replace my-site http://old.example https://new.example --env live --apply --yes
 ```
 
 `--clear-cache` clears the cache after the replacement. Take a [backup](/commands/backups/) before you apply.

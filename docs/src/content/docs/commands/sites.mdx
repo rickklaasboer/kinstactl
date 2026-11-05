@@ -9,8 +9,8 @@ The `sites` commands manage whole sites, that is a site with all its environment
 
 ```sh
 kinstactl sites list
-kinstactl sites get klant-x
-kinstactl sites create "Klant Y" --region europe-west4 --plain
+kinstactl sites get my-site
+kinstactl sites create "My Site" --region europe-west4 --plain
 ```
 
 Creating, cloning, resetting, deleting and changing the PHP allocation of a site are long operations. Each of them waits for Kinsta to finish by default, and accepts `--no-wait`, `--timeout <minutes>` and `--dry-run`; see [operations](/commands/operations/). `--dry-run` prints the resolved site and the request that would be sent, and changes nothing.
@@ -32,7 +32,7 @@ kinstactl caches the list of sites for five minutes to resolve site names quickl
 Show the details of a site.
 
 ```sh
-kinstactl sites get klant-x
+kinstactl sites get my-site
 ```
 
 <CommandRef path="sites get" />
@@ -44,7 +44,7 @@ Without `<site>`, a command on a terminal shows a picker. Add `--json` for the f
 Create a new site.
 
 ```sh
-kinstactl sites create "Klant Y" --region europe-west4 --admin-user admin --admin-email admin@klant-y.nl --admin-password -
+kinstactl sites create "My Site" --region europe-west4 --admin-user admin --admin-email admin@example.com --admin-password -
 ```
 
 <CommandRef path="sites create" />
@@ -52,7 +52,7 @@ kinstactl sites create "Klant Y" --region europe-west4 --admin-user admin --admi
 By default the new site gets a WordPress install, which needs the admin user, email and password. Pass `--plain` for an empty environment without WordPress; the WordPress options (`--admin-user`, `--title`, `--multisite`, `--woocommerce`, `--yoast` and so on) are for the default install. `--admin-password -` reads the password from stdin, so it stays out of your shell history. On a terminal, a missing region or password is asked for interactively.
 
 ```sh
-kinstactl sites create "Klant Y" --region europe-west4 --plain
+kinstactl sites create "My Site" --region europe-west4 --plain
 ```
 
 Run `kinstactl company regions` to see the region IDs.
@@ -62,7 +62,7 @@ Run `kinstactl company regions` to see the region IDs.
 Clone an environment of a site into a new site.
 
 ```sh
-kinstactl sites clone klant-x "Klant Y" --env live
+kinstactl sites clone my-site "My Site" --env live
 ```
 
 <CommandRef path="sites clone" />
@@ -74,7 +74,7 @@ The new site gets a copy of the chosen environment. Without `--env`, the site's 
 Delete a site with all its environments.
 
 ```sh
-kinstactl sites delete klant-x --confirm klant-x
+kinstactl sites delete my-site --confirm my-site
 ```
 
 <CommandRef path="sites delete" />
@@ -86,7 +86,7 @@ Deleting a site cannot be undone, so `--yes` is not accepted here. You confirm b
 Reset a site to a fresh WordPress install, in all environments.
 
 ```sh
-kinstactl sites reset klant-x --admin-password - --confirm klant-x
+kinstactl sites reset my-site --admin-password - --confirm my-site
 ```
 
 <CommandRef path="sites reset" />
@@ -98,7 +98,7 @@ Everything on the site is replaced by a clean WordPress install, in every enviro
 Change the PHP allocation of the live and standard staging environments.
 
 ```sh
-kinstactl sites php-allocation klant-x --threads 4 --memory 256
+kinstactl sites php-allocation my-site --threads 4 --memory 256
 ```
 
 <CommandRef path="sites php-allocation" />
@@ -110,7 +110,7 @@ kinstactl sites php-allocation klant-x --threads 4 --memory 256
 Show the visits, bandwidth and CDN bandwidth of a site this month.
 
 ```sh
-kinstactl sites usage klant-x
+kinstactl sites usage my-site
 ```
 
 <CommandRef path="sites usage" />

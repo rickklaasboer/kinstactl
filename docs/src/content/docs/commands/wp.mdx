@@ -8,9 +8,9 @@ import CommandRef from '../../../components/CommandRef.astro';
 The `wp` commands act on the WordPress installation of an environment: run a WP-CLI command, get a one-time login link, and create or look up admin users. For the database, see [db](/commands/db/).
 
 ```sh
-kinstactl wp run klant-x "wp plugin list" --env live --yes
-kinstactl wp login klant-x --env live --email admin@klant-x.nl
-kinstactl wp user exists klant-x ann@klant-x.nl --env live
+kinstactl wp run my-site "wp plugin list" --env live --yes
+kinstactl wp login my-site --env live --email admin@example.com
+kinstactl wp user exists my-site ann@example.com --env live
 ```
 
 Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/).
@@ -20,7 +20,7 @@ Without `--env`, a site with one environment uses it; a site with several gets a
 Run a WP-CLI command in an environment.
 
 ```sh
-kinstactl wp run klant-x "wp core version" --env live --yes
+kinstactl wp run my-site "wp core version" --env live --yes
 ```
 
 <CommandRef path="wp run" />
@@ -36,7 +36,7 @@ The command waits for Kinsta to finish, and accepts `--no-wait` and `--timeout <
 Create a one-time WordPress admin login link.
 
 ```sh
-kinstactl wp login klant-x --env live --email admin@klant-x.nl
+kinstactl wp login my-site --env live --email admin@example.com
 ```
 
 <CommandRef path="wp login" />
@@ -48,7 +48,7 @@ kinstactl wp login klant-x --env live --email admin@klant-x.nl
 Create a WordPress admin user.
 
 ```sh
-kinstactl wp user create klant-x ann@klant-x.nl --env live --first-name Ann --last-name Lee
+kinstactl wp user create my-site ann@example.com --env live --first-name Ann --last-name Lee
 ```
 
 <CommandRef path="wp user create" />
@@ -60,7 +60,7 @@ kinstactl wp user create klant-x ann@klant-x.nl --env live --first-name Ann --la
 Check whether a WordPress admin user exists.
 
 ```sh
-kinstactl wp user exists klant-x ann@klant-x.nl --env live
+kinstactl wp user exists my-site ann@example.com --env live
 ```
 
 <CommandRef path="wp user exists" />
