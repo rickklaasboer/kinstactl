@@ -91,8 +91,14 @@ export function registerEnv(program: Command, rt: Runtime): void {
             {destructive: 'confirm'},
         ).action(async (input: string, opts: PushOptions) => {
             const site = await resolveSite(rt, input, {fresh: true});
-            const from = await resolveEnv(rt, site, opts.from);
-            const to = await resolveEnv(rt, site, opts.to);
+            const from = await resolveEnv(rt, site, opts.from, {
+                flag: '--from',
+                message: 'Push from which environment?',
+            });
+            const to = await resolveEnv(rt, site, opts.to, {
+                flag: '--to',
+                message: 'Push to which environment?',
+            });
             if (from.id === to.id)
                 throw new CliError(
                     'USAGE',

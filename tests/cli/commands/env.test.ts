@@ -1,4 +1,5 @@
 import {describe, expect, test} from 'bun:test';
+import type {Prompts} from '@/cli/prompts';
 import {runCli} from '../../helpers/runCli';
 
 const sitesBody = {
@@ -190,6 +191,51 @@ describe('env push', () => {
         expect(r.code).toBe(2);
         expect(JSON.parse(r.stderr).error.code).toBe('ENV_REQUIRED');
         expect(puts(r.calls)).toEqual([]);
+    });
+
+    test('missing --from non-interactive hints --from, not --env', async () => {
+        const r = await runCli(
+            ['env', 'push', 'klant-x', '--to', 'live', '--yes', '--json'],
+            {routes: pushRoutes},
+        );
+        expect(r.code).toBe(2);
+        const {error} = JSON.parse(r.stderr);
+        expect(error.code).toBe('ENV_REQUIRED');
+        expect(error.hints).toEqual(['--from live', '--from staging']);
+    });
+
+    test('missing --to non-interactive hints --to', async () => {
+        const r = await runCli(
+            ['env', 'push', 'klant-x', '--from', 'staging', '--yes', '--json'],
+            {routes: pushRoutes},
+        );
+        expect(JSON.parse(r.stderr).error.hints).toEqual([
+            '--to live',
+            '--to staging',
+        ]);
+    });
+
+    test('interactive prompts tell source and target apart', async () => {
+        const messages: string[] = [];
+        let n = 0;
+        await runCli(['env', 'push', 'klant-x', '--yes'], {
+            routes: pushRoutes,
+            tty: true,
+            prompts: {
+                select: (async (
+                    message: string,
+                    options: {value: unknown}[],
+                ) => {
+                    messages.push(message);
+                    // staging as source, live as target (options are live first)
+                    return options[n++ === 0 ? 1 : 0]!.value;
+                }) as Prompts['select'],
+            },
+        });
+        expect(messages).toEqual([
+            'Push from which environment?',
+            'Push to which environment?',
+        ]);
     });
 
     test('non-interactive without --yes exits 5 and sends no PUT', async () => {

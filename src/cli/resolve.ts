@@ -84,7 +84,9 @@ export async function resolveEnv(
     rt: Runtime,
     site: SiteRef,
     input: string | undefined,
+    opts: {flag?: string; message?: string} = {},
 ): Promise<EnvRef> {
+    const {flag = '--env', message = 'Select an environment'} = opts;
     const envs = site.environments;
     if (input === undefined) {
         if (envs.length === 1) {
@@ -98,10 +100,10 @@ export async function resolveEnv(
             throw new CliError(
                 'ENV_REQUIRED',
                 `Site ${site.name} has several environments; choose one`,
-                liveFirst.map((e) => `--env ${e.name}`),
+                liveFirst.map((e) => `${flag} ${e.name}`),
             );
         return rt.prompts.select(
-            'Select an environment',
+            message,
             liveFirst.map((e) => ({value: e, label: e.displayName})),
         );
     }
