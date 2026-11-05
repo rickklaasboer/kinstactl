@@ -27,13 +27,6 @@ function specOperations(): Set<EndpointKey> {
 const PENDING = new Set<EndpointKey>([
     'GET /company/{id}/users/{id_user}',
     'GET /company/{id}/api-keys',
-    'POST /sites/{site_id}/environments',
-    'POST /sites/{site_id}/environments/plain',
-    'POST /sites/{site_id}/environments/clone',
-    'DELETE /sites/environments/{env_id}',
-    'POST /sites/environments/{env_id}/change-environment-php-allocation',
-    'POST /sites/environments/{env_id}/change-webroot-subfolder',
-    'GET /sites/environments/{env_id}/file-list',
     'GET /sites/tools/denied-ips',
     'PUT /sites/tools/denied-ips',
     'GET /sites/environments/{env_id}/downloadable-backups',

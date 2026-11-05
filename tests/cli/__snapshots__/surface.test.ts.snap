@@ -749,6 +749,362 @@ exports[`commands --json is unchanged 1`] = `
           ],
           "path": "env push",
         },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "display name of the new environment",
+              "name": "display-name",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Create a new environment for a site",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/{site_id}/environments",
+            "POST /sites/{site_id}/environments/plain",
+          ],
+          "name": "create",
+          "options": [
+            {
+              "description": "create an empty environment without WordPress",
+              "flags": "--plain",
+            },
+            {
+              "description": "create a premium staging environment",
+              "flags": "--premium",
+            },
+            {
+              "description": "WordPress admin user name",
+              "flags": "--admin-user <name>",
+            },
+            {
+              "description": "WordPress admin email",
+              "flags": "--admin-email <email>",
+            },
+            {
+              "description": ""-" reads it from stdin; omitted on a TTY prompts for it",
+              "flags": "--admin-password <password>",
+            },
+            {
+              "description": "site title (default: the display name)",
+              "flags": "--title <title>",
+            },
+            {
+              "description": "WordPress language",
+              "flags": "--language <code>",
+            },
+            {
+              "description": "install WordPress as a multisite",
+              "flags": "--multisite",
+            },
+            {
+              "description": "make the multisite use subdomains",
+              "flags": "--subdomain-multisite",
+            },
+            {
+              "description": "install WooCommerce",
+              "flags": "--woocommerce",
+            },
+            {
+              "description": "install Yoast SEO",
+              "flags": "--yoast",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "env create",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "display name of the new environment",
+              "name": "display-name",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Clone an environment into a new environment of the same site",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/{site_id}/environments/clone",
+          ],
+          "name": "clone",
+          "options": [
+            {
+              "description": "environment to clone",
+              "flags": "--from <environment>",
+            },
+            {
+              "description": "create a premium staging environment",
+              "flags": "--premium",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "env clone",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Delete an environment",
+          "destructive": "irreversible",
+          "endpoints": [
+            "GET /sites",
+            "DELETE /sites/environments/{env_id}",
+          ],
+          "name": "delete",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "the site name, to confirm an irreversible action",
+              "flags": "--confirm <site-name>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "env delete",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Change the PHP allocation of a premium staging environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/environments/{env_id}/change-environment-php-allocation",
+          ],
+          "name": "php-allocation",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "number of PHP threads",
+              "flags": "--threads <n>",
+            },
+            {
+              "description": "memory per PHP thread in MB",
+              "flags": "--memory <mb>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "env php-allocation",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "webroot subfolder, e.g. /public or /",
+              "name": "subfolder",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Change the webroot subfolder of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/environments/{env_id}/change-webroot-subfolder",
+          ],
+          "name": "webroot",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "do not clear all caches afterwards",
+              "flags": "--no-clear-cache",
+            },
+            {
+              "description": "do not refresh the plugin and theme inventory",
+              "flags": "--no-refresh",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "env webroot",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Show the file tree of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/environments/{env_id}/file-list",
+          ],
+          "name": "files",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "env files",
+        },
       ],
       "description": "List and manage environments of a site",
       "destructive": null,
@@ -2576,6 +2932,12 @@ sites  Manage Kinsta sites
 env  List and manage environments of a site
   list [site]  List the environments of a site
   push [site]  Push the database and/or files of one environment to another
+  create <site> <display-name>  Create a new environment for a site
+  clone <site> <display-name>  Clone an environment into a new environment of the same site
+  delete [site]  Delete an environment
+  php-allocation [site]  Change the PHP allocation of a premium staging environment
+  webroot <site> <subfolder>  Change the webroot subfolder of an environment
+  files [site]  Show the file tree of an environment
 cache  Clear the caches of a site environment
   clear [site]  Clear the site cache of an environment
   edge  Edge cache
@@ -3142,13 +3504,18 @@ exports[`help of every command and group is unchanged 20`] = `
 List and manage environments of a site
 
 Options:
-  -h, --help             display help for command
+  -h, --help                              display help for command
 
 Commands:
-  list [site]            List the environments of a site
-  push [options] [site]  Push the database and/or files of one environment to
-                         another
-  help [command]         display help for command
+  list [site]                             List the environments of a site
+  push [options] [site]                   Push the database and/or files of one environment to another
+  create [options] <site> <display-name>  Create a new environment for a site
+  clone [options] <site> <display-name>   Clone an environment into a new environment of the same site
+  delete [options] [site]                 Delete an environment
+  php-allocation [options] [site]         Change the PHP allocation of a premium staging environment
+  webroot [options] <site> <subfolder>    Change the webroot subfolder of an environment
+  files [options] [site]                  Show the file tree of an environment
+  help [command]                          display help for command
 "
 ,
 }
@@ -3215,6 +3582,192 @@ Examples:
 exports[`help of every command and group is unchanged 23`] = `
 {
   "code": 0,
+  "path": "env create",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl env create [options] <site> <display-name>
+
+Create a new environment for a site
+
+Arguments:
+  site                         site name, display name or ID
+  display-name                 display name of the new environment
+
+Options:
+  --plain                      create an empty environment without WordPress
+  --premium                    create a premium staging environment
+  --admin-user <name>          WordPress admin user name
+  --admin-email <email>        WordPress admin email
+  --admin-password <password>  "-" reads it from stdin; omitted on a TTY prompts
+                               for it
+  --title <title>              site title (default: the display name)
+  --language <code>            WordPress language (default: "en_US")
+  --multisite                  install WordPress as a multisite
+  --subdomain-multisite        make the multisite use subdomains
+  --woocommerce                install WooCommerce
+  --yoast                      install Yoast SEO
+  --dry-run                    print the resolved target and request; change
+                               nothing
+  --no-wait                    return the operation ID instead of waiting
+  --timeout <minutes>          give up waiting after this many minutes (default
+                               30)
+  -h, --help                   display help for command
+
+Examples:
+  $ kinstactl env create klant-x dev --admin-user admin --admin-email admin@klant-x.nl --admin-password -
+  $ kinstactl env create klant-x dev --plain
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 24`] = `
+{
+  "code": 0,
+  "path": "env clone",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl env clone [options] <site> <display-name>
+
+Clone an environment into a new environment of the same site
+
+Arguments:
+  site                  site name, display name or ID
+  display-name          display name of the new environment
+
+Options:
+  --from <environment>  environment to clone
+  --premium             create a premium staging environment
+  --dry-run             print the resolved target and request; change nothing
+  --no-wait             return the operation ID instead of waiting
+  --timeout <minutes>   give up waiting after this many minutes (default 30)
+  -h, --help            display help for command
+
+Examples:
+  $ kinstactl env clone klant-x dev --from live
+  $ kinstactl env clone klant-x dev --from live --premium
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 25`] = `
+{
+  "code": 0,
+  "path": "env delete",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl env delete [options] [site]
+
+Delete an environment
+
+Arguments:
+  site                   site name, display name or ID
+
+Options:
+  --env <environment>    environment name or ID
+  --dry-run              print the resolved target and request; change nothing
+  --no-wait              return the operation ID instead of waiting
+  --timeout <minutes>    give up waiting after this many minutes (default 30)
+  --confirm <site-name>  the site name, to confirm an irreversible action
+  -h, --help             display help for command
+
+Examples:
+  $ kinstactl env delete klant-x --env staging --confirm klant-x
+  $ kinstactl env delete klant-x --env staging --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 26`] = `
+{
+  "code": 0,
+  "path": "env php-allocation",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl env php-allocation [options] [site]
+
+Change the PHP allocation of a premium staging environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --threads <n>        number of PHP threads
+  --memory <mb>        memory per PHP thread in MB
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl env php-allocation klant-x --env staging --threads 4 --memory 256
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 27`] = `
+{
+  "code": 0,
+  "path": "env webroot",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl env webroot [options] <site> <subfolder>
+
+Change the webroot subfolder of an environment
+
+Arguments:
+  site                 site name, display name or ID
+  subfolder            webroot subfolder, e.g. /public or /
+
+Options:
+  --env <environment>  environment name or ID
+  --no-clear-cache     do not clear all caches afterwards
+  --no-refresh         do not refresh the plugin and theme inventory
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl env webroot klant-x /public --env live
+  $ kinstactl env webroot klant-x / --env staging --no-clear-cache
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 28`] = `
+{
+  "code": 0,
+  "path": "env files",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl env files [options] [site]
+
+Show the file tree of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl env files klant-x --env live
+  $ kinstactl env files klant-x --env live --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 29`] = `
+{
+  "code": 0,
   "path": "cache",
   "stderr": "",
   "stdout": 
@@ -3235,7 +3788,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 24`] = `
+exports[`help of every command and group is unchanged 30`] = `
 {
   "code": 0,
   "path": "cache clear",
@@ -3263,7 +3816,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 25`] = `
+exports[`help of every command and group is unchanged 31`] = `
 {
   "code": 0,
   "path": "cache edge",
@@ -3286,7 +3839,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 26`] = `
+exports[`help of every command and group is unchanged 32`] = `
 {
   "code": 0,
   "path": "cache edge clear",
@@ -3316,7 +3869,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 27`] = `
+exports[`help of every command and group is unchanged 33`] = `
 {
   "code": 0,
   "path": "cache edge enable",
@@ -3344,7 +3897,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 28`] = `
+exports[`help of every command and group is unchanged 34`] = `
 {
   "code": 0,
   "path": "cache edge disable",
@@ -3372,7 +3925,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 29`] = `
+exports[`help of every command and group is unchanged 35`] = `
 {
   "code": 0,
   "path": "cache cdn",
@@ -3394,7 +3947,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 30`] = `
+exports[`help of every command and group is unchanged 36`] = `
 {
   "code": 0,
   "path": "cache cdn clear",
@@ -3422,7 +3975,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 31`] = `
+exports[`help of every command and group is unchanged 37`] = `
 {
   "code": 0,
   "path": "cache cdn image-optimization",
@@ -3452,7 +4005,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 32`] = `
+exports[`help of every command and group is unchanged 38`] = `
 {
   "code": 0,
   "path": "php",
@@ -3475,7 +4028,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 33`] = `
+exports[`help of every command and group is unchanged 39`] = `
 {
   "code": 0,
   "path": "php restart",
@@ -3503,7 +4056,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 34`] = `
+exports[`help of every command and group is unchanged 40`] = `
 {
   "code": 0,
   "path": "php version",
@@ -3534,7 +4087,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 35`] = `
+exports[`help of every command and group is unchanged 41`] = `
 {
   "code": 0,
   "path": "plugins",
@@ -3557,7 +4110,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 36`] = `
+exports[`help of every command and group is unchanged 42`] = `
 {
   "code": 0,
   "path": "plugins list",
@@ -3583,7 +4136,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 37`] = `
+exports[`help of every command and group is unchanged 43`] = `
 {
   "code": 0,
   "path": "plugins update",
@@ -3613,7 +4166,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 38`] = `
+exports[`help of every command and group is unchanged 44`] = `
 {
   "code": 0,
   "path": "themes",
@@ -3635,7 +4188,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 39`] = `
+exports[`help of every command and group is unchanged 45`] = `
 {
   "code": 0,
   "path": "themes list",
@@ -3661,7 +4214,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 40`] = `
+exports[`help of every command and group is unchanged 46`] = `
 {
   "code": 0,
   "path": "themes update",
@@ -3691,7 +4244,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 41`] = `
+exports[`help of every command and group is unchanged 47`] = `
 {
   "code": 0,
   "path": "backups",
@@ -3717,7 +4270,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 42`] = `
+exports[`help of every command and group is unchanged 48`] = `
 {
   "code": 0,
   "path": "backups list",
@@ -3743,7 +4296,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 43`] = `
+exports[`help of every command and group is unchanged 49`] = `
 {
   "code": 0,
   "path": "backups create",
@@ -3772,7 +4325,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 44`] = `
+exports[`help of every command and group is unchanged 50`] = `
 {
   "code": 0,
   "path": "backups restore",
@@ -3803,7 +4356,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 45`] = `
+exports[`help of every command and group is unchanged 51`] = `
 {
   "code": 0,
   "path": "backups delete",
@@ -3833,7 +4386,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 46`] = `
+exports[`help of every command and group is unchanged 52`] = `
 {
   "code": 0,
   "path": "domains",
@@ -3858,7 +4411,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 47`] = `
+exports[`help of every command and group is unchanged 53`] = `
 {
   "code": 0,
   "path": "domains list",
@@ -3883,7 +4436,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 48`] = `
+exports[`help of every command and group is unchanged 54`] = `
 {
   "code": 0,
   "path": "domains add",
@@ -3917,7 +4470,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 49`] = `
+exports[`help of every command and group is unchanged 55`] = `
 {
   "code": 0,
   "path": "domains remove",
@@ -3947,7 +4500,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 50`] = `
+exports[`help of every command and group is unchanged 56`] = `
 {
   "code": 0,
   "path": "domains primary",
@@ -3978,7 +4531,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 51`] = `
+exports[`help of every command and group is unchanged 57`] = `
 {
   "code": 0,
   "path": "domains verification",
@@ -4004,7 +4557,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 52`] = `
+exports[`help of every command and group is unchanged 58`] = `
 {
   "code": 0,
   "path": "dns",
@@ -4026,7 +4579,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 53`] = `
+exports[`help of every command and group is unchanged 59`] = `
 {
   "code": 0,
   "path": "dns zones",
@@ -4047,7 +4600,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 54`] = `
+exports[`help of every command and group is unchanged 60`] = `
 {
   "code": 0,
   "path": "dns records",
@@ -4071,7 +4624,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 55`] = `
+exports[`help of every command and group is unchanged 61`] = `
 {
   "code": 0,
   "path": "dns records list",
@@ -4094,7 +4647,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 56`] = `
+exports[`help of every command and group is unchanged 62`] = `
 {
   "code": 0,
   "path": "dns records add",
@@ -4125,7 +4678,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 57`] = `
+exports[`help of every command and group is unchanged 63`] = `
 {
   "code": 0,
   "path": "dns records update",
@@ -4157,7 +4710,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 58`] = `
+exports[`help of every command and group is unchanged 64`] = `
 {
   "code": 0,
   "path": "dns records delete",
@@ -4187,7 +4740,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 59`] = `
+exports[`help of every command and group is unchanged 65`] = `
 {
   "code": 0,
   "path": "wp",
@@ -4210,7 +4763,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 60`] = `
+exports[`help of every command and group is unchanged 66`] = `
 {
   "code": 0,
   "path": "wp run",
@@ -4240,7 +4793,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 61`] = `
+exports[`help of every command and group is unchanged 67`] = `
 {
   "code": 0,
   "path": "wp login",
@@ -4266,7 +4819,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 62`] = `
+exports[`help of every command and group is unchanged 68`] = `
 {
   "code": 0,
   "path": "wp user",
@@ -4288,7 +4841,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 63`] = `
+exports[`help of every command and group is unchanged 69`] = `
 {
   "code": 0,
   "path": "wp user create",
@@ -4316,7 +4869,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 64`] = `
+exports[`help of every command and group is unchanged 70`] = `
 {
   "code": 0,
   "path": "wp user exists",
@@ -4341,7 +4894,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 65`] = `
+exports[`help of every command and group is unchanged 71`] = `
 {
   "code": 0,
   "path": "db",
@@ -4362,7 +4915,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 66`] = `
+exports[`help of every command and group is unchanged 72`] = `
 {
   "code": 0,
   "path": "db login",
@@ -4387,7 +4940,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 67`] = `
+exports[`help of every command and group is unchanged 73`] = `
 {
   "code": 0,
   "path": "search-replace",

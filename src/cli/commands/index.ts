@@ -25,8 +25,14 @@ import {DomainsListCommand} from './domains/DomainsListCommand';
 import {DomainsPrimaryCommand} from './domains/DomainsPrimaryCommand';
 import {DomainsRemoveCommand} from './domains/DomainsRemoveCommand';
 import {DomainsVerificationCommand} from './domains/DomainsVerificationCommand';
+import {EnvCloneCommand} from './env/EnvCloneCommand';
+import {EnvCreateCommand} from './env/EnvCreateCommand';
+import {EnvDeleteCommand} from './env/EnvDeleteCommand';
+import {EnvFilesCommand} from './env/EnvFilesCommand';
 import {EnvListCommand} from './env/EnvListCommand';
+import {EnvPhpAllocationCommand} from './env/EnvPhpAllocationCommand';
 import {EnvPushCommand} from './env/EnvPushCommand';
+import {EnvWebrootCommand} from './env/EnvWebrootCommand';
 import {LogsCommand} from './logs/LogsCommand';
 import {OperationsGetCommand} from './operations/OperationsGetCommand';
 import {OperationsWaitCommand} from './operations/OperationsWaitCommand';
@@ -67,6 +73,12 @@ export const COMMANDS: CommandClass[] = [
     SitesPhpAllocationCommand,
     EnvListCommand,
     EnvPushCommand,
+    EnvCreateCommand,
+    EnvCloneCommand,
+    EnvDeleteCommand,
+    EnvPhpAllocationCommand,
+    EnvWebrootCommand,
+    EnvFilesCommand,
     CacheClearCommand,
     CacheEdgeClearCommand,
     CacheEdgeEnableCommand,
