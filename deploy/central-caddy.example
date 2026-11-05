@@ -1,0 +1,10 @@
+# hetzner: ../caddy/hosts/hetzner/vhosts/kinstactl.rickklaasboer.nl.caddy
+kinstactl.rickklaasboer.nl {
+	import logging
+	import hsts
+	encode
+
+	reverse_proxy 127.0.0.1:3005 {
+		import proxy_headers
+	}
+}
