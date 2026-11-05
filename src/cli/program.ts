@@ -1,5 +1,4 @@
 import {Command, CommanderError} from 'commander';
-import type {EndpointKey} from '@/client/request';
 import type {DependencyContainer} from 'tsyringe';
 import {
     CommandRegistry,
@@ -7,50 +6,23 @@ import {
     ROOT_DESCRIPTION,
     toOption,
 } from './CommandRegistry';
-import type {BaseCommand, CommandClass} from './commands/BaseCommand';
-import {COMMANDS, GROUPS, type LegacyEntry} from './commands/index';
+import {COMMANDS, GROUPS} from './commands/index';
 import {createContainer} from './container';
 import {toCliError} from './errors';
 import {IO, type Io} from './io';
 import {Output} from './output';
-import {Runtime} from './runtime';
 import {RunContext} from './services/RunContext';
-
-export interface CommandMeta {
-    endpoints: EndpointKey[];
-    destructive?: 'confirm' | 'irreversible';
-}
-
-const metas = new WeakMap<Command, CommandMeta>();
-
-/** Declares which API endpoints a command uses and whether it is destructive. */
-export function meta(cmd: Command, m: CommandMeta): Command {
-    metas.set(cmd, m);
-    return cmd;
-}
-
-export function getMeta(cmd: Command): CommandMeta | undefined {
-    return metas.get(cmd);
-}
-
-function isLegacy(entry: CommandClass | LegacyEntry): entry is LegacyEntry {
-    return 'legacy' in entry;
-}
 
 export function createProgramContainer(io: Io): DependencyContainer {
     const container = createContainer(io);
-    const classes = COMMANDS.filter(
-        (entry): entry is CommandClass => !isLegacy(entry),
-    );
     container.registerInstance(
         CommandRegistry,
-        new CommandRegistry(container, classes, GROUPS),
+        new CommandRegistry(container, COMMANDS, GROUPS),
     );
     return container;
 }
 
 export function buildProgram(container: DependencyContainer): Command {
-    const rt = container.resolve(Runtime);
     const ctx = container.resolve(RunContext);
     const output = container.resolve(Output);
     const io = container.resolve<Io>(IO);
@@ -71,18 +43,8 @@ export function buildProgram(container: DependencyContainer): Command {
     for (const def of GLOBAL_OPTIONS) program.addOption(toOption(def));
     program.hook('preAction', () => ctx.configure(program.opts()));
 
-    const resolved = registry.commands();
-    let next = 0;
-    for (const entry of COMMANDS) {
-        if (isLegacy(entry)) {
-            entry.legacy(program, rt);
-            continue;
-        }
-        const command = resolved[next++] as BaseCommand;
-        meta(registry.attach(program, command), {
-            endpoints: command.endpoints,
-            destructive: command.destructive,
-        });
+    for (const command of registry.commands()) {
+        registry.attach(program, command);
     }
     return program;
 }

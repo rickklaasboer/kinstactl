@@ -1,9 +1,9 @@
 import {expect, test} from 'bun:test';
 import {readFileSync} from 'node:fs';
-import type {Command} from 'commander';
 import {parse} from 'yaml';
+import {CommandRegistry} from '@/cli/CommandRegistry';
 import type {Io} from '@/cli/io';
-import {buildProgram, createProgramContainer, getMeta} from '@/cli/program';
+import {createProgramContainer} from '@/cli/program';
 import {ALL_ENDPOINTS} from '@/client/endpoints';
 import type {EndpointKey} from '@/client/request';
 
@@ -134,9 +134,6 @@ test('nothing pending is unknown to the spec', () => {
     expect([...PENDING].filter((k) => !ops.has(k))).toEqual([]);
 });
 
-// Client endpoints no command uses yet; each command task removes the keys it claims.
-const COMMAND_PENDING = new Set<EndpointKey>([]);
-
 function claimedByCommands(): Set<EndpointKey> {
     const io: Io = {
         stdout() {},
@@ -146,29 +143,21 @@ function claimedByCommands(): Set<EndpointKey> {
         progressOutput: process.stderr,
         prompts: {} as Io['prompts'],
     };
-    const claimed = new Set<EndpointKey>();
-    const walk = (cmd: Command) => {
-        for (const k of getMeta(cmd)?.endpoints ?? []) claimed.add(k);
-        cmd.commands.forEach(walk);
-    };
-    walk(buildProgram(createProgramContainer(io)));
-    return claimed;
+    return new Set(
+        createProgramContainer(io)
+            .resolve(CommandRegistry)
+            .commands()
+            .flatMap((c) => c.endpoints),
+    );
 }
 
-test('every client endpoint is claimed by a command or pending', () => {
+test('every client endpoint is claimed by a command class', () => {
     const claimed = claimedByCommands();
-    expect(
-        ALL_ENDPOINTS.filter((k) => !claimed.has(k) && !COMMAND_PENDING.has(k)),
-    ).toEqual([]);
+    expect(ALL_ENDPOINTS.filter((k) => !claimed.has(k))).toEqual([]);
 });
 
-test('nothing is both claimed by a command and command-pending', () => {
-    const claimed = claimedByCommands();
-    expect([...COMMAND_PENDING].filter((k) => claimed.has(k))).toEqual([]);
-});
-
-test('nothing command-pending is unknown to the client', () => {
+test('every endpoint a command claims exists in the client', () => {
     expect(
-        [...COMMAND_PENDING].filter((k) => !ALL_ENDPOINTS.includes(k)),
+        [...claimedByCommands()].filter((k) => !ALL_ENDPOINTS.includes(k)),
     ).toEqual([]);
 });

@@ -1,5 +1,3 @@
-import type {Command} from 'commander';
-import type {Runtime} from '../runtime';
 import {AuthLoginCommand} from './auth/AuthLoginCommand';
 import {AuthLogoutCommand} from './auth/AuthLogoutCommand';
 import {AuthProfilesCommand} from './auth/AuthProfilesCommand';
@@ -11,8 +9,8 @@ import {BackupsRestoreCommand} from './backups/BackupsRestoreCommand';
 import {CacheCdnClearCommand} from './cache/CacheCdnClearCommand';
 import {CacheClearCommand} from './cache/CacheClearCommand';
 import {CacheEdgeClearCommand} from './cache/CacheEdgeClearCommand';
-import {registerCommands} from './commands';
 import type {CommandClass, GroupDef} from './BaseCommand';
+import {CommandsCommand} from './CommandsCommand';
 import {EnvListCommand} from './env/EnvListCommand';
 import {EnvPushCommand} from './env/EnvPushCommand';
 import {LogsCommand} from './logs/LogsCommand';
@@ -27,17 +25,12 @@ import {ThemesUpdateCommand} from './plugins/ThemesUpdateCommand';
 import {SitesGetCommand} from './sites/SitesGetCommand';
 import {SitesListCommand} from './sites/SitesListCommand';
 
-/** Transitional: a not yet migrated command module, removed once all are classes. */
-export interface LegacyEntry {
-    legacy: (program: Command, rt: Runtime) => void;
-}
-
-export const COMMANDS: (CommandClass | LegacyEntry)[] = [
+export const COMMANDS: CommandClass[] = [
     AuthLoginCommand,
     AuthStatusCommand,
     AuthLogoutCommand,
     AuthProfilesCommand,
-    {legacy: registerCommands},
+    CommandsCommand,
     OperationsGetCommand,
     OperationsWaitCommand,
     LogsCommand,
