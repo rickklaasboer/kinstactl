@@ -49,7 +49,7 @@ kinstactl backups restore my-site 123456789 --notify rick@example.com
 
 <CommandRef path="backups restore" />
 
-Restoring replaces the content of the environment with the backup, so the command asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`, otherwise it fails with `CONFIRMATION_REQUIRED` (exit code 5). `--notify` takes the email of a company user, who is notified when the restore finishes.
+Restoring replaces the content of the environment with the backup, so the command asks for confirmation. On a terminal you answer a prompt; in a script pass `--notify <email>` and `--yes`. Without `--notify` a script fails with `USAGE` (there is no user to notify), and without `--yes` it fails with `CONFIRMATION_REQUIRED` (exit code 5). `--notify` takes the email of a company user, who is notified when the restore finishes.
 
 By default the backup is restored onto the environment it was taken on. With `--from-env` you restore a backup taken on another environment of the same site onto `--env`, for example a staging backup onto live:
 

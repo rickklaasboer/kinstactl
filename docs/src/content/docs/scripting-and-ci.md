@@ -48,7 +48,7 @@ kinstactl prints colour only on a terminal. Set `NO_COLOR=1` to turn it off ther
 Destructive commands ask before they act. In a script you answer in advance with a flag.
 
 ```sh
-kinstactl backups restore my-site 123456789 --env live --yes
+kinstactl backups restore my-site 123456789 --env live --notify admin@example.com --yes
 kinstactl sites delete my-site --confirm my-site
 ```
 
