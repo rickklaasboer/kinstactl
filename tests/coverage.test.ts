@@ -138,11 +138,6 @@ test('nothing pending is unknown to the spec', () => {
 const COMMAND_PENDING = new Set<EndpointKey>([
     'GET /company/{id}/users',
     'PUT /sites/{site_id}/environments',
-    'POST /sites/tools/clear-cache',
-    'POST /sites/tools/restart-php',
-    'PUT /sites/tools/modify-php-version',
-    'POST /sites/edge-caching/clear',
-    'POST /sites/cdn/clear-cache',
     'GET /sites/environments/{env_id}/backups',
     'POST /sites/environments/{env_id}/manual-backups',
     'POST /sites/environments/{target_env_id}/backups/restore',
