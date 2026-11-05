@@ -1,3 +1,6 @@
+import { CommanderError } from 'commander'
+import { KinstaApiError, OperationFailedError, OperationTimeoutError } from '@/client/errors'
+
 export type ErrorCode =
   | 'USAGE'
   | 'AUTH_MISSING'
@@ -39,4 +42,16 @@ export class CliError extends Error {
     this.name = 'CliError'
     this.exitCode = EXIT_CODES[code]
   }
+}
+
+export function toCliError(e: unknown): CliError {
+  if (e instanceof CliError) return e
+  if (e instanceof KinstaApiError) {
+    if (e.status === 401) return new CliError('AUTH_INVALID', e.message, ['Run: kinstactl auth login'])
+    return new CliError('API_ERROR', e.message)
+  }
+  if (e instanceof OperationFailedError) return new CliError('OPERATION_FAILED', e.message, [`Operation: ${e.operationId}`])
+  if (e instanceof OperationTimeoutError) return new CliError('OPERATION_TIMEOUT', e.message, [`Operation: ${e.operationId}`])
+  if (e instanceof CommanderError) return new CliError('USAGE', e.message.replace(/^error: /, ''))
+  return new CliError('API_ERROR', e instanceof Error ? e.message : String(e))
 }

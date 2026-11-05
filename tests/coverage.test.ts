@@ -1,6 +1,9 @@
 import { expect, test } from 'bun:test'
 import { readFileSync } from 'node:fs'
+import type { Command } from 'commander'
 import { parse } from 'yaml'
+import { buildProgram, getMeta } from '@/cli/program'
+import { Runtime, type Io } from '@/cli/runtime'
 import { ALL_ENDPOINTS } from '@/client/endpoints'
 import type { EndpointKey } from '@/client/request'
 
@@ -127,4 +130,55 @@ test('nothing is both implemented and pending', () => {
 test('nothing pending is unknown to the spec', () => {
   const ops = specOperations()
   expect([...PENDING].filter((k) => !ops.has(k))).toEqual([])
+})
+
+// Client endpoints no command uses yet; each command task removes the keys it claims.
+const COMMAND_PENDING = new Set<EndpointKey>([
+  'GET /company/{id}/users',
+  'GET /sites',
+  'GET /sites/{site_id}',
+  'GET /sites/{site_id}/environments',
+  'PUT /sites/{site_id}/environments',
+  'POST /sites/tools/clear-cache',
+  'POST /sites/tools/restart-php',
+  'PUT /sites/tools/modify-php-version',
+  'POST /sites/edge-caching/clear',
+  'POST /sites/cdn/clear-cache',
+  'GET /sites/environments/{env_id}/backups',
+  'POST /sites/environments/{env_id}/manual-backups',
+  'POST /sites/environments/{target_env_id}/backups/restore',
+  'DELETE /sites/environments/backups/{backup_id}',
+  'GET /sites/environments/{env_id}/logs',
+  'GET /sites/environments/{env_id}/wp-plugins',
+  'GET /sites/environments/{env_id}/wp-themes',
+  'PUT /sites/environments/{env_id}/plugins',
+  'PUT /sites/environments/{env_id}/themes',
+  'PUT /sites/environments/{env_id}/plugins/bulk-update',
+  'PUT /sites/environments/{env_id}/themes/bulk-update',
+  'GET /operations/{operation_id}',
+])
+
+function claimedByCommands(): Set<EndpointKey> {
+  const io: Io = { stdout() {}, stderr() {}, isTTY: false, env: {}, prompts: {} as Io['prompts'] }
+  const claimed = new Set<EndpointKey>()
+  const walk = (cmd: Command) => {
+    for (const k of getMeta(cmd)?.endpoints ?? []) claimed.add(k)
+    cmd.commands.forEach(walk)
+  }
+  walk(buildProgram(new Runtime(io)))
+  return claimed
+}
+
+test('every client endpoint is claimed by a command or pending', () => {
+  const claimed = claimedByCommands()
+  expect(ALL_ENDPOINTS.filter((k) => !claimed.has(k) && !COMMAND_PENDING.has(k))).toEqual([])
+})
+
+test('nothing is both claimed by a command and command-pending', () => {
+  const claimed = claimedByCommands()
+  expect([...COMMAND_PENDING].filter((k) => claimed.has(k))).toEqual([])
+})
+
+test('nothing command-pending is unknown to the client', () => {
+  expect([...COMMAND_PENDING].filter((k) => !ALL_ENDPOINTS.includes(k))).toEqual([])
 })
