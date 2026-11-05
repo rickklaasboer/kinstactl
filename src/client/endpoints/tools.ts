@@ -81,10 +81,47 @@ export function clearCdnCache(envId: string, cdnCacheId: string): RequestSpec {
     };
 }
 
+export function setEdgeCacheStatus(
+    envId: string,
+    enabled: boolean,
+): RequestSpec {
+    const body: Schemas['UpdateEdgeCacheStatusRequestBody'] = {
+        environment_id: envId,
+        enabled,
+    };
+    return {
+        endpoint: 'PUT /sites/edge-caching/status',
+        method: 'PUT',
+        path: '/sites/edge-caching/status',
+        body,
+    };
+}
+
+export type ImageOptimizationType =
+    Schemas['UpdateImageOptimizationRequestBody']['image_optimization_type'];
+
+export function setImageOptimization(
+    envId: string,
+    type: ImageOptimizationType,
+): RequestSpec {
+    const body: Schemas['UpdateImageOptimizationRequestBody'] = {
+        environment_id: envId,
+        image_optimization_type: type,
+    };
+    return {
+        endpoint: 'PUT /sites/cdn/image-optimization',
+        method: 'PUT',
+        path: '/sites/cdn/image-optimization',
+        body,
+    };
+}
+
 export const ENDPOINTS: EndpointKey[] = [
     'POST /sites/tools/clear-cache',
     'POST /sites/tools/restart-php',
     'PUT /sites/tools/modify-php-version',
     'POST /sites/edge-caching/clear',
     'POST /sites/cdn/clear-cache',
+    'PUT /sites/edge-caching/status',
+    'PUT /sites/cdn/image-optimization',
 ];

@@ -145,6 +145,22 @@ describe('tools', () => {
             body: {environment_id: 'e1', cdn_cache_id: 'cdn1'},
         });
     });
+    test('setEdgeCacheStatus', () => {
+        expect(tools.setEdgeCacheStatus('e1', false)).toEqual({
+            endpoint: 'PUT /sites/edge-caching/status',
+            method: 'PUT',
+            path: '/sites/edge-caching/status',
+            body: {environment_id: 'e1', enabled: false},
+        });
+    });
+    test('setImageOptimization', () => {
+        expect(tools.setImageOptimization('e1', 'lossless')).toEqual({
+            endpoint: 'PUT /sites/cdn/image-optimization',
+            method: 'PUT',
+            path: '/sites/cdn/image-optimization',
+            body: {environment_id: 'e1', image_optimization_type: 'lossless'},
+        });
+    });
 });
 
 describe('backups', () => {

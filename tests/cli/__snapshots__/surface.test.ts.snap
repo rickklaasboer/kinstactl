@@ -571,6 +571,102 @@ exports[`commands --json is unchanged 1`] = `
               ],
               "path": "cache edge clear",
             },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Enable edge caching of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "PUT /sites/edge-caching/status",
+              ],
+              "name": "enable",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "cache edge enable",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Disable edge caching of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "PUT /sites/edge-caching/status",
+              ],
+              "name": "disable",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "cache edge disable",
+            },
           ],
           "description": "Edge cache",
           "destructive": null,
@@ -629,6 +725,65 @@ exports[`commands --json is unchanged 1`] = `
                 },
               ],
               "path": "cache cdn clear",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "choices": [
+                    "off",
+                    "lossy",
+                    "lossless",
+                  ],
+                  "description": "set this type; omit to show the current one",
+                  "name": "type",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Show or set the CDN image optimization of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/{site_id}/environments",
+                "PUT /sites/cdn/image-optimization",
+              ],
+              "name": "image-optimization",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "cache cdn image-optimization",
             },
           ],
           "description": "CDN cache",
@@ -1241,8 +1396,11 @@ cache  Clear the caches of a site environment
   clear [site]  Clear the site cache of an environment
   edge  Edge cache
     clear [site]  Clear the edge cache of an environment
+    enable [site]  Enable edge caching of an environment
+    disable [site]  Disable edge caching of an environment
   cdn  CDN cache
     clear [site]  Clear the CDN cache of an environment
+    image-optimization <site> [type]  Show or set the CDN image optimization of an environment
 php  Manage the PHP engine of a site environment
   restart [site]  Restart the PHP engine of an environment
   version <site> [version]  Show the PHP version of an environment, or change it
@@ -1745,11 +1903,13 @@ exports[`help of every command and group is unchanged 20`] = `
 Edge cache
 
 Options:
-  -h, --help              display help for command
+  -h, --help                display help for command
 
 Commands:
-  clear [options] [site]  Clear the edge cache of an environment
-  help [command]          display help for command
+  clear [options] [site]    Clear the edge cache of an environment
+  enable [options] [site]   Enable edge caching of an environment
+  disable [options] [site]  Disable edge caching of an environment
+  help [command]            display help for command
 "
 ,
 }
@@ -1788,6 +1948,62 @@ Examples:
 exports[`help of every command and group is unchanged 22`] = `
 {
   "code": 0,
+  "path": "cache edge enable",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl cache edge enable [options] [site]
+
+Enable edge caching of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl cache edge enable klant-x --env live
+  $ kinstactl cache edge enable klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 23`] = `
+{
+  "code": 0,
+  "path": "cache edge disable",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl cache edge disable [options] [site]
+
+Disable edge caching of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl cache edge disable klant-x --env live
+  $ kinstactl cache edge disable klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 24`] = `
+{
+  "code": 0,
   "path": "cache cdn",
   "stderr": "",
   "stdout": 
@@ -1796,17 +2012,18 @@ exports[`help of every command and group is unchanged 22`] = `
 CDN cache
 
 Options:
-  -h, --help              display help for command
+  -h, --help                                  display help for command
 
 Commands:
-  clear [options] [site]  Clear the CDN cache of an environment
-  help [command]          display help for command
+  clear [options] [site]                      Clear the CDN cache of an environment
+  image-optimization [options] <site> [type]  Show or set the CDN image optimization of an environment
+  help [command]                              display help for command
 "
 ,
 }
 `;
 
-exports[`help of every command and group is unchanged 23`] = `
+exports[`help of every command and group is unchanged 25`] = `
 {
   "code": 0,
   "path": "cache cdn clear",
@@ -1834,7 +2051,37 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 24`] = `
+exports[`help of every command and group is unchanged 26`] = `
+{
+  "code": 0,
+  "path": "cache cdn image-optimization",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl cache cdn image-optimization [options] <site> [type]
+
+Show or set the CDN image optimization of an environment
+
+Arguments:
+  site                 site name, display name or ID
+  type                 set this type; omit to show the current one (choices:
+                       "off", "lossy", "lossless")
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl cache cdn image-optimization klant-x --env live
+  $ kinstactl cache cdn image-optimization klant-x lossy --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 27`] = `
 {
   "code": 0,
   "path": "php",
@@ -1857,7 +2104,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 25`] = `
+exports[`help of every command and group is unchanged 28`] = `
 {
   "code": 0,
   "path": "php restart",
@@ -1885,7 +2132,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 26`] = `
+exports[`help of every command and group is unchanged 29`] = `
 {
   "code": 0,
   "path": "php version",
@@ -1916,7 +2163,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 27`] = `
+exports[`help of every command and group is unchanged 30`] = `
 {
   "code": 0,
   "path": "plugins",
@@ -1939,7 +2186,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 28`] = `
+exports[`help of every command and group is unchanged 31`] = `
 {
   "code": 0,
   "path": "plugins list",
@@ -1965,7 +2212,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 29`] = `
+exports[`help of every command and group is unchanged 32`] = `
 {
   "code": 0,
   "path": "plugins update",
@@ -1995,7 +2242,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 30`] = `
+exports[`help of every command and group is unchanged 33`] = `
 {
   "code": 0,
   "path": "themes",
@@ -2017,7 +2264,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 31`] = `
+exports[`help of every command and group is unchanged 34`] = `
 {
   "code": 0,
   "path": "themes list",
@@ -2043,7 +2290,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 32`] = `
+exports[`help of every command and group is unchanged 35`] = `
 {
   "code": 0,
   "path": "themes update",
@@ -2073,7 +2320,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 33`] = `
+exports[`help of every command and group is unchanged 36`] = `
 {
   "code": 0,
   "path": "backups",
@@ -2099,7 +2346,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 34`] = `
+exports[`help of every command and group is unchanged 37`] = `
 {
   "code": 0,
   "path": "backups list",
@@ -2125,7 +2372,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 35`] = `
+exports[`help of every command and group is unchanged 38`] = `
 {
   "code": 0,
   "path": "backups create",
@@ -2154,7 +2401,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 36`] = `
+exports[`help of every command and group is unchanged 39`] = `
 {
   "code": 0,
   "path": "backups restore",
@@ -2185,7 +2432,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 37`] = `
+exports[`help of every command and group is unchanged 40`] = `
 {
   "code": 0,
   "path": "backups delete",

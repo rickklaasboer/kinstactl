@@ -7,8 +7,11 @@ import {BackupsDeleteCommand} from './backups/BackupsDeleteCommand';
 import {BackupsListCommand} from './backups/BackupsListCommand';
 import {BackupsRestoreCommand} from './backups/BackupsRestoreCommand';
 import {CacheCdnClearCommand} from './cache/CacheCdnClearCommand';
+import {CacheCdnImageOptimizationCommand} from './cache/CacheCdnImageOptimizationCommand';
 import {CacheClearCommand} from './cache/CacheClearCommand';
 import {CacheEdgeClearCommand} from './cache/CacheEdgeClearCommand';
+import {CacheEdgeDisableCommand} from './cache/CacheEdgeDisableCommand';
+import {CacheEdgeEnableCommand} from './cache/CacheEdgeEnableCommand';
 import type {CommandClass, GroupDef} from './BaseCommand';
 import {CommandsCommand} from './CommandsCommand';
 import {EnvListCommand} from './env/EnvListCommand';
@@ -40,7 +43,10 @@ export const COMMANDS: CommandClass[] = [
     EnvPushCommand,
     CacheClearCommand,
     CacheEdgeClearCommand,
+    CacheEdgeEnableCommand,
+    CacheEdgeDisableCommand,
     CacheCdnClearCommand,
+    CacheCdnImageOptimizationCommand,
     PhpRestartCommand,
     PhpVersionCommand,
     PluginsListCommand,

@@ -50,8 +50,6 @@ const PENDING = new Set<EndpointKey>([
     'POST /sites/environments/{env_id}/change-webroot-subfolder',
     'POST /sites/{site_id}/change-site-php-allocation',
     'GET /sites/environments/{env_id}/file-list',
-    'PUT /sites/edge-caching/status',
-    'PUT /sites/cdn/image-optimization',
     'GET /sites/tools/denied-ips',
     'PUT /sites/tools/denied-ips',
     'GET /sites/environments/{env_id}/downloadable-backups',
