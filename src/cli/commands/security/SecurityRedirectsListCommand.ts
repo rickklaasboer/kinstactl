@@ -83,8 +83,8 @@ export class SecurityRedirectsListCommand implements BaseCommand<Options> {
         {flags: '--desc', description: 'sort descending'},
     ];
     readonly examples = [
-        'kinstactl security redirects list klant-x --env live',
-        'kinstactl security redirects list klant-x --search /blog --sort from --desc',
+        'kinstactl security redirects list my-site --env live',
+        'kinstactl security redirects list my-site --search /blog --sort from --desc',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

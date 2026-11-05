@@ -68,8 +68,8 @@ export abstract class WpItemUpdateCommand implements BaseCommand<Options> {
     get examples(): string[] {
         const {command, noun} = this.kind;
         return [
-            `kinstactl ${command} update klant-x ${noun === 'plugin' ? 'akismet' : 'twentytwentyfour'} --env live`,
-            `kinstactl ${command} update klant-x --all --env live --dry-run`,
+            `kinstactl ${command} update my-site ${noun === 'plugin' ? 'akismet' : 'twentytwentyfour'} --env live`,
+            `kinstactl ${command} update my-site --all --env live --dry-run`,
         ];
     }
 

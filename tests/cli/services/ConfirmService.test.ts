@@ -7,8 +7,8 @@ import {ConfirmService} from '@/cli/services/ConfirmService';
 
 const site = {
     id: 's1',
-    name: 'KLANT-X',
-    displayName: 'Klant X',
+    name: 'MY-SITE',
+    displayName: 'My Site',
     environments: [],
 };
 const env = {id: 'e1', name: 'live', displayName: 'Live', isLive: true};
@@ -55,7 +55,7 @@ describe('confirmDestructive: confirm level', () => {
             },
         });
         await rt.confirmDestructive({...args, flags: base});
-        expect(asked).toBe('Restart PHP on Klant X (live)?');
+        expect(asked).toBe('Restart PHP on My Site (live)?');
     });
 
     test('interactive decline is CONFIRMATION_DECLINED', async () => {
@@ -129,13 +129,13 @@ describe('confirmDestructive: irreversible level', () => {
             }),
         );
         expect(e.code).toBe('CONFIRMATION_REQUIRED');
-        expect(e.hints).toContain('--confirm KLANT-X');
+        expect(e.hints).toContain('--confirm MY-SITE');
     });
 
     test('--confirm with the site name passes, case-insensitive', async () => {
         await runtime(false).confirmDestructive({
             ...args,
-            flags: {...base, confirm: 'klant-x'},
+            flags: {...base, confirm: 'my-site'},
         });
     });
 
@@ -150,7 +150,7 @@ describe('confirmDestructive: irreversible level', () => {
     });
 
     test('interactive typed name must match', async () => {
-        const ok = runtime(true, {text: async () => 'klant-x'});
+        const ok = runtime(true, {text: async () => 'my-site'});
         await ok.confirmDestructive({...args, flags: base});
         const bad = runtime(true, {text: async () => 'nope'});
         const e = await failure(bad.confirmDestructive({...args, flags: base}));
@@ -162,7 +162,7 @@ describe('confirmDestructive: irreversible level', () => {
         const rt = runtime(true, {
             text: async () => {
                 asked = true;
-                return 'KLANT-X';
+                return 'MY-SITE';
             },
         });
         await rt.confirmDestructive({

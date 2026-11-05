@@ -9,8 +9,8 @@ const sites = {
                 sites: [
                     {
                         id: 'id-x',
-                        name: 'klant-x',
-                        display_name: 'Klant X',
+                        name: 'my-site',
+                        display_name: 'My Site',
                         status: 'live',
                         environments: [
                             {
@@ -38,7 +38,7 @@ const denied = (ips: string[]) => ({
 
 describe('security denied-ips', () => {
     test('denied-ips prints the list', async () => {
-        const r = await runCli(['security', 'denied-ips', 'klant-x'], {
+        const r = await runCli(['security', 'denied-ips', 'my-site'], {
             routes: {...sites, ...denied(['1.1.1.1', '2.2.2.2'])},
         });
         expect(r.code).toBe(0);
@@ -52,14 +52,14 @@ describe('security denied-ips', () => {
     test('denied-ips --add sends the merged list and needs --yes', async () => {
         const routes = {...sites, ...denied(['1.1.1.1'])};
         const refused = await runCli(
-            ['security', 'denied-ips', 'klant-x', '--add', '2.2.2.2'],
+            ['security', 'denied-ips', 'my-site', '--add', '2.2.2.2'],
             {routes},
         );
         expect(refused.code).toBe(5);
         expect(writes(refused.calls)).toHaveLength(0);
 
         const r = await runCli(
-            ['security', 'denied-ips', 'klant-x', '--add', '2.2.2.2', '--yes'],
+            ['security', 'denied-ips', 'my-site', '--add', '2.2.2.2', '--yes'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -77,7 +77,7 @@ describe('security denied-ips', () => {
             [
                 'security',
                 'denied-ips',
-                'klant-x',
+                'my-site',
                 '--remove',
                 '1.1.1.1',
                 '--yes',
@@ -96,7 +96,7 @@ describe('security denied-ips', () => {
             [
                 'security',
                 'denied-ips',
-                'klant-x',
+                'my-site',
                 '--add',
                 '1.1.1.1',
                 '--yes',
@@ -114,7 +114,7 @@ describe('security denied-ips', () => {
             [
                 'security',
                 'denied-ips',
-                'klant-x',
+                'my-site',
                 '--remove',
                 '9.9.9.9',
                 '--yes',
@@ -132,7 +132,7 @@ describe('security denied-ips', () => {
             [
                 'security',
                 'denied-ips',
-                'klant-x',
+                'my-site',
                 '--add',
                 '2.2.2.2',
                 '2.2.2.2',
@@ -151,7 +151,7 @@ describe('security denied-ips', () => {
             [
                 'security',
                 'denied-ips',
-                'klant-x',
+                'my-site',
                 '--add',
                 '2.2.2.2',
                 '--remove',
@@ -171,7 +171,7 @@ describe('security denied-ips', () => {
             [
                 'security',
                 'denied-ips',
-                'klant-x',
+                'my-site',
                 '--clear',
                 '--add',
                 '2.2.2.2',
@@ -187,7 +187,7 @@ describe('security denied-ips', () => {
 
     test('denied-ips --clear --yes sends an empty list', async () => {
         const r = await runCli(
-            ['security', 'denied-ips', 'klant-x', '--clear', '--yes', '--json'],
+            ['security', 'denied-ips', 'my-site', '--clear', '--yes', '--json'],
             {routes: {...sites, ...denied(['1.1.1.1'])}},
         );
         expect(r.code).toBe(0);
@@ -234,7 +234,7 @@ describe('security redirects', () => {
                 'security',
                 'redirects',
                 'list',
-                'klant-x',
+                'my-site',
                 '--limit',
                 '5',
                 '--offset',
@@ -264,7 +264,7 @@ describe('security redirects', () => {
 
     test('redirects add sends NEW with a null domain by default', async () => {
         const r = await runCli(
-            ['security', 'redirects', 'add', 'klant-x', '/a', '/b'],
+            ['security', 'redirects', 'add', 'my-site', '/a', '/b'],
             {routes: {...sites, ...rules([])}},
         );
         expect(r.code).toBe(0);
@@ -280,7 +280,7 @@ describe('security redirects', () => {
                 'security',
                 'redirects',
                 'add',
-                'klant-x',
+                'my-site',
                 '/a',
                 '/b',
                 '--type',
@@ -307,7 +307,7 @@ describe('security redirects', () => {
                 'security',
                 'redirects',
                 'update',
-                'klant-x',
+                'my-site',
                 '/old',
                 '--to',
                 '/newer',
@@ -325,7 +325,7 @@ describe('security redirects', () => {
 
     test('redirects update without a change is a usage error', async () => {
         const r = await runCli(
-            ['security', 'redirects', 'update', 'klant-x', '/old', '--yes'],
+            ['security', 'redirects', 'update', 'my-site', '/old', '--yes'],
             {routes: {...sites, ...rules([stored('/old')])}},
         );
         expect(r.code).toBe(2);
@@ -338,7 +338,7 @@ describe('security redirects', () => {
                 'security',
                 'redirects',
                 'update',
-                'klant-x',
+                'my-site',
                 '/old',
                 '--to',
                 '/n',
@@ -360,14 +360,14 @@ describe('security redirects', () => {
     test('redirects delete needs --yes', async () => {
         const routes = {...sites, ...rules([stored('/old')])};
         const refused = await runCli(
-            ['security', 'redirects', 'delete', 'klant-x', '/old'],
+            ['security', 'redirects', 'delete', 'my-site', '/old'],
             {routes},
         );
         expect(refused.code).toBe(5);
         expect(writes(refused.calls)).toHaveLength(0);
 
         const r = await runCli(
-            ['security', 'redirects', 'delete', 'klant-x', '/old', '--yes'],
+            ['security', 'redirects', 'delete', 'my-site', '/old', '--yes'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -383,7 +383,7 @@ describe('security redirects', () => {
                 'security',
                 'redirects',
                 'delete',
-                'klant-x',
+                'my-site',
                 '--all',
                 '--yes',
                 '--json',
@@ -397,7 +397,7 @@ describe('security redirects', () => {
 
     test('redirects delete needs from or --all, not both', async () => {
         const neither = await runCli(
-            ['security', 'redirects', 'delete', 'klant-x', '--yes'],
+            ['security', 'redirects', 'delete', 'my-site', '--yes'],
             {routes: {...sites, ...rules([])}},
         );
         expect(neither.code).toBe(2);
@@ -406,7 +406,7 @@ describe('security redirects', () => {
                 'security',
                 'redirects',
                 'delete',
-                'klant-x',
+                'my-site',
                 '/a',
                 '--all',
                 '--yes',
@@ -423,7 +423,7 @@ describe('security redirects', () => {
                 'security',
                 'redirects',
                 'delete',
-                'klant-x',
+                'my-site',
                 '/nope',
                 '--yes',
                 '--json',

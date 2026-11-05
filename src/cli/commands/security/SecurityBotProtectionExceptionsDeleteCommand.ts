@@ -44,7 +44,7 @@ export class SecurityBotProtectionExceptionsDeleteCommand
         ...actionOptions({destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl security bot-protection exceptions delete klant-x ip:skip:192.0.2.1 --env live --yes',
+        'kinstactl security bot-protection exceptions delete my-site ip:skip:192.0.2.1 --env live --yes',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

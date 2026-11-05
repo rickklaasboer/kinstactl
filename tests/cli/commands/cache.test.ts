@@ -8,8 +8,8 @@ const sites = {
                 sites: [
                     {
                         id: 'id-x',
-                        name: 'klant-x',
-                        display_name: 'Klant X',
+                        name: 'my-site',
+                        display_name: 'My Site',
                         status: 'live',
                         environments: [
                             {
@@ -50,7 +50,7 @@ const started = (id: string) => ({
 describe('cache clear', () => {
     test('sends the environment id and completes', async () => {
         const r = await runCli(
-            ['cache', 'clear', 'klant-x', '--env', 'live', '--json'],
+            ['cache', 'clear', 'my-site', '--env', 'live', '--json'],
             {
                 routes: {
                     ...sites,
@@ -79,7 +79,7 @@ describe('cache clear', () => {
                     options: {value: unknown; label: string}[],
                 ) => {
                     searchCalls++;
-                    return options.find((o) => o.label.includes('klant-x'))!
+                    return options.find((o) => o.label.includes('my-site'))!
                         .value;
                 }) as never,
             },
@@ -102,7 +102,7 @@ describe('cache clear', () => {
     });
 
     test('several environments without --env exits 2', async () => {
-        const r = await runCli(['cache', 'clear', 'klant-x', '--json'], {
+        const r = await runCli(['cache', 'clear', 'my-site', '--json'], {
             routes: sites,
         });
         expect(r.code).toBe(2);
@@ -117,7 +117,7 @@ describe('cache edge clear', () => {
                 'cache',
                 'edge',
                 'clear',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--url',
@@ -140,7 +140,7 @@ describe('cache edge clear', () => {
 describe('cache cdn clear', () => {
     test('sends the cdn_cache_id of the environment', async () => {
         const r = await runCli(
-            ['cache', 'cdn', 'clear', 'klant-x', '--env', 'live', '--json'],
+            ['cache', 'cdn', 'clear', 'my-site', '--env', 'live', '--json'],
             {
                 routes: {
                     ...sites,
@@ -160,13 +160,13 @@ describe('cache cdn clear', () => {
 
     test('a null cdn_cache_id is a usage error', async () => {
         const r = await runCli(
-            ['cache', 'cdn', 'clear', 'klant-x', '--env', 'staging', '--json'],
+            ['cache', 'cdn', 'clear', 'my-site', '--env', 'staging', '--json'],
             {routes: {...sites, ...envs('cdn-1')}},
         );
         expect(r.code).toBe(2);
         const err = JSON.parse(r.stderr).error;
         expect(err.code).toBe('USAGE');
-        expect(err.message).toBe('CDN is not enabled for klant-x (staging)');
+        expect(err.message).toBe('CDN is not enabled for my-site (staging)');
         expect(r.calls.some((c) => c.method === 'POST')).toBe(false);
     });
 });

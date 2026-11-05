@@ -180,7 +180,7 @@ describe('company users site-role', () => {
                 'users',
                 'site-role',
                 'jan@example.com',
-                'klant-x',
+                'my-site',
                 'site-developer',
             ],
             {
@@ -272,7 +272,7 @@ describe('company activity', () => {
                 '--category',
                 'siteActions',
                 '--site',
-                'klant-x',
+                'my-site',
                 '--language',
                 'nl',
             ],

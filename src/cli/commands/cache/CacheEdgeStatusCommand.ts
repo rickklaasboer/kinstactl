@@ -53,8 +53,8 @@ export abstract class CacheEdgeStatusCommand implements BaseCommand<Options> {
     get examples(): string[] {
         const verb = this.enabled ? 'enable' : 'disable';
         return [
-            `kinstactl cache edge ${verb} klant-x --env live`,
-            `kinstactl cache edge ${verb} klant-x --env live --dry-run`,
+            `kinstactl cache edge ${verb} my-site --env live`,
+            `kinstactl cache edge ${verb} my-site --env live --dry-run`,
         ];
     }
 

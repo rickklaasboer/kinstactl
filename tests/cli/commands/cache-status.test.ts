@@ -8,8 +8,8 @@ const sites = {
                 sites: [
                     {
                         id: 'id-x',
-                        name: 'klant-x',
-                        display_name: 'Klant X',
+                        name: 'my-site',
+                        display_name: 'My Site',
                         status: 'live',
                         environments: [
                             {
@@ -42,7 +42,7 @@ const started = (id: string) => ({
 describe('cache edge enable/disable', () => {
     test('cache edge enable sends enabled true', async () => {
         const r = await runCli(
-            ['cache', 'edge', 'enable', 'klant-x', '--env', 'live', '--json'],
+            ['cache', 'edge', 'enable', 'my-site', '--env', 'live', '--json'],
             {
                 routes: {
                     ...sites,
@@ -59,7 +59,7 @@ describe('cache edge enable/disable', () => {
 
     test('cache edge disable sends enabled false', async () => {
         const r = await runCli(
-            ['cache', 'edge', 'disable', 'klant-x', '--env', 'live', '--json'],
+            ['cache', 'edge', 'disable', 'my-site', '--env', 'live', '--json'],
             {
                 routes: {
                     ...sites,
@@ -75,7 +75,7 @@ describe('cache edge enable/disable', () => {
 });
 
 describe('cache cdn image-optimization', () => {
-    const base = ['cache', 'cdn', 'image-optimization', 'klant-x', '--env'];
+    const base = ['cache', 'cdn', 'image-optimization', 'my-site', '--env'];
 
     test('without a type shows the current setting', async () => {
         const r = await runCli([...base, 'live'], {
@@ -95,7 +95,7 @@ describe('cache cdn image-optimization', () => {
             routes: {...sites, ...envs('off')},
         });
         expect(JSON.parse(json.stdout)).toEqual({
-            site: 'klant-x',
+            site: 'my-site',
             environment: 'live',
             image_optimization_type: 'off',
         });

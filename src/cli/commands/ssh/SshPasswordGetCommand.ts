@@ -25,8 +25,8 @@ export class SshPasswordGetCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl ssh password get klant-x --env live',
-        'kinstactl ssh password get klant-x --json',
+        'kinstactl ssh password get my-site --env live',
+        'kinstactl ssh password get my-site --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

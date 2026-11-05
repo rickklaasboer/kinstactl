@@ -42,7 +42,7 @@ export class WpUserCreateCommand implements BaseCommand<Options> {
         ...actionOptions({wait: false}),
     ];
     readonly examples = [
-        'kinstactl wp user create klant-x ann@example.com --env live --first-name Ann --last-name Lee',
+        'kinstactl wp user create my-site ann@example.com --env live --first-name Ann --last-name Lee',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

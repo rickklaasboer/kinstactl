@@ -51,8 +51,8 @@ export abstract class WpItemListCommand implements BaseCommand<Options> {
     get examples(): string[] {
         const {command} = this.kind;
         return [
-            `kinstactl ${command} list klant-x --env live`,
-            `kinstactl ${command} list klant-x --env live --updates`,
+            `kinstactl ${command} list my-site --env live`,
+            `kinstactl ${command} list my-site --env live --updates`,
         ];
     }
 

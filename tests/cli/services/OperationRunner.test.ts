@@ -13,8 +13,8 @@ import {type FakeRoute, fakeKinsta} from '../../helpers/fakeKinsta';
 
 const site = {
     id: 's1',
-    name: 'klant-x',
-    displayName: 'Klant X',
+    name: 'my-site',
+    displayName: 'My Site',
     environments: [],
 };
 const env = {id: 'e1', name: 'live', displayName: 'Live', isLive: true};
@@ -95,7 +95,7 @@ describe('runOperation', () => {
         expect(r.calls).toEqual([]);
         const out = JSON.parse(r.stdout);
         expect(out.dry_run).toBe(true);
-        expect(out.target.site.name).toBe('klant-x');
+        expect(out.target.site.name).toBe('my-site');
         expect(out.request.method).toBe('POST');
         expect(out.request.body.environment_id).toBe('e1');
     });

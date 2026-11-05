@@ -166,3 +166,36 @@ test('the npm token is only exposed to the npm job', () => {
 test('ci runs the package smoke', () => {
     expect(runs(ci.jobs.package)).toContain('bun run smoke:package');
 });
+
+const docs = parse(readFileSync('.github/workflows/docs.yml', 'utf8'));
+
+test('the docs image is published from main by its own workflow', () => {
+    expect(docs.on.push.branches).toEqual(['main']);
+    expect('workflow_dispatch' in docs.on).toBe(true);
+    expect(Object.keys(docs.jobs)).toEqual(['publish']);
+    expect(docs.jobs.publish.permissions.packages).toBe('write');
+    const withs: Record<string, string>[] = docs.jobs.publish.steps.flatMap(
+        (step: {with?: Record<string, string>}) =>
+            step.with ? [step.with] : [],
+    );
+    expect(
+        withs.some((w) => w.images === 'ghcr.io/${{ github.repository }}-docs'),
+    ).toBe(true);
+    expect(withs.some((w) => w.context === 'docs')).toBe(true);
+});
+
+test('a docs-only change does not release', () => {
+    expect(release.on.push['paths-ignore']).toEqual(['docs/**']);
+});
+
+test('ci builds and serves the docs', () => {
+    const steps = runs(ci.jobs.docs);
+    expect(steps).toContain('bun run docs:build');
+    expect(
+        steps.some((r) => r.includes('docker build -t kinstactl-docs:ci docs')),
+    ).toBe(true);
+});
+
+test('the docs workflow never sees the npm token', () => {
+    expect(JSON.stringify(docs)).not.toContain('NPM_TOKEN');
+});

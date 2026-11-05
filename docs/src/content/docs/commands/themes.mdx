@@ -1,0 +1,44 @@
+---
+title: themes
+description: List the themes of an environment and update one or all of them.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `themes` commands show the WordPress themes of one environment and update them through Kinsta. They work exactly like the [plugins](/commands/plugins/) commands. To look across all sites of the company, see `kinstactl company themes`.
+
+```sh
+kinstactl themes list my-site --env live
+kinstactl themes list my-site --env live --updates
+kinstactl themes update my-site --all --env live
+```
+
+## themes list
+
+List the themes of an environment.
+
+```sh
+kinstactl themes list my-site --env live --updates
+```
+
+<CommandRef path="themes list" />
+
+The table shows each theme with its status, version, the version it can be updated to and whether the installed version is known to be vulnerable. `--updates` keeps only the themes with an update available.
+
+## themes update
+
+Update one theme, or all themes with an update.
+
+```sh
+kinstactl themes update my-site twentytwentyfour --env live
+```
+
+<CommandRef path="themes update" />
+
+Pass either a theme `name` as shown by `themes list`, or `--all`, not both and not neither; both mistakes are `USAGE` errors. A theme that is not installed or already up to date also fails with a `USAGE` error, while `--all` with nothing to update just reports that all themes are up to date. Updates are not destructive and need no confirmation, but they do change a running site. Check what would be sent first with `--dry-run`:
+
+```sh
+kinstactl themes update my-site --all --env live --dry-run
+```
+
+Updating waits for Kinsta to finish by default, and accepts `--no-wait` and `--timeout <minutes>`; see [operations](/commands/operations/).

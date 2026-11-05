@@ -35,8 +35,8 @@ export class SitesResetCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'irreversible'}),
     ];
     readonly examples = [
-        'kinstactl sites reset klant-x --admin-password - --confirm klant-x',
-        'kinstactl sites reset klant-x --admin-password x --dry-run',
+        'kinstactl sites reset my-site --admin-password - --confirm my-site',
+        'kinstactl sites reset my-site --admin-password x --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

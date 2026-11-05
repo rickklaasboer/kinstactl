@@ -40,7 +40,7 @@ describe('sites create', () => {
             [
                 'sites',
                 'create',
-                'Klant Y',
+                'My Other Site',
                 '--region',
                 'europe-west4',
                 ...WP_FLAGS,
@@ -54,13 +54,13 @@ describe('sites create', () => {
         expect(sent[0]!.url.pathname).toBe('/v2/sites');
         expect(sent[0]!.body).toEqual({
             company: 'c1',
-            display_name: 'Klant Y',
+            display_name: 'My Other Site',
             region: 'europe-west4',
             install_mode: 'new',
             admin_user: 'admin',
             admin_email: 'a@b.nl',
             admin_password: 's3cret',
-            site_title: 'Klant Y',
+            site_title: 'My Other Site',
             wp_language: 'en_US',
         });
     });
@@ -70,7 +70,7 @@ describe('sites create', () => {
             [
                 'sites',
                 'create',
-                'Klant Y',
+                'My Other Site',
                 '--region',
                 'europe-west4',
                 '--plain',
@@ -84,7 +84,7 @@ describe('sites create', () => {
         expect(sent[0]!.url.pathname).toBe('/v2/sites/plain');
         expect(sent[0]!.body).toEqual({
             company: 'c1',
-            display_name: 'Klant Y',
+            display_name: 'My Other Site',
             region: 'europe-west4',
         });
     });
@@ -94,7 +94,7 @@ describe('sites create', () => {
             [
                 'sites',
                 'create',
-                'Klant Y',
+                'My Other Site',
                 '--region',
                 'europe-west4',
                 ...WP_FLAGS,
@@ -114,7 +114,7 @@ describe('sites create', () => {
             [
                 'sites',
                 'create',
-                'Klant Y',
+                'My Other Site',
                 '--region',
                 'europe-west4',
                 ...WP_FLAGS,
@@ -136,7 +136,7 @@ describe('sites create', () => {
             [
                 'sites',
                 'create',
-                'Klant Y',
+                'My Other Site',
                 '--region',
                 'mars-1',
                 '--plain',
@@ -153,7 +153,7 @@ describe('sites create', () => {
 
     test('a missing region without a TTY exits 2 with the regions as hints', async () => {
         const r = await runCli(
-            ['sites', 'create', 'Klant Y', '--plain', '--json'],
+            ['sites', 'create', 'My Other Site', '--plain', '--json'],
             {routes},
         );
         expect(r.code).toBe(2);
@@ -165,7 +165,7 @@ describe('sites create', () => {
 
     test('a missing region on a TTY opens the picker', async () => {
         const r = await runCli(
-            ['sites', 'create', 'Klant Y', '--plain', '--no-wait'],
+            ['sites', 'create', 'My Other Site', '--plain', '--no-wait'],
             {
                 routes,
                 tty: true,
@@ -183,7 +183,7 @@ describe('sites create', () => {
             [
                 'sites',
                 'create',
-                'Klant Y',
+                'My Other Site',
                 '--region',
                 'europe-west4',
                 '--admin-user',
@@ -204,7 +204,7 @@ describe('sites create', () => {
             [
                 'sites',
                 'create',
-                'Klant Y',
+                'My Other Site',
                 '--region',
                 'europe-west4',
                 '--admin-email',
@@ -227,8 +227,8 @@ describe('sites clone', () => {
             [
                 'sites',
                 'clone',
-                'klant-x',
-                'Klant Y',
+                'my-site',
+                'My Other Site',
                 '--env',
                 'staging',
                 '--json',
@@ -246,7 +246,7 @@ describe('sites clone', () => {
         expect(sent).toHaveLength(1);
         expect(sent[0]!.body).toEqual({
             company: 'c1',
-            display_name: 'Klant Y',
+            display_name: 'My Other Site',
             source_env_id: 'env-stg',
         });
     });
@@ -260,7 +260,7 @@ describe('sites delete', () => {
     };
 
     test('needs --confirm with the site name', async () => {
-        const none = await runCli(['sites', 'delete', 'klant-x', '--json'], {
+        const none = await runCli(['sites', 'delete', 'my-site', '--json'], {
             routes,
         });
         expect(none.code).toBe(5);
@@ -268,21 +268,28 @@ describe('sites delete', () => {
 
         // --yes is not registered on irreversible commands: Commander rejects it.
         const yes = await runCli(
-            ['sites', 'delete', 'klant-x', '--yes', '--json'],
+            ['sites', 'delete', 'my-site', '--yes', '--json'],
             {routes},
         );
         expect(yes.code).toBe(2);
         expect(yes.calls).toEqual([]);
 
         const wrong = await runCli(
-            ['sites', 'delete', 'klant-x', '--confirm', 'klant-y', '--json'],
+            [
+                'sites',
+                'delete',
+                'my-site',
+                '--confirm',
+                'my-other-site',
+                '--json',
+            ],
             {routes},
         );
         expect(wrong.code).toBe(5);
         expect(posts(wrong.calls)).toEqual([]);
 
         const ok = await runCli(
-            ['sites', 'delete', 'klant-x', '--confirm', 'klant-x', '--json'],
+            ['sites', 'delete', 'my-site', '--confirm', 'my-site', '--json'],
             {routes},
         );
         expect(ok.code).toBe(0);
@@ -297,9 +304,9 @@ describe('sites delete', () => {
             [
                 'sites',
                 'delete',
-                'klant-x',
+                'my-site',
                 '--confirm',
-                'klant-x',
+                'my-site',
                 '--dry-run',
                 '--json',
             ],
@@ -322,7 +329,7 @@ describe('sites reset', () => {
             [
                 'sites',
                 'reset',
-                'klant-x',
+                'my-site',
                 '--admin-password',
                 'x',
                 '--dry-run',
@@ -340,7 +347,7 @@ describe('sites reset', () => {
             [
                 'sites',
                 'reset',
-                'klant-x',
+                'my-site',
                 '--admin-password',
                 'x',
                 '--yes',
@@ -352,7 +359,7 @@ describe('sites reset', () => {
         expect(yes.calls).toEqual([]);
 
         const noConfirm = await runCli(
-            ['sites', 'reset', 'klant-x', '--admin-password', 'x', '--json'],
+            ['sites', 'reset', 'my-site', '--admin-password', 'x', '--json'],
             {routes},
         );
         expect(noConfirm.code).toBe(5);
@@ -362,11 +369,11 @@ describe('sites reset', () => {
             [
                 'sites',
                 'reset',
-                'klant-x',
+                'my-site',
                 '--admin-password',
                 'x',
                 '--confirm',
-                'klant-x',
+                'my-site',
                 '--json',
             ],
             {routes},
@@ -377,7 +384,7 @@ describe('sites reset', () => {
 
     test('without a password and without a TTY exits 2 and sends nothing', async () => {
         const r = await runCli(
-            ['sites', 'reset', 'klant-x', '--confirm', 'klant-x', '--json'],
+            ['sites', 'reset', 'my-site', '--confirm', 'my-site', '--json'],
             {routes},
         );
         expect(r.code).toBe(2);
@@ -389,11 +396,11 @@ describe('sites reset', () => {
             [
                 'sites',
                 'reset',
-                'klant-x',
+                'my-site',
                 '--admin-password',
                 '',
                 '--confirm',
-                'klant-x',
+                'my-site',
                 '--json',
             ],
             {routes},
@@ -415,7 +422,7 @@ describe('sites php-allocation', () => {
             [
                 'sites',
                 'php-allocation',
-                'klant-x',
+                'my-site',
                 '--threads',
                 '4',
                 '--memory',
@@ -436,7 +443,7 @@ describe('sites php-allocation', () => {
             [
                 'sites',
                 'php-allocation',
-                'klant-x',
+                'my-site',
                 '--threads',
                 '0',
                 '--memory',

@@ -7,8 +7,8 @@ const SITES = {
         sites: [
             {
                 id: 'site-1',
-                name: 'klant-x',
-                display_name: 'Klant X',
+                name: 'my-site',
+                display_name: 'My Site',
                 status: 'live',
                 environments: [
                     {id: 'env-live', name: 'live', display_name: 'Live'},
@@ -70,7 +70,7 @@ const analyticsCall = (calls: {url: URL}[]) =>
 describe('analytics', () => {
     test('visits prints each series and polls no operation', async () => {
         const r = await runCli(
-            ['analytics', 'visits', 'klant-x', '--env', 'live'],
+            ['analytics', 'visits', 'my-site', '--env', 'live'],
             {routes: routes('visits', series)},
         );
         expect(r.code).toBe(0);
@@ -87,7 +87,7 @@ describe('analytics', () => {
 
     test('top-ips maps to top-client-ips and renders ip and requests', async () => {
         const r = await runCli(
-            ['analytics', 'top-ips', 'klant-x', '--env', 'live'],
+            ['analytics', 'top-ips', 'my-site', '--env', 'live'],
             {routes: routes('top-client-ips', ips)},
         );
         expect(r.code).toBe(0);
@@ -102,7 +102,7 @@ describe('analytics', () => {
             [
                 'analytics',
                 'visits',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--span',
@@ -121,7 +121,7 @@ describe('analytics', () => {
             [
                 'analytics',
                 'visits',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--from',
@@ -144,7 +144,7 @@ describe('analytics', () => {
                 [
                     'analytics',
                     'visits',
-                    'klant-x',
+                    'my-site',
                     '--env',
                     'live',
                     '--span',
@@ -165,7 +165,7 @@ describe('analytics', () => {
             [
                 'analytics',
                 'visits',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--to',
@@ -184,7 +184,7 @@ describe('analytics', () => {
             [
                 'analytics',
                 'diskspace',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--time-zone',
@@ -201,7 +201,7 @@ describe('analytics', () => {
             [
                 'analytics',
                 'diskspace',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--span',
@@ -217,7 +217,7 @@ describe('analytics', () => {
     test('diskspace defaults to the local time zone of the run clock', async () => {
         const now = Date.UTC(2026, 10, 5, 12);
         const r = await runCli(
-            ['analytics', 'diskspace', 'klant-x', '--env', 'live'],
+            ['analytics', 'diskspace', 'my-site', '--env', 'live'],
             {routes: routes('diskspace', series), io: {now: () => now}},
         );
         expect(r.code).toBe(0);
@@ -231,7 +231,7 @@ describe('analytics', () => {
             [
                 'analytics',
                 'visits',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--time-zone',
@@ -256,7 +256,7 @@ describe('analytics', () => {
 
     test('bot-traffic-flow renders both tables', async () => {
         const r = await runCli(
-            ['analytics', 'bot-traffic-flow', 'klant-x', '--env', 'live'],
+            ['analytics', 'bot-traffic-flow', 'my-site', '--env', 'live'],
             {routes: routes('bot-protection/traffic-flow', flow)},
         );
         expect(r.code).toBe(0);
@@ -268,7 +268,7 @@ describe('analytics', () => {
 
     test('an unknown metric is a usage error', async () => {
         const r = await runCli(
-            ['analytics', 'nonsense', 'klant-x', '--env', 'live'],
+            ['analytics', 'nonsense', 'my-site', '--env', 'live'],
             {routes: routes('visits', series)},
         );
         expect(r.code).toBe(2);
@@ -276,7 +276,7 @@ describe('analytics', () => {
 
     test('--json prints the raw body', async () => {
         const r = await runCli(
-            ['analytics', 'visits', 'klant-x', '--env', 'live', '--json'],
+            ['analytics', 'visits', 'my-site', '--env', 'live', '--json'],
             {routes: routes('visits', series)},
         );
         expect(JSON.parse(r.stdout)).toEqual(series);
@@ -284,7 +284,7 @@ describe('analytics', () => {
 
     test('a response without data is an error', async () => {
         const r = await runCli(
-            ['analytics', 'visits', 'klant-x', '--env', 'live'],
+            ['analytics', 'visits', 'my-site', '--env', 'live'],
             {routes: routes('visits', {})},
         );
         expect(r.code).toBe(1);
@@ -308,7 +308,7 @@ describe('sites usage', () => {
     };
 
     test('prints the three numbers', async () => {
-        const r = await runCli(['sites', 'usage', 'klant-x'], {
+        const r = await runCli(['sites', 'usage', 'my-site'], {
             routes: usageRoutes,
         });
         expect(r.code).toBe(0);
@@ -318,11 +318,11 @@ describe('sites usage', () => {
     });
 
     test('--json prints one document', async () => {
-        const r = await runCli(['sites', 'usage', 'klant-x', '--json'], {
+        const r = await runCli(['sites', 'usage', 'my-site', '--json'], {
             routes: usageRoutes,
         });
         expect(JSON.parse(r.stdout)).toEqual({
-            site: 'klant-x',
+            site: 'my-site',
             visits: 1234,
             bandwidth: 5678,
             cdn_bandwidth: 91011,

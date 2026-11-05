@@ -84,10 +84,10 @@ export class AnalyticsCommand implements BaseCommand<Options> {
         },
     ];
     readonly examples = [
-        'kinstactl analytics visits klant-x --env live',
-        'kinstactl analytics top-countries klant-x --env live --span 30d',
-        'kinstactl analytics diskspace klant-x --env live --time-zone 02:00',
-        'kinstactl analytics bot-traffic-flow klant-x --env live --json',
+        'kinstactl analytics visits my-site --env live',
+        'kinstactl analytics top-countries my-site --env live --span 30d',
+        'kinstactl analytics diskspace my-site --env live --time-zone 02:00',
+        'kinstactl analytics bot-traffic-flow my-site --env live --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

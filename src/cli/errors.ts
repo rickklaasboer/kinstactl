@@ -20,7 +20,7 @@ export type ErrorCode =
     | 'OPERATION_FAILED'
     | 'OPERATION_TIMEOUT';
 
-const EXIT_CODES: Record<ErrorCode, number> = {
+export const EXIT_CODES: Record<ErrorCode, number> = {
     USAGE: 2,
     AUTH_MISSING: 2,
     SITE_NOT_FOUND: 2,

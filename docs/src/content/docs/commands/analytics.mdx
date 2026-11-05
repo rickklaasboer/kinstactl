@@ -1,0 +1,57 @@
+---
+title: analytics
+description: Traffic, bandwidth, disk space and bot protection analytics of an environment.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `analytics` command shows one metric of an environment over a period of time.
+
+```sh
+kinstactl analytics visits my-site --env live
+kinstactl analytics top-countries my-site --env live --span 30d
+kinstactl analytics bot-traffic-flow my-site --env live --json
+```
+
+Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/). The command only reads, so it has no `--dry-run`, `--no-wait` or confirmation.
+
+## analytics
+
+Show one analytics metric of an environment.
+
+```sh
+kinstactl analytics visits my-site --env live --span 30d
+```
+
+<CommandRef path="analytics" />
+
+The first argument is the metric, and is one of the choices in the reference above. They fall in a few groups:
+
+- Over time: `visits`, `bandwidth`, `cdn-bandwidth`, `diskspace`, `response-codes`.
+- Top lists: `top-countries`, `top-cities`, `top-ips`, `top-asns`, `top-browsers`, `top-hosts`, `top-referrers`, `top-user-agents`.
+- Distribution of visits: `visits-dispersion`.
+- Bot protection: `bot-traffic-flow`, `bot-requests`, `bot-protection-results`, `bot-top-breakdown`.
+
+### Choosing the period
+
+`--span` takes `24h`, `7d`, `30d` or `60d`, and defaults to `7d`. For a custom period use `--from` and `--to` instead; the values are passed to the API as given, for example `2026-10-01` and `2026-10-31`. `--span` cannot be combined with `--from` or `--to`; the command fails with a `USAGE` error before it sends a request. The `diskspace` metric has no `24h` span, so use `7d`, `30d` or `60d` there.
+
+```sh
+kinstactl analytics visits my-site --env live --from 2026-10-01 --to 2026-10-31
+```
+
+### Disk space and time zones
+
+`--time-zone` only applies to `diskspace`; with any other metric the command fails with a `USAGE` error. It takes a whole-hour UTC offset such as `02:00` or `-05:00`, and defaults to the offset of your local time zone, rounded toward zero to whole hours.
+
+```sh
+kinstactl analytics diskspace my-site --env live --time-zone 02:00
+```
+
+### Output
+
+Without `--json` the command prints tables on stdout: a heading line and a key/value table per series for the metrics over time, and a table per list for the others. With `--json` it prints the raw API response and nothing else, which is the way to get the exact numbers into a script:
+
+```sh
+kinstactl analytics visits my-site --env live --span 24h --json
+```

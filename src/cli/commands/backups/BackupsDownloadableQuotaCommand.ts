@@ -25,7 +25,7 @@ export class BackupsDownloadableQuotaCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl backups downloadable quota klant-x --env live',
+        'kinstactl backups downloadable quota my-site --env live',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

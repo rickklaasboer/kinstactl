@@ -56,8 +56,8 @@ export class EnvCreateCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl env create klant-x dev --admin-user admin --admin-email admin@klant-x.nl --admin-password -',
-        'kinstactl env create klant-x dev --plain',
+        'kinstactl env create my-site dev --admin-user admin --admin-email admin@example.com --admin-password -',
+        'kinstactl env create my-site dev --plain',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

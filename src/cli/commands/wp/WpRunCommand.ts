@@ -42,8 +42,8 @@ export class WpRunCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl wp run klant-x "wp plugin list" --env live --yes',
-        'kinstactl wp run klant-x "wp core version" --env staging --dry-run',
+        'kinstactl wp run my-site "wp plugin list" --env live --yes',
+        'kinstactl wp run my-site "wp core version" --env staging --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

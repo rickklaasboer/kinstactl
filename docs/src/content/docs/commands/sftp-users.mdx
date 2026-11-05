@@ -1,0 +1,88 @@
+---
+title: sftp-users
+description: Manage the additional SFTP accounts of an environment.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+An environment can have additional SFTP accounts next to its main SSH and SFTP login, for example one per developer or one limited to the uploads folder. The `sftp-users` commands manage them. For the main login, see [ssh](/commands/ssh/).
+
+```sh
+kinstactl sftp-users list my-site --env live
+kinstactl sftp-users add my-site deploy --env live --permission write
+kinstactl sftp-users delete my-site deploy --env live --yes
+```
+
+Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/). Commands that change something wait for Kinsta to finish by default, and accept `--no-wait`, `--timeout <minutes>` and `--dry-run`; see [operations](/commands/operations/).
+
+## sftp-users list
+
+List the additional SFTP accounts of an environment.
+
+```sh
+kinstactl sftp-users list my-site --env staging
+```
+
+<CommandRef path="sftp-users list" />
+
+The table shows the username, root directory, permission and ID of each account, and whether it is active. Below it, the command reports whether additional accounts are enabled for the environment and on which port.
+
+## sftp-users add
+
+Add an additional SFTP account to an environment.
+
+```sh
+kinstactl sftp-users add my-site deploy --env live --permission write
+```
+
+<CommandRef path="sftp-users add" />
+
+The account needs a password. On a terminal you are prompted for it, with hidden input. In a script there is no prompt, so pass `--password <value>`, or `--password -` to read it from stdin, which keeps it out of your shell history and the process list:
+
+```sh
+cat password.txt | kinstactl sftp-users add my-site deploy --env live --password - --permission write
+```
+
+Without a password the command fails with a `USAGE` error. The password is never echoed back: `--dry-run` shows the request with it masked as `***`.
+
+`--permission` takes `read` or `write`. `--root-directory` restricts the account to a directory:
+
+```sh
+cat password.txt | kinstactl sftp-users add my-site reader --env live --password - --root-directory /wp-content/uploads --permission read --dry-run
+```
+
+## sftp-users enable
+
+Enable the additional SFTP accounts of an environment.
+
+```sh
+kinstactl sftp-users enable my-site --env live
+```
+
+<CommandRef path="sftp-users enable" />
+
+This switches the feature on for the whole environment, not a single account. It needs no confirmation.
+
+## sftp-users disable
+
+Disable the additional SFTP accounts of an environment.
+
+```sh
+kinstactl sftp-users disable my-site --env live
+```
+
+<CommandRef path="sftp-users disable" />
+
+The accounts are kept, but they cannot log in until you run `sftp-users enable`. It needs no confirmation.
+
+## sftp-users delete
+
+Delete an additional SFTP account.
+
+```sh
+kinstactl sftp-users delete my-site deploy --env live --yes
+```
+
+<CommandRef path="sftp-users delete" />
+
+The account is looked up by username, ignoring case, so a typo fails with the list of usernames the environment has. Deleting is destructive, so the command asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`, otherwise it fails with `CONFIRMATION_REQUIRED` (exit code 5).

@@ -1,0 +1,153 @@
+---
+import {Aside} from '@astrojs/starlight/components';
+import tree from '../generated/commands.json';
+
+interface Props {
+    path: string;
+}
+
+interface Node {
+    name: string;
+    path: string;
+    description: string;
+    arguments: {
+        name: string;
+        required: boolean;
+        description: string;
+        choices?: string[];
+    }[];
+    options: {flags: string; description: string}[];
+    destructive: 'confirm' | 'irreversible' | null;
+    endpoints: string[];
+    commands: Node[];
+}
+
+const {path} = Astro.props;
+
+let command = tree as Node;
+for (const word of path.split(' ')) {
+    const next = command.commands.find((c) => c.name === word);
+    if (!next) throw new Error(`CommandRef: unknown command "${path}"`);
+    command = next;
+}
+if (command.commands.length !== 0) {
+    throw new Error(`CommandRef: unknown command "${path}"`);
+}
+
+const globalFlags = new Set(tree.options.map((o) => o.flags));
+const ownOptions = command.options.filter((o) => !globalFlags.has(o.flags));
+const usage = [
+    'kinstactl',
+    path,
+    ...command.arguments.map((a) => (a.required ? `<${a.name}>` : `[${a.name}]`)),
+    '[options]',
+].join(' ');
+---
+
+<pre><code class="language-sh">{usage}</code></pre>
+
+<p>{command.description}</p>
+
+{
+    command.arguments.length > 0 && (
+        <>
+            <h4>Arguments</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Argument</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {command.arguments.map((a) => (
+                        <tr>
+                            <td>
+                                <code>{a.name}</code>
+                            </td>
+                            <td>
+                                {a.description}
+                                {a.choices && (
+                                    <>
+                                        {' '}
+                                        Choices:{' '}
+                                        {a.choices.map((choice, i) => (
+                                            <>
+                                                {i > 0 && ', '}
+                                                <code>{choice}</code>
+                                            </>
+                                        ))}
+                                        .
+                                    </>
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </>
+    )
+}
+
+{
+    ownOptions.length > 0 && (
+        <>
+            <h4>Options</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {ownOptions.map((o) => (
+                        <tr>
+                            <td>
+                                <code>{o.flags}</code>
+                            </td>
+                            <td>{o.description}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <p>
+                Global options <code>--profile</code>, <code>--json</code> and{' '}
+                <code>--no-input</code> apply too. See{' '}
+                <a href="/scripting-and-ci/">scripting and CI</a>.
+            </p>
+        </>
+    )
+}
+
+{
+    command.destructive === 'confirm' && (
+        <Aside type="caution">
+            Asks for confirmation on a TTY. Pass <code>--yes</code> to skip it;
+            without a TTY and without <code>--yes</code> the command fails.
+        </Aside>
+    )
+}
+
+{
+    command.destructive === 'irreversible' && (
+        <Aside type="danger">
+            Irreversible. Requires <code>--confirm &lt;site-name&gt;</code>, on
+            a TTY and off it; <code>--yes</code> is not accepted.
+        </Aside>
+    )
+}
+
+{
+    command.endpoints.length > 0 && (
+        <p>
+            Kinsta API:{' '}
+            {command.endpoints.map((e, i) => (
+                <>
+                    {i > 0 && ', '}
+                    <code>{e}</code>
+                </>
+            ))}
+        </p>
+    )
+}

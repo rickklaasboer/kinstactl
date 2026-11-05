@@ -53,8 +53,8 @@ export class EnvWebrootCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl env webroot klant-x /public --env live',
-        'kinstactl env webroot klant-x / --env staging --no-clear-cache',
+        'kinstactl env webroot my-site /public --env live',
+        'kinstactl env webroot my-site / --env staging --no-clear-cache',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

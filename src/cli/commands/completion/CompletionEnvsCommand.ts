@@ -19,7 +19,7 @@ export class CompletionEnvsCommand implements BaseCommand {
         'Print the environment names of a site for shell completion';
     readonly arguments: ArgumentDef[] = [siteArgument('site name or ID')];
     readonly options: OptionDef[] = [];
-    readonly examples = ['kinstactl completion envs klant-x'];
+    readonly examples = ['kinstactl completion envs my-site'];
     readonly endpoints: EndpointKey[] = ['GET /sites'];
 
     constructor(

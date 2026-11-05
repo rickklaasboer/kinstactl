@@ -34,7 +34,7 @@ export class WpLoginCommand implements BaseCommand<Options> {
         ...actionOptions({wait: false}),
     ];
     readonly examples = [
-        'kinstactl wp login klant-x --env live --email admin@example.com',
+        'kinstactl wp login my-site --env live --email admin@example.com',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

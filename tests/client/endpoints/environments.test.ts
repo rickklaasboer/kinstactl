@@ -14,7 +14,7 @@ describe('environment lifecycle builders', () => {
     test('createEnvironment', () => {
         const body = {
             display_name: 'staging2',
-            site_title: 'Klant X',
+            site_title: 'My Site',
             is_premium: false,
             admin_user: 'admin',
             admin_email: 'a@b.nl',

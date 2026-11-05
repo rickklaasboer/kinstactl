@@ -39,8 +39,8 @@ export class DomainsRemoveCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl domains remove klant-x example.com',
-        'kinstactl domains remove klant-x example.com --env live --yes',
+        'kinstactl domains remove my-site example.com',
+        'kinstactl domains remove my-site example.com --env live --yes',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

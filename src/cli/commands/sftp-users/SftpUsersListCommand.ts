@@ -25,8 +25,8 @@ export class SftpUsersListCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl sftp-users list klant-x',
-        'kinstactl sftp-users list klant-x --env staging --json',
+        'kinstactl sftp-users list my-site',
+        'kinstactl sftp-users list my-site --env staging --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

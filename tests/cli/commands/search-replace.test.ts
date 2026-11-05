@@ -9,8 +9,8 @@ const routes = {
                 sites: [
                     {
                         id: 'id-x',
-                        name: 'klant-x',
-                        display_name: 'Klant X',
+                        name: 'my-site',
+                        display_name: 'My Site',
                         status: 'live',
                         environments: [
                             {
@@ -37,7 +37,7 @@ const posts = (calls: FakeCall[]) => calls.filter((c) => c.method === 'POST');
 
 describe('search-replace', () => {
     test('without --apply sends perform_replacement false and asks nothing', async () => {
-        const r = await runCli(['search-replace', 'klant-x', 'old', 'new'], {
+        const r = await runCli(['search-replace', 'my-site', 'old', 'new'], {
             routes,
         });
         expect(r.code).toBe(0);
@@ -54,7 +54,7 @@ describe('search-replace', () => {
 
     test('--json prints exactly one JSON document', async () => {
         const r = await runCli(
-            ['search-replace', 'klant-x', 'old', 'new', '--json'],
+            ['search-replace', 'my-site', 'old', 'new', '--json'],
             {routes},
         );
         const out = JSON.parse(r.stdout);
@@ -65,7 +65,7 @@ describe('search-replace', () => {
 
     test('--apply without --yes exits 5 and sends nothing', async () => {
         const r = await runCli(
-            ['search-replace', 'klant-x', 'old', 'new', '--apply'],
+            ['search-replace', 'my-site', 'old', 'new', '--apply'],
             {routes},
         );
         expect(r.code).toBe(5);
@@ -76,7 +76,7 @@ describe('search-replace', () => {
         const r = await runCli(
             [
                 'search-replace',
-                'klant-x',
+                'my-site',
                 'old',
                 'new',
                 '--apply',
@@ -93,7 +93,7 @@ describe('search-replace', () => {
         const r = await runCli(
             [
                 'search-replace',
-                'klant-x',
+                'my-site',
                 'old',
                 'new',
                 '--apply',

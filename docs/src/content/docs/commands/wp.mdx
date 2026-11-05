@@ -1,0 +1,68 @@
+---
+title: wp
+description: Run WP-CLI commands, create one-time admin login links and manage WordPress admin users.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `wp` commands act on the WordPress installation of an environment: run a WP-CLI command, get a one-time login link, and create or look up admin users. For the database, see [db](/commands/db/).
+
+```sh
+kinstactl wp run my-site "wp plugin list" --env live --yes
+kinstactl wp login my-site --env live --email admin@example.com
+kinstactl wp user exists my-site ann@example.com --env live
+```
+
+Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/).
+
+## wp run
+
+Run a WP-CLI command in an environment.
+
+```sh
+kinstactl wp run my-site "wp core version" --env live --yes
+```
+
+<CommandRef path="wp run" />
+
+Pass the whole WP-CLI command as one quoted argument, starting with `wp `. Only letters, digits and the characters `-_./:=@'` are allowed, so pipes, redirects, `;` and `$(...)` are rejected with a `USAGE` error before anything is sent.
+
+A WP-CLI command can change anything, so the command asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`, otherwise it fails with `CONFIRMATION_REQUIRED` (exit code 5). `--dry-run` prints the request and does not ask.
+
+The command waits for Kinsta to finish, and accepts `--no-wait` and `--timeout <minutes>`; see [operations](/commands/operations/). The output of the WP-CLI command is the result of the operation and is the only thing printed on stdout. With `--json` you get one document with `operation_id`, `status`, `message` and `data`, where `data` holds the output. With `--no-wait` the command returns right after the request is accepted: in human mode the operation ID appears only in the `Follow with:` hint on stderr, and with `--json` it is `operation_id` on stdout.
+
+## wp login
+
+Create a one-time WordPress admin login link.
+
+```sh
+kinstactl wp login my-site --env live --email admin@example.com
+```
+
+<CommandRef path="wp login" />
+
+`--email` is required and must be the email of an existing WordPress admin user; there is no prompt for it. Check that with [`wp user exists`](/commands/wp/#wp-user-exists). The command prints the login link on stdout, and nothing else. Treat the link like a password: anyone who opens it before it is used is logged in. This command has no `--no-wait`.
+
+## wp user create
+
+Create a WordPress admin user.
+
+```sh
+kinstactl wp user create my-site ann@example.com --env live --first-name Ann --last-name Lee
+```
+
+<CommandRef path="wp user create" />
+
+`--first-name` and `--last-name` are required; without them the command fails with a `USAGE` error, there is no prompt. The command takes no password and prints none: on success it prints `Created WordPress admin user <email>`, and with `--json` the response from Kinsta. If Kinsta reports that it did not create the user, the command fails with `API_ERROR`. This command has no `--no-wait`.
+
+## wp user exists
+
+Check whether a WordPress admin user exists.
+
+```sh
+kinstactl wp user exists my-site ann@example.com --env live
+```
+
+<CommandRef path="wp user exists" />
+
+The command prints `yes` or `no`. With `--json` it prints `email` and `has_wp_admin_user`, which is what to read in a script.

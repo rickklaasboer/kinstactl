@@ -12,8 +12,8 @@ const sitesBody = {
         sites: [
             {
                 id: 'id-x',
-                name: 'klant-x',
-                display_name: 'Klant X',
+                name: 'my-site',
+                display_name: 'My Site',
                 status: 'live',
                 environments: [
                     env('env-x-live', 'live', 'Live'),
@@ -27,8 +27,8 @@ const sitesBody = {
 const siteBody = {
     site: {
         id: 'id-x',
-        name: 'klant-x',
-        display_name: 'Klant X',
+        name: 'my-site',
+        display_name: 'My Site',
         company_id: 'c1',
         status: 'live',
         environments: [],
@@ -50,7 +50,7 @@ describe('sites list', () => {
         });
         expect(r.code).toBe(0);
         expect(r.stdout).toContain('ENVIRONMENTS');
-        expect(r.stdout).toContain('klant-x');
+        expect(r.stdout).toContain('my-site');
         expect(r.stdout).toContain('live, staging');
         expect(r.stdout).toContain('id-x');
     });
@@ -64,7 +64,7 @@ describe('sites list', () => {
 
 describe('sites get', () => {
     test('--json prints the API site', async () => {
-        const r = await runCli(['sites', 'get', 'klant-x', '--json'], {
+        const r = await runCli(['sites', 'get', 'my-site', '--json'], {
             routes: {
                 'GET /sites': {body: sitesBody},
                 'GET /sites/id-x': {body: siteBody},
@@ -75,7 +75,7 @@ describe('sites get', () => {
     });
 
     test('human output is a key/value block', async () => {
-        const r = await runCli(['sites', 'get', 'klant-x'], {
+        const r = await runCli(['sites', 'get', 'my-site'], {
             routes: {
                 'GET /sites': {body: sitesBody},
                 'GET /sites/id-x': {body: siteBody},
@@ -83,8 +83,8 @@ describe('sites get', () => {
         });
         expect(r.code).toBe(0);
         expect(r.stdout).toContain('Name');
-        expect(r.stdout).toContain('klant-x');
-        expect(r.stdout).toContain('Klant X');
+        expect(r.stdout).toContain('my-site');
+        expect(r.stdout).toContain('My Site');
         expect(r.stdout).toContain('live');
     });
 

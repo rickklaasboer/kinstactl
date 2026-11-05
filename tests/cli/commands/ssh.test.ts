@@ -9,8 +9,8 @@ const sites = {
                 sites: [
                     {
                         id: 'id-x',
-                        name: 'klant-x',
-                        display_name: 'Klant X',
+                        name: 'my-site',
+                        display_name: 'My Site',
                         status: 'live',
                         environments: [
                             {
@@ -46,17 +46,17 @@ describe('ssh status', () => {
     };
 
     test('prints enabled', async () => {
-        const r = await runCli(['ssh', 'status', 'klant-x'], {routes});
+        const r = await runCli(['ssh', 'status', 'my-site'], {routes});
         expect(r.code).toBe(0);
         expect(r.stdout.trim()).toBe('enabled');
     });
 
     test('json carries site, environment and flag', async () => {
-        const r = await runCli(['ssh', 'status', 'klant-x', '--json'], {
+        const r = await runCli(['ssh', 'status', 'my-site', '--json'], {
             routes,
         });
         expect(JSON.parse(r.stdout)).toEqual({
-            site: 'klant-x',
+            site: 'my-site',
             environment: 'live',
             is_ssh_enabled: true,
         });
@@ -72,7 +72,7 @@ describe('ssh enable/disable', () => {
     };
 
     test('enable sends is_enabled true and no operation is polled', async () => {
-        const r = await runCli(['ssh', 'enable', 'klant-x'], {routes});
+        const r = await runCli(['ssh', 'enable', 'my-site'], {routes});
         expect(r.code).toBe(0);
         expect(r.stdout).toContain('SSH enabled');
         const sent = posts(r.calls);
@@ -84,7 +84,7 @@ describe('ssh enable/disable', () => {
     });
 
     test('disable --dry-run sends nothing', async () => {
-        const r = await runCli(['ssh', 'disable', 'klant-x', '--dry-run'], {
+        const r = await runCli(['ssh', 'disable', 'my-site', '--dry-run'], {
             routes,
         });
         expect(r.code).toBe(0);
@@ -100,9 +100,9 @@ describe('ssh config', () => {
             body: {
                 site: {
                     id: 'id-x',
-                    name: 'klant-x',
-                    displayName: 'Klant X',
-                    usr: 'klantx',
+                    name: 'my-site',
+                    displayName: 'My Site',
+                    usr: 'mysite',
                     environment: {id: 'env-live', activeContainer},
                 },
             },
@@ -110,7 +110,7 @@ describe('ssh config', () => {
     });
 
     test('prints the ssh command from the nested shape', async () => {
-        const r = await runCli(['ssh', 'config', 'klant-x', '--json'], {
+        const r = await runCli(['ssh', 'config', 'my-site', '--json'], {
             routes: config({
                 id: 'c1',
                 lxdSshPort: '12345',
@@ -121,13 +121,13 @@ describe('ssh config', () => {
         expect(JSON.parse(r.stdout)).toEqual({
             host: '203.0.113.9',
             port: '12345',
-            user: 'klantx',
-            ssh_command: 'ssh klantx@203.0.113.9 -p 12345',
+            user: 'mysite',
+            ssh_command: 'ssh mysite@203.0.113.9 -p 12345',
         });
     });
 
     test('human output has Host, Port and User lines', async () => {
-        const r = await runCli(['ssh', 'config', 'klant-x'], {
+        const r = await runCli(['ssh', 'config', 'my-site'], {
             routes: config({
                 id: 'c1',
                 lxdSshPort: '12345',
@@ -137,13 +137,13 @@ describe('ssh config', () => {
         expect(r.stdout.trim().split('\n')).toEqual([
             'Host: 203.0.113.9',
             'Port: 12345',
-            'User: klantx',
-            'ssh klantx@203.0.113.9 -p 12345',
+            'User: mysite',
+            'ssh mysite@203.0.113.9 -p 12345',
         ]);
     });
 
     test('without connection details is an api error', async () => {
-        const r = await runCli(['ssh', 'config', 'klant-x', '--json'], {
+        const r = await runCli(['ssh', 'config', 'my-site', '--json'], {
             routes: config(undefined),
         });
         expect(r.code).toBe(1);
@@ -155,7 +155,7 @@ describe('ssh config', () => {
 
 describe('ssh allowlist', () => {
     test('prints the list', async () => {
-        const r = await runCli(['ssh', 'allowlist', 'klant-x'], {
+        const r = await runCli(['ssh', 'allowlist', 'my-site'], {
             routes: {...sites, ...allowlist(['1.1.1.1', '2.2.2.2'])},
         });
         expect(r.code).toBe(0);
@@ -165,7 +165,7 @@ describe('ssh allowlist', () => {
 
     test('--add appends and sends the merged list', async () => {
         const r = await runCli(
-            ['ssh', 'allowlist', 'klant-x', '--add', '2.2.2.2'],
+            ['ssh', 'allowlist', 'my-site', '--add', '2.2.2.2'],
             {routes: {...sites, ...allowlist(['1.1.1.1'])}},
         );
         expect(r.code).toBe(0);
@@ -177,7 +177,7 @@ describe('ssh allowlist', () => {
 
     test('--remove drops the entry', async () => {
         const r = await runCli(
-            ['ssh', 'allowlist', 'klant-x', '--remove', '1.1.1.1'],
+            ['ssh', 'allowlist', 'my-site', '--remove', '1.1.1.1'],
             {routes: {...sites, ...allowlist(['1.1.1.1', '2.2.2.2'])}},
         );
         expect(r.code).toBe(0);
@@ -186,7 +186,7 @@ describe('ssh allowlist', () => {
 
     test('--add of a present ip is a usage error', async () => {
         const r = await runCli(
-            ['ssh', 'allowlist', 'klant-x', '--add', '1.1.1.1', '--json'],
+            ['ssh', 'allowlist', 'my-site', '--add', '1.1.1.1', '--json'],
             {routes: {...sites, ...allowlist(['1.1.1.1'])}},
         );
         expect(r.code).toBe(2);
@@ -196,7 +196,7 @@ describe('ssh allowlist', () => {
 
     test('--remove of a missing ip is a usage error', async () => {
         const r = await runCli(
-            ['ssh', 'allowlist', 'klant-x', '--remove', '9.9.9.9', '--json'],
+            ['ssh', 'allowlist', 'my-site', '--remove', '9.9.9.9', '--json'],
             {routes: {...sites, ...allowlist(['1.1.1.1'])}},
         );
         expect(r.code).toBe(2);
@@ -207,7 +207,7 @@ describe('ssh allowlist', () => {
 
 describe('ssh password', () => {
     test('get prints only the password', async () => {
-        const r = await runCli(['ssh', 'password', 'get', 'klant-x'], {
+        const r = await runCli(['ssh', 'password', 'get', 'my-site'], {
             routes: {
                 ...sites,
                 'GET /sites/environments/env-live/ssh/password': {
@@ -222,7 +222,7 @@ describe('ssh password', () => {
     });
 
     test('generate reports the follow-up command', async () => {
-        const r = await runCli(['ssh', 'password', 'generate', 'klant-x'], {
+        const r = await runCli(['ssh', 'password', 'generate', 'my-site'], {
             routes: {
                 ...sites,
                 'POST /sites/environments/env-live/ssh/generate-password': {
@@ -232,13 +232,13 @@ describe('ssh password', () => {
         });
         expect(r.code).toBe(0);
         expect(r.stdout).toContain(
-            'New SFTP password generated; show it with: kinstactl ssh password get klant-x --env live',
+            'New SFTP password generated; show it with: kinstactl ssh password get my-site --env live',
         );
     });
 
     test('generate prints one json document', async () => {
         const r = await runCli(
-            ['ssh', 'password', 'generate', 'klant-x', '--json'],
+            ['ssh', 'password', 'generate', 'my-site', '--json'],
             {
                 routes: {
                     ...sites,
@@ -250,7 +250,7 @@ describe('ssh password', () => {
         );
         expect(r.code).toBe(0);
         expect(JSON.parse(r.stdout)).toEqual({
-            site: 'klant-x',
+            site: 'my-site',
             environment: 'live',
             generated: true,
         });
@@ -263,11 +263,11 @@ describe('ssh password', () => {
                 body: {result: null},
             },
         };
-        const on = await runCli(['ssh', 'password', 'enable', 'klant-x'], {
+        const on = await runCli(['ssh', 'password', 'enable', 'my-site'], {
             routes,
         });
         expect(posts(on.calls)[0]?.body).toEqual({is_enabled: true});
-        const off = await runCli(['ssh', 'password', 'disable', 'klant-x'], {
+        const off = await runCli(['ssh', 'password', 'disable', 'my-site'], {
             routes,
         });
         expect(posts(off.calls)[0]?.body).toEqual({is_enabled: false});
@@ -275,7 +275,7 @@ describe('ssh password', () => {
 
     test('expiration maps 7d to days_7', async () => {
         const r = await runCli(
-            ['ssh', 'password', 'expiration', 'klant-x', '7d'],
+            ['ssh', 'password', 'expiration', 'my-site', '7d'],
             {
                 routes: {
                     ...sites,
@@ -290,7 +290,7 @@ describe('ssh password', () => {
 
     test('expiration rejects an unknown interval', async () => {
         const r = await runCli(
-            ['ssh', 'password', 'expiration', 'klant-x', '5d'],
+            ['ssh', 'password', 'expiration', 'my-site', '5d'],
             {routes: sites},
         );
         expect(r.code).toBe(2);

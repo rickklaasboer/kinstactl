@@ -1,0 +1,44 @@
+---
+title: plugins
+description: List the plugins of an environment and update one or all of them.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `plugins` commands show the WordPress plugins of one environment and update them through Kinsta. The [themes](/commands/themes/) commands work the same way. To look across all sites of the company, see `kinstactl company plugins`.
+
+```sh
+kinstactl plugins list my-site --env live
+kinstactl plugins list my-site --env live --updates
+kinstactl plugins update my-site --all --env live
+```
+
+## plugins list
+
+List the plugins of an environment.
+
+```sh
+kinstactl plugins list my-site --env live --updates
+```
+
+<CommandRef path="plugins list" />
+
+The table shows each plugin with its status, version, the version it can be updated to and whether the installed version is known to be vulnerable. `--updates` keeps only the plugins with an update available.
+
+## plugins update
+
+Update one plugin, or all plugins with an update.
+
+```sh
+kinstactl plugins update my-site akismet --env live
+```
+
+<CommandRef path="plugins update" />
+
+Pass either a plugin `name` as shown by `plugins list`, or `--all`, not both and not neither; both mistakes are `USAGE` errors. A plugin that is not installed or already up to date also fails with a `USAGE` error, while `--all` with nothing to update just reports that all plugins are up to date. Updates are not destructive and need no confirmation, but they do change a running site. Check what would be sent first with `--dry-run`:
+
+```sh
+kinstactl plugins update my-site --all --env live --dry-run
+```
+
+Updating waits for Kinsta to finish by default, and accepts `--no-wait` and `--timeout <minutes>`; see [operations](/commands/operations/).

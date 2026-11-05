@@ -1,0 +1,95 @@
+---
+title: domains
+description: List, add and remove the domains of an environment, change the primary domain and look up its DNS records.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `domains` commands manage the domains that point at an environment. To manage the DNS records of a zone hosted at Kinsta, see [dns](/commands/dns/).
+
+```sh
+kinstactl domains list my-site --env live
+kinstactl domains add my-site example.com --env live
+kinstactl domains primary my-site example.com --env live
+```
+
+Domains belong to an environment. Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/). `domains add`, `domains remove` and `domains primary` wait for Kinsta to finish by default, and accept `--no-wait`, `--timeout <minutes>` and `--dry-run`; see [operations](/commands/operations/). Where a command takes a `<domain>`, you can give the domain name or its ID; a unique prefix of the name also works.
+
+## domains list
+
+List the domains of an environment.
+
+```sh
+kinstactl domains list my-site --env staging
+```
+
+<CommandRef path="domains list" />
+
+The table shows the name and ID of each domain, and whether it uses Cloudflare DNS.
+
+## domains add
+
+Add a domain to an environment.
+
+```sh
+kinstactl domains add my-site example.com --env live
+```
+
+<CommandRef path="domains add" />
+
+By default the domain is added without wildcard support. Two flags widen that:
+
+- `--wildcard` also covers subdomains.
+- `--with-www` also adds the `www` subdomain. It requires `--wildcard`; without it the command fails with a `USAGE` error before anything is sent.
+
+`--setup-type` takes `quick` or `avoid_downtime`.
+
+To use your own certificate instead of the one Kinsta issues, pass the certificate and its private key as files:
+
+```sh
+kinstactl domains add my-site example.com --env live --wildcard --with-www --ssl-cert cert.pem --ssl-key key.pem
+```
+
+`--ssl-cert` and `--ssl-key` must be given together, and both files must be readable and not empty. The key is sent to Kinsta and never echoed back: `--dry-run` shows the request with the key masked as `***`.
+
+## domains remove
+
+Remove a domain from an environment.
+
+```sh
+kinstactl domains remove my-site example.com --env live --yes
+```
+
+<CommandRef path="domains remove" />
+
+The domain is looked up first, so a typo fails with the list of domains the environment has. Removing is destructive, so the command asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`, otherwise it fails with `CONFIRMATION_REQUIRED` (exit code 5).
+
+## domains primary
+
+Change the primary domain of an environment.
+
+```sh
+kinstactl domains primary my-site example.com --env live
+```
+
+<CommandRef path="domains primary" />
+
+The primary domain is the one the site is served on. Changing it alone needs no confirmation.
+
+With `--search-replace`, Kinsta also rewrites the old URL in the database to the new one. That changes content, so the command then asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`.
+
+```sh
+kinstactl domains primary my-site example.com --env live --search-replace --yes
+```
+
+## domains verification
+
+Show the DNS records that verify and point a domain.
+
+```sh
+kinstactl domains verification my-site example.com --env live
+```
+
+<CommandRef path="domains verification" />
+
+The output has two tables, each with a type, name and value. Add the verification records to the domain's DNS so Kinsta can confirm you own it, and the pointing records so the domain resolves to the environment. If the zone is hosted at Kinsta you can create them with [`dns records add`](/commands/dns/#dns-records-add). With `--json` you get the response as Kinsta returns it.

@@ -33,8 +33,8 @@ export class BackupsDownloadableCreateCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl backups downloadable create klant-x --env live',
-        'kinstactl backups downloadable create klant-x --env live --no-wait',
+        'kinstactl backups downloadable create my-site --env live',
+        'kinstactl backups downloadable create my-site --env live --no-wait',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

@@ -6,8 +6,8 @@ const sitesBody = {
         sites: [
             {
                 id: 'id-x',
-                name: 'klant-x',
-                display_name: 'Klant X',
+                name: 'my-site',
+                display_name: 'My Site',
                 status: 'live',
                 environments: [
                     {id: 'env-x-live', name: 'live', display_name: 'Live'},
@@ -20,8 +20,8 @@ const sitesBody = {
             },
             {
                 id: 'id-y',
-                name: 'klant-y',
-                display_name: 'Klant Y',
+                name: 'my-other-site',
+                display_name: 'My Other Site',
                 status: 'live',
                 environments: [
                     {id: 'env-y-live', name: 'live', display_name: 'Live'},
@@ -69,11 +69,11 @@ test('completion sites prints cached names without prompting', async () => {
         prompts: noPrompts,
     });
     expect(r.code).toBe(0);
-    expect(r.stdout).toBe('klant-x\nklant-y\n');
+    expect(r.stdout).toBe('my-site\nmy-other-site\n');
 });
 
 test('completion envs prints the environments of a site', async () => {
-    const r = await runCli(['completion', 'envs', 'klant-x'], {
+    const r = await runCli(['completion', 'envs', 'my-site'], {
         routes,
         tty: true,
         prompts: noPrompts,

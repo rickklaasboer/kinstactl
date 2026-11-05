@@ -31,8 +31,8 @@ export class BackupsCreateCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl backups create klant-x',
-        'kinstactl backups create klant-x --env live --tag "before plugin update"',
+        'kinstactl backups create my-site',
+        'kinstactl backups create my-site --env live --tag "before plugin update"',
     ];
     readonly endpoints: EndpointKey[] = [
         'POST /sites/environments/{env_id}/manual-backups',

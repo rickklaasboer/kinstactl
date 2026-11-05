@@ -42,8 +42,8 @@ export class SshConfigCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl ssh config klant-x --env live',
-        'kinstactl ssh config klant-x --json',
+        'kinstactl ssh config my-site --env live',
+        'kinstactl ssh config my-site --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

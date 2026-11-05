@@ -64,7 +64,7 @@ describe('unexpected errors in a command', () => {
         },
     };
     // Resolving a site writes the site cache, which reads the (throwing) clock.
-    const args = ['sites', 'get', 'klant-x'];
+    const args = ['sites', 'get', 'my-site'];
     const routes = {'GET /sites': {body: {company: {sites: []}}}};
 
     test('human mode prints the message and the stack on stderr', async () => {

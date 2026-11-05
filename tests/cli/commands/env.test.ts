@@ -7,8 +7,8 @@ const sitesBody = {
         sites: [
             {
                 id: 'id-x',
-                name: 'klant-x',
-                display_name: 'Klant X',
+                name: 'my-site',
+                display_name: 'My Site',
                 status: 'live',
                 environments: [
                     {id: 'env-x-live', name: 'live', display_name: 'Live'},
@@ -30,14 +30,14 @@ const envsBody = {
                 id: 'env-x-live',
                 name: 'live',
                 display_name: 'Live',
-                primaryDomain: {name: 'klant-x.nl'},
+                primaryDomain: {name: 'my-site.example.com'},
                 container_info: {php_engine_version: '8.2'},
             },
             {
                 id: 'env-x-staging',
                 name: 'staging',
                 display_name: 'Staging',
-                primaryDomain: {name: 'staging-klant-x.kinsta.cloud'},
+                primaryDomain: {name: 'staging-my-site.kinsta.cloud'},
                 container_info: {php_engine_version: '8.3'},
             },
         ],
@@ -51,18 +51,18 @@ const routes = {
 
 describe('env list', () => {
     test('human output shows environments with PHP and primary domain', async () => {
-        const r = await runCli(['env', 'list', 'klant-x'], {routes});
+        const r = await runCli(['env', 'list', 'my-site'], {routes});
         expect(r.code).toBe(0);
         expect(r.stdout).toContain('PRIMARY DOMAIN');
         expect(r.stdout).toContain('live');
         expect(r.stdout).toContain('staging');
         expect(r.stdout).toContain('8.2');
-        expect(r.stdout).toContain('klant-x.nl');
+        expect(r.stdout).toContain('my-site.example.com');
         expect(r.stdout).toContain('env-x-live');
     });
 
     test('--json prints the API environments array', async () => {
-        const r = await runCli(['env', 'list', 'klant-x', '--json'], {routes});
+        const r = await runCli(['env', 'list', 'my-site', '--json'], {routes});
         expect(r.code).toBe(0);
         expect(JSON.parse(r.stdout)).toEqual(envsBody.site.environments);
     });
@@ -83,7 +83,7 @@ describe('env push', () => {
     const base = [
         'env',
         'push',
-        'klant-x',
+        'my-site',
         '--from',
         'staging',
         '--to',
@@ -148,7 +148,7 @@ describe('env push', () => {
             [
                 'env',
                 'push',
-                'klant-x',
+                'my-site',
                 '--from',
                 'live',
                 '--to',
@@ -185,7 +185,7 @@ describe('env push', () => {
 
     test('missing --to non-interactive exits 2 with ENV_REQUIRED', async () => {
         const r = await runCli(
-            ['env', 'push', 'klant-x', '--from', 'staging', '--yes', '--json'],
+            ['env', 'push', 'my-site', '--from', 'staging', '--yes', '--json'],
             {routes: pushRoutes},
         );
         expect(r.code).toBe(2);
@@ -195,7 +195,7 @@ describe('env push', () => {
 
     test('missing --from non-interactive hints --from, not --env', async () => {
         const r = await runCli(
-            ['env', 'push', 'klant-x', '--to', 'live', '--yes', '--json'],
+            ['env', 'push', 'my-site', '--to', 'live', '--yes', '--json'],
             {routes: pushRoutes},
         );
         expect(r.code).toBe(2);
@@ -206,7 +206,7 @@ describe('env push', () => {
 
     test('missing --to non-interactive hints --to', async () => {
         const r = await runCli(
-            ['env', 'push', 'klant-x', '--from', 'staging', '--yes', '--json'],
+            ['env', 'push', 'my-site', '--from', 'staging', '--yes', '--json'],
             {routes: pushRoutes},
         );
         expect(JSON.parse(r.stderr).error.hints).toEqual([
@@ -218,7 +218,7 @@ describe('env push', () => {
     test('interactive prompts tell source and target apart', async () => {
         const messages: string[] = [];
         let n = 0;
-        await runCli(['env', 'push', 'klant-x', '--yes'], {
+        await runCli(['env', 'push', 'my-site', '--yes'], {
             routes: pushRoutes,
             tty: true,
             prompts: {

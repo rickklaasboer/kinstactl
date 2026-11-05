@@ -12,8 +12,8 @@ const sitesBody = {
         sites: [
             {
                 id: 'id-x',
-                name: 'klant-x',
-                display_name: 'Klant X',
+                name: 'my-site',
+                display_name: 'My Site',
                 status: 'live',
                 environments: [
                     env('env-x-live', 'live', 'Live'),
@@ -37,7 +37,7 @@ const routes = {
 
 describe('logs', () => {
     test('defaults to the error log with 1000 lines', async () => {
-        const r = await runCli(['logs', 'klant-x', '--env', 'live'], {routes});
+        const r = await runCli(['logs', 'my-site', '--env', 'live'], {routes});
         expect(r.code).toBe(0);
         const call = r.calls.find((c) => c.url.pathname.endsWith('/logs'))!;
         expect(call.url.searchParams.get('file_name')).toBe('error');
@@ -46,7 +46,7 @@ describe('logs', () => {
 
     test('cache maps to kinsta-cache-perf and honors --lines', async () => {
         const r = await runCli(
-            ['logs', 'klant-x', 'cache', '--env', 'live', '--lines', '50'],
+            ['logs', 'my-site', 'cache', '--env', 'live', '--lines', '50'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -61,7 +61,7 @@ describe('logs', () => {
         const r = await runCli(
             [
                 'logs',
-                'klant-x',
+                'my-site',
                 'access',
                 '--env',
                 'live',
@@ -85,33 +85,33 @@ describe('logs', () => {
 
     test('--lines above 20000 is a usage error', async () => {
         const r = await runCli(
-            ['logs', 'klant-x', '--env', 'live', '--lines', '30000'],
+            ['logs', 'my-site', '--env', 'live', '--lines', '30000'],
             {routes},
         );
         expect(r.code).toBe(2);
     });
 
     test('an unknown log type is a usage error', async () => {
-        const r = await runCli(['logs', 'klant-x', 'nginx', '--env', 'live'], {
+        const r = await runCli(['logs', 'my-site', 'nginx', '--env', 'live'], {
             routes,
         });
         expect(r.code).toBe(2);
     });
 
     test('human output is the raw log text', async () => {
-        const r = await runCli(['logs', 'klant-x', '--env', 'live'], {routes});
+        const r = await runCli(['logs', 'my-site', '--env', 'live'], {routes});
         expect(r.stdout).toBe('line one\nline two\n');
     });
 
     test('--json prints the API payload', async () => {
-        const r = await runCli(['logs', 'klant-x', '--env', 'live', '--json'], {
+        const r = await runCli(['logs', 'my-site', '--env', 'live', '--json'], {
             routes,
         });
         expect(JSON.parse(r.stdout)).toEqual(logBody);
     });
 
     test('a response without log text is an error', async () => {
-        const r = await runCli(['logs', 'klant-x', '--env', 'live'], {
+        const r = await runCli(['logs', 'my-site', '--env', 'live'], {
             routes: {
                 'GET /sites': {body: sitesBody},
                 'GET /sites/environments/env-x-live/logs': {body: {}},

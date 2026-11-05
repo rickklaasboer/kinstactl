@@ -53,8 +53,8 @@ export class SecurityRedirectsAddCommand implements BaseCommand<Options> {
         ...actionOptions({wait: false}),
     ];
     readonly examples = [
-        'kinstactl security redirects add klant-x /old /new --env live',
-        'kinstactl security redirects add klant-x /old https://example.com/new --type redirect --domain example.com',
+        'kinstactl security redirects add my-site /old /new --env live',
+        'kinstactl security redirects add my-site /old https://example.com/new --type redirect --domain example.com',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

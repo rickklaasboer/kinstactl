@@ -11,6 +11,8 @@ name: Release
 on:
     push:
         branches: [main]
+        # Avoids a pointless release run: releases are already semantic (.release-it.ts), so docs-only merges would not release anyway.
+        paths-ignore: ["docs/**"]
     workflow_dispatch:
         inputs:
             increment:

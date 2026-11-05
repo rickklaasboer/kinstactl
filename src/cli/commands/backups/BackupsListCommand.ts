@@ -30,8 +30,8 @@ export class BackupsListCommand implements BaseCommand<Options> {
         },
     ];
     readonly examples = [
-        'kinstactl backups list klant-x',
-        'kinstactl backups list klant-x --env staging --type manual',
+        'kinstactl backups list my-site',
+        'kinstactl backups list my-site --env staging --type manual',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites/environments/{env_id}/backups',

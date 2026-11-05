@@ -27,8 +27,8 @@ export class CacheClearCommand implements BaseCommand<Options> {
         ...actionOptions({dryRun: true, wait: true}),
     ];
     readonly examples = [
-        'kinstactl cache clear klant-x --env live',
-        'kinstactl cache clear klant-x --env staging --dry-run',
+        'kinstactl cache clear my-site --env live',
+        'kinstactl cache clear my-site --env staging --dry-run',
     ];
     readonly endpoints: EndpointKey[] = ['POST /sites/tools/clear-cache'];
 

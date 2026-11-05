@@ -50,8 +50,8 @@ export class SearchReplaceCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl search-replace klant-x http://old.example https://new.example --env live',
-        'kinstactl search-replace klant-x http://old.example https://new.example --env live --apply --clear-cache --yes',
+        'kinstactl search-replace my-site http://old.example https://new.example --env live',
+        'kinstactl search-replace my-site http://old.example https://new.example --env live --apply --clear-cache --yes',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

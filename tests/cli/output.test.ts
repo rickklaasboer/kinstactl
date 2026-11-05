@@ -76,14 +76,14 @@ describe('Output', () => {
     test('error in json mode goes to stderr as JSON and leaves stdout empty', () => {
         const {output, out, err} = make(true);
         output.error(
-            new CliError('SITE_NOT_FOUND', 'Site not found', ['klant-x']),
+            new CliError('SITE_NOT_FOUND', 'Site not found', ['my-site']),
         );
         expect(out()).toBe('');
         expect(JSON.parse(err())).toEqual({
             error: {
                 code: 'SITE_NOT_FOUND',
                 message: 'Site not found',
-                hints: ['klant-x'],
+                hints: ['my-site'],
             },
         });
     });
@@ -91,11 +91,11 @@ describe('Output', () => {
     test('error in human mode prints message and hints on stderr', () => {
         const {output, out, err} = make(false);
         output.error(
-            new CliError('SITE_NOT_FOUND', 'Site not found', ['klant-x']),
+            new CliError('SITE_NOT_FOUND', 'Site not found', ['my-site']),
         );
         expect(out()).toBe('');
         expect(err()).toContain('Site not found');
-        expect(err()).toContain('klant-x');
+        expect(err()).toContain('my-site');
     });
 
     test('info is silent in json mode and goes to stderr otherwise', () => {

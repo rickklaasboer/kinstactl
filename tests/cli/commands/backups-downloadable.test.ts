@@ -41,7 +41,7 @@ const POST_ROUTE = 'POST /sites/environments/env-live/downloadable-backups';
 describe('backups downloadable list', () => {
     test('list shows links and generating state', async () => {
         const r = await runCli(
-            ['backups', 'downloadable', 'list', 'klant-x', '--env', 'live'],
+            ['backups', 'downloadable', 'list', 'my-site', '--env', 'live'],
             {routes: {...SITES_ROUTES, [LIST_ROUTE]: {body: LIST}}},
         );
         expect(r.code).toBe(0);
@@ -57,7 +57,7 @@ describe('backups downloadable list', () => {
                 'backups',
                 'downloadable',
                 'list',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--json',
@@ -73,7 +73,7 @@ describe('backups downloadable list', () => {
 describe('backups downloadable create', () => {
     test('create waits and prints the newest link', async () => {
         const r = await runCli(
-            ['backups', 'downloadable', 'create', 'klant-x', '--env', 'live'],
+            ['backups', 'downloadable', 'create', 'my-site', '--env', 'live'],
             {
                 routes: {
                     ...SITES_ROUTES,
@@ -103,7 +103,7 @@ describe('backups downloadable create', () => {
                 'backups',
                 'downloadable',
                 'create',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--json',
@@ -132,7 +132,7 @@ describe('backups downloadable create', () => {
                 'backups',
                 'downloadable',
                 'create',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--no-wait',
@@ -164,7 +164,7 @@ describe('backups downloadable quota', () => {
 
     test('quota prints reset_at when unavailable', async () => {
         const r = await runCli(
-            ['backups', 'downloadable', 'quota', 'klant-x', '--env', 'live'],
+            ['backups', 'downloadable', 'quota', 'my-site', '--env', 'live'],
             {
                 routes: {
                     ...SITES_ROUTES,
@@ -187,7 +187,7 @@ describe('backups downloadable quota', () => {
         const body = {is_backup_available: true, reset_at: null};
         const routes = {...SITES_ROUTES, [QUOTA]: {body}};
         const human = await runCli(
-            ['backups', 'downloadable', 'quota', 'klant-x', '--env', 'live'],
+            ['backups', 'downloadable', 'quota', 'my-site', '--env', 'live'],
             {routes},
         );
         expect(human.stdout.trim()).toBe('available');
@@ -196,7 +196,7 @@ describe('backups downloadable quota', () => {
                 'backups',
                 'downloadable',
                 'quota',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--json',

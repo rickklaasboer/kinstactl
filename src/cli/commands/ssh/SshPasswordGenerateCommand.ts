@@ -27,7 +27,7 @@ export class SshPasswordGenerateCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
         ...actionOptions({wait: false}),
     ];
-    readonly examples = ['kinstactl ssh password generate klant-x --env live'];
+    readonly examples = ['kinstactl ssh password generate my-site --env live'];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',
         'POST /sites/environments/{env_id}/ssh/generate-password',

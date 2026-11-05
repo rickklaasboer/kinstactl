@@ -29,7 +29,7 @@ const WP_FLAGS = [
 describe('env create', () => {
     test('env create sends the wp fields and is_premium', async () => {
         const r = await runCli(
-            ['env', 'create', 'klant-x', 'dev', ...WP_FLAGS, '--json'],
+            ['env', 'create', 'my-site', 'dev', ...WP_FLAGS, '--json'],
             {routes, io: {stdin: async () => 's3cret\n'}},
         );
         expect(r.code).toBe(0);
@@ -52,7 +52,7 @@ describe('env create', () => {
             [
                 'env',
                 'create',
-                'klant-x',
+                'my-site',
                 'dev',
                 '--premium',
                 ...WP_FLAGS,
@@ -71,7 +71,7 @@ describe('env create', () => {
             [
                 'env',
                 'create',
-                'klant-x',
+                'my-site',
                 'dev',
                 ...WP_FLAGS,
                 '--dry-run',
@@ -87,7 +87,7 @@ describe('env create', () => {
 
     test('env create --plain sends display_name and is_premium only', async () => {
         const r = await runCli(
-            ['env', 'create', 'klant-x', 'dev', '--plain', '--json'],
+            ['env', 'create', 'my-site', 'dev', '--plain', '--json'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -100,7 +100,7 @@ describe('env create', () => {
 describe('env clone', () => {
     test('env clone sends source_env_id of --from', async () => {
         const r = await runCli(
-            ['env', 'clone', 'klant-x', 'dev', '--from', 'staging', '--json'],
+            ['env', 'clone', 'my-site', 'dev', '--from', 'staging', '--json'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -120,11 +120,11 @@ describe('env delete', () => {
             [
                 'env',
                 'delete',
-                'klant-x',
+                'my-site',
                 '--env',
                 'staging',
                 '--confirm',
-                'klant-x',
+                'my-site',
                 '--json',
             ],
             {routes},
@@ -136,7 +136,7 @@ describe('env delete', () => {
         expect(sent[0]!.url.pathname).toBe('/v2/sites/environments/env-stg');
 
         const refused = await runCli(
-            ['env', 'delete', 'klant-x', '--env', 'staging', '--json'],
+            ['env', 'delete', 'my-site', '--env', 'staging', '--json'],
             {routes},
         );
         expect(refused.code).toBe(5);
@@ -145,7 +145,7 @@ describe('env delete', () => {
 
     test('env delete rejects --yes', async () => {
         const r = await runCli(
-            ['env', 'delete', 'klant-x', '--env', 'staging', '--yes'],
+            ['env', 'delete', 'my-site', '--env', 'staging', '--yes'],
             {routes},
         );
         expect(r.code).toBe(2);
@@ -159,7 +159,7 @@ describe('env php-allocation', () => {
             [
                 'env',
                 'php-allocation',
-                'klant-x',
+                'my-site',
                 '--env',
                 'staging',
                 '--threads',
@@ -183,7 +183,7 @@ describe('env webroot', () => {
     test('env webroot rejects a subfolder outside the pattern before any request', async () => {
         for (const bad of ['public', '/pub lic']) {
             const r = await runCli(
-                ['env', 'webroot', 'klant-x', bad, '--env', 'staging'],
+                ['env', 'webroot', 'my-site', bad, '--env', 'staging'],
                 {routes},
             );
             expect(r.code).toBe(2);
@@ -196,7 +196,7 @@ describe('env webroot', () => {
             [
                 'env',
                 'webroot',
-                'klant-x',
+                'my-site',
                 '/public',
                 '--env',
                 'staging',
@@ -218,7 +218,7 @@ describe('env webroot', () => {
 
     test('env webroot without flags sends the subfolder only', async () => {
         const r = await runCli(
-            ['env', 'webroot', 'klant-x', '/', '--env', 'staging', '--json'],
+            ['env', 'webroot', 'my-site', '/', '--env', 'staging', '--json'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -253,7 +253,7 @@ describe('env files', () => {
 
     test('env files prints the tree', async () => {
         const r = await runCli(
-            ['env', 'files', 'klant-x', '--env', 'staging'],
+            ['env', 'files', 'my-site', '--env', 'staging'],
             {routes: filesRoutes},
         );
         expect(r.code).toBe(0);
@@ -264,7 +264,7 @@ describe('env files', () => {
 
     test('env files --json returns the paths as received', async () => {
         const r = await runCli(
-            ['env', 'files', 'klant-x', '--env', 'staging', '--json'],
+            ['env', 'files', 'my-site', '--env', 'staging', '--json'],
             {routes: filesRoutes},
         );
         expect(r.code).toBe(0);

@@ -88,8 +88,8 @@ export class DomainsAddCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl domains add klant-x example.com --env live',
-        'kinstactl domains add klant-x example.com --wildcard --with-www --ssl-key key.pem --ssl-cert cert.pem',
+        'kinstactl domains add my-site example.com --env live',
+        'kinstactl domains add my-site example.com --wildcard --with-www --ssl-key key.pem --ssl-cert cert.pem',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

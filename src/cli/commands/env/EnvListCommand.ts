@@ -22,8 +22,8 @@ export class EnvListCommand implements BaseCommand {
     readonly arguments: ArgumentDef[] = [siteArgument()];
     readonly options: OptionDef[] = [];
     readonly examples = [
-        'kinstactl env list klant-x',
-        'kinstactl env list klant-x --json',
+        'kinstactl env list my-site',
+        'kinstactl env list my-site --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

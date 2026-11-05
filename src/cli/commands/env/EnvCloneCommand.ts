@@ -42,8 +42,8 @@ export class EnvCloneCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl env clone klant-x dev --from live',
-        'kinstactl env clone klant-x dev --from live --premium',
+        'kinstactl env clone my-site dev --from live',
+        'kinstactl env clone my-site dev --from live --premium',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

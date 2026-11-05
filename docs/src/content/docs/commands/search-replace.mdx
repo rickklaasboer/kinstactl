@@ -1,0 +1,37 @@
+---
+title: search-replace
+description: Search and replace text in the database of an environment, as a dry run first.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+`search-replace` replaces text in the database of an environment, for example after moving a site to a new domain. It reports what would change unless you pass `--apply`.
+
+```sh
+kinstactl search-replace my-site http://old.example https://new.example --env live
+kinstactl search-replace my-site http://old.example https://new.example --env live --apply --clear-cache --yes
+```
+
+## search-replace
+
+Search and replace in the database.
+
+```sh
+kinstactl search-replace my-site http://old.example https://new.example --env live
+```
+
+<CommandRef path="search-replace" />
+
+Without `--apply` the replacement is not performed: Kinsta only reports the matches, and the command asks for no confirmation. Run it this way first and check the result. Add `--apply` to make the change. That changes content, so the command then asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`, otherwise it fails with `CONFIRMATION_REQUIRED` (exit code 5).
+
+```sh
+kinstactl search-replace my-site http://old.example https://new.example --env live --apply --yes
+```
+
+`--clear-cache` clears the cache after the replacement. Take a [backup](/commands/backups/) before you apply.
+
+`--dry-run` is not the same as leaving out `--apply`: the default report is still a request to Kinsta, while `--dry-run` only prints the request that would be sent and sends nothing at all.
+
+Without `--env`, a site with one environment uses it; a site with several gets a picker on a terminal and fails with `ENV_REQUIRED` in a script. See [Sites and environments](/getting-started/sites-and-environments/).
+
+The command waits for Kinsta to finish, and accepts `--no-wait` and `--timeout <minutes>`; see [operations](/commands/operations/). The report from Kinsta is the result of the operation and is what is printed on stdout. With `--json` you get one document with `operation_id`, `status`, `message` and `data`. With `--no-wait` the command returns right after the request is accepted: in human mode the operation ID appears only in the `Follow with:` hint on stderr, and with `--json` it is `operation_id` on stdout.

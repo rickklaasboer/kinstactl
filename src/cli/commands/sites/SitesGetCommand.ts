@@ -22,8 +22,8 @@ export class SitesGetCommand implements BaseCommand {
     readonly arguments: ArgumentDef[] = [siteArgument()];
     readonly options: OptionDef[] = [];
     readonly examples = [
-        'kinstactl sites get klant-x',
-        'kinstactl sites get klant-x --json',
+        'kinstactl sites get my-site',
+        'kinstactl sites get my-site --json',
     ];
     readonly endpoints: EndpointKey[] = ['GET /sites', 'GET /sites/{site_id}'];
 

@@ -51,8 +51,8 @@ export class EnvPushCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl env push klant-x --from staging --to live',
-        'kinstactl env push klant-x --from staging --to live --no-db --path wp-content/themes --yes',
+        'kinstactl env push my-site --from staging --to live',
+        'kinstactl env push my-site --from staging --to live --no-db --path wp-content/themes --yes',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

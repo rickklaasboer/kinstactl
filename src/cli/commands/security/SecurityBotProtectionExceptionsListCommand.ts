@@ -32,7 +32,7 @@ export class SecurityBotProtectionExceptionsListCommand
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl security bot-protection exceptions list klant-x --env live',
+        'kinstactl security bot-protection exceptions list my-site --env live',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

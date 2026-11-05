@@ -80,9 +80,9 @@ export class LogsCommand implements BaseCommand<Options> {
         },
     ];
     readonly examples = [
-        'kinstactl logs klant-x --env live',
-        'kinstactl logs klant-x access --env live --lines 200 --search wp-login',
-        'kinstactl logs klant-x cache --env live --json',
+        'kinstactl logs my-site --env live',
+        'kinstactl logs my-site access --env live --lines 200 --search wp-login',
+        'kinstactl logs my-site cache --env live --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites/environments/{env_id}/logs',

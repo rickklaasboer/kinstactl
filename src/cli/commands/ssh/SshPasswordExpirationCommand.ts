@@ -50,8 +50,8 @@ export class SshPasswordExpirationCommand implements BaseCommand<Options> {
         ...actionOptions({wait: false}),
     ];
     readonly examples = [
-        'kinstactl ssh password expiration klant-x 7d --env live',
-        'kinstactl ssh password expiration klant-x never --dry-run',
+        'kinstactl ssh password expiration my-site 7d --env live',
+        'kinstactl ssh password expiration my-site never --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

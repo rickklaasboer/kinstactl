@@ -27,8 +27,8 @@ export class SitesUsageCommand implements BaseCommand {
     readonly arguments: ArgumentDef[] = [siteArgument()];
     readonly options: OptionDef[] = [];
     readonly examples = [
-        'kinstactl sites usage klant-x',
-        'kinstactl sites usage klant-x --json',
+        'kinstactl sites usage my-site',
+        'kinstactl sites usage my-site --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

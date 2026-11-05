@@ -51,8 +51,8 @@ export class SecurityRedirectsDeleteCommand implements BaseCommand<Options> {
         ...actionOptions({wait: false, destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl security redirects delete klant-x /old --env live --yes',
-        'kinstactl security redirects delete klant-x --all --yes',
+        'kinstactl security redirects delete my-site /old --env live --yes',
+        'kinstactl security redirects delete my-site --all --yes',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

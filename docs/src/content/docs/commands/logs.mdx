@@ -1,0 +1,33 @@
+---
+title: logs
+description: Read the error, access or cache log of an environment.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+`logs` prints the log of one environment straight to your terminal, so you can pipe it into `grep`, `less` or a file without opening MyKinsta.
+
+```sh
+kinstactl logs my-site --env live
+kinstactl logs my-site access --env live --lines 200 --search wp-login
+```
+
+## logs
+
+Read the error, access or cache log of an environment.
+
+```sh
+kinstactl logs my-site access --env live --lines 200 --search wp-login
+```
+
+<CommandRef path="logs" />
+
+The optional `type` argument is `error`, `access` or `cache` and defaults to `error`. `--lines` defaults to 1000 and accepts 1 to 20000. `--search` keeps only the lines that contain the text, and `--from` and `--to` limit the log to a window in time; Kinsta applies all of these filters, not kinstactl. Without `--env` the usual environment selection applies, see [Sites and environments](/getting-started/sites-and-environments/).
+
+The log is written to stdout as plain text, exactly as Kinsta returns it, with no table, colors or decoration, whether or not a terminal is attached. That makes it safe to pipe:
+
+```sh
+kinstactl logs my-site access --env live --lines 5000 | grep " 500 "
+```
+
+With `--json` you get the complete API response instead of the bare text.

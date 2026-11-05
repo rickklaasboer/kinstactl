@@ -6,8 +6,8 @@ const SITES = {
         sites: [
             {
                 id: 'site-1',
-                name: 'klant-x',
-                display_name: 'Klant X',
+                name: 'my-site',
+                display_name: 'My Site',
                 status: 'live',
                 environments: [
                     {id: 'env-live', name: 'live', display_name: 'Live'},
@@ -74,7 +74,7 @@ const posts = <T extends {method: string}>(calls: T[]) =>
 
 describe('backups list', () => {
     test('sorts newest first and formats local time', async () => {
-        const r = await runCli(['backups', 'list', 'klant-x'], {routes: base});
+        const r = await runCli(['backups', 'list', 'my-site'], {routes: base});
         expect(r.code).toBe(0);
         const lines = r.stdout.split('\n');
         const i123 = lines.findIndex((l) => l.includes('123'));
@@ -87,7 +87,7 @@ describe('backups list', () => {
 
     test('--type filters', async () => {
         const r = await runCli(
-            ['backups', 'list', 'klant-x', '--type', 'manual', '--json'],
+            ['backups', 'list', 'my-site', '--type', 'manual', '--json'],
             {routes: base},
         );
         expect(JSON.parse(r.stdout).map((b: {id: number}) => b.id)).toEqual([
@@ -99,7 +99,7 @@ describe('backups list', () => {
 describe('backups create', () => {
     test('sends one creation request with the tag', async () => {
         const r = await runCli(
-            ['backups', 'create', 'klant-x', '--tag', 'hello', '--json'],
+            ['backups', 'create', 'my-site', '--tag', 'hello', '--json'],
             {
                 routes: {
                     ...base,
@@ -132,7 +132,7 @@ describe('backups restore', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '123',
                 '--notify',
                 'rick@example.com',
@@ -153,7 +153,7 @@ describe('backups restore', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '123',
                 '--yes',
                 '--notify',
@@ -176,7 +176,7 @@ describe('backups restore', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '123',
                 '--notify',
                 'rick@example.com',
@@ -195,7 +195,7 @@ describe('backups restore', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '123',
                 '--yes',
                 '--notify',
@@ -214,7 +214,7 @@ describe('backups restore', () => {
 
     test('non-interactive without --notify exits 2 with a hint', async () => {
         const r = await runCli(
-            ['backups', 'restore', 'klant-x', '123', '--yes', '--json'],
+            ['backups', 'restore', 'my-site', '123', '--yes', '--json'],
             {routes: {...base, ...restoreRoute}},
         );
         expect(r.code).toBe(2);
@@ -225,7 +225,7 @@ describe('backups restore', () => {
     });
 
     test('interactive without --notify selects a user, then confirms', async () => {
-        const r = await runCli(['backups', 'restore', 'klant-x', '123'], {
+        const r = await runCli(['backups', 'restore', 'my-site', '123'], {
             routes: {...base, ...restoreRoute},
             tty: true,
             prompts: {
@@ -246,7 +246,7 @@ describe('backups restore', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '999',
                 '--yes',
                 '--notify',
@@ -257,7 +257,7 @@ describe('backups restore', () => {
         );
         expect(r.code).toBe(2);
         const err = JSON.parse(r.stderr).error;
-        expect(err.message).toBe('backup 999 not found on klant-x (live)');
+        expect(err.message).toBe('backup 999 not found on my-site (live)');
         expect(err.hints).toEqual([]);
         expect(posts(r.calls)).toHaveLength(0);
     });
@@ -269,8 +269,8 @@ describe('backups restore --from-env', () => {
             sites: [
                 {
                     id: 'site-1',
-                    name: 'klant-x',
-                    display_name: 'Klant X',
+                    name: 'my-site',
+                    display_name: 'My Site',
                     status: 'live',
                     environments: [
                         {id: 'env-live', name: 'live', display_name: 'Live'},
@@ -306,7 +306,7 @@ describe('backups restore --from-env', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '123',
                 '--from-env',
                 'staging',
@@ -340,7 +340,7 @@ describe('backups restore --from-env', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '123',
                 '--from-env',
                 'staging',
@@ -363,7 +363,7 @@ describe('backups restore --from-env', () => {
         );
         expect(r.code).toBe(2);
         expect(JSON.parse(r.stderr).error.message).toBe(
-            'backup 123 not found on klant-x (staging)',
+            'backup 123 not found on my-site (staging)',
         );
         expect(posts(r.calls)).toHaveLength(0);
     });
@@ -374,7 +374,7 @@ describe('backups restore --from-env', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '123',
                 '--from-env',
                 'staging',
@@ -404,7 +404,7 @@ describe('backups restore --from-env', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '123',
                 '--from-env',
                 'staging',
@@ -428,7 +428,7 @@ describe('backups restore --from-env', () => {
             [
                 'backups',
                 'restore',
-                'klant-x',
+                'my-site',
                 '123',
                 '--from-env',
                 'live',
@@ -466,7 +466,7 @@ describe('backups delete', () => {
     };
 
     test('non-interactive without --yes exits 5 and sends nothing', async () => {
-        const r = await runCli(['backups', 'delete', 'klant-x', '123'], {
+        const r = await runCli(['backups', 'delete', 'my-site', '123'], {
             routes: {...base, ...deleteRoute},
         });
         expect(r.code).toBe(5);
@@ -475,7 +475,7 @@ describe('backups delete', () => {
 
     test('--yes sends the delete', async () => {
         const r = await runCli(
-            ['backups', 'delete', 'klant-x', '123', '--yes', '--json'],
+            ['backups', 'delete', 'my-site', '123', '--yes', '--json'],
             {routes: {...base, ...deleteRoute}},
         );
         expect(r.code).toBe(0);

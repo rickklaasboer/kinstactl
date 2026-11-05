@@ -40,8 +40,8 @@ export class DomainsVerificationCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl domains verification klant-x example.com',
-        'kinstactl domains verification klant-x example.com --json',
+        'kinstactl domains verification my-site example.com',
+        'kinstactl domains verification my-site example.com --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

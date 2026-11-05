@@ -57,8 +57,8 @@ export class SitesCreateCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl sites create "Klant Y" --region europe-west4 --admin-user admin --admin-email admin@klant-y.nl --admin-password -',
-        'kinstactl sites create "Klant Y" --region europe-west4 --plain',
+        'kinstactl sites create "My Site" --region europe-west4 --admin-user admin --admin-email admin@example.com --admin-password -',
+        'kinstactl sites create "My Site" --region europe-west4 --plain',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /company/{id}/available-regions',
