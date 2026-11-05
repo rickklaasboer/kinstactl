@@ -1,85 +1,63 @@
 import {inject, Lifecycle, scoped} from 'tsyringe';
-import {KinstaClient} from '@/client/KinstaClient';
-import {type Credentials, resolveCredentials} from './config';
+import type {KinstaClient} from '@/client/KinstaClient';
+import type {Credentials} from './config';
 import {IO, type Io} from './io';
 import {Output} from './output';
-import type {Prompts} from './prompts';
+import {PROMPTS, type Prompts} from './prompts';
+import {ClientProvider} from './services/ClientProvider';
+import {ConfigService} from './services/ConfigService';
+import {type GlobalOptions, RunContext} from './services/RunContext';
 
-export interface GlobalOptions {
-    json?: boolean;
-    /** Commander stores --no-input as input=false. */
-    input?: boolean;
-    profile?: string;
-}
-
+/** Facade over the run-scoped services, for code that predates them. */
 @scoped(Lifecycle.ContainerScoped)
 export class Runtime {
-    json = false;
-    interactive: boolean;
-    profile?: string;
-    readonly output: Output;
-    readonly prompts: Prompts;
-    readonly sleep?: (ms: number) => Promise<void>;
-    private cachedCredentials?: Credentials;
-    private cachedClient?: KinstaClient;
+    constructor(
+        @inject(IO) readonly io: Io,
+        private readonly ctx: RunContext,
+        readonly output: Output,
+        @inject(PROMPTS) readonly prompts: Prompts,
+        private readonly config: ConfigService,
+        private readonly clients: ClientProvider,
+    ) {}
 
-    constructor(@inject(IO) readonly io: Io) {
-        this.prompts = io.prompts;
-        this.sleep = io.sleep;
-        this.interactive = this.computeInteractive(true);
-        this.output = new Output({
-            stdout: io.stdout,
-            stderr: io.stderr,
-            json: () => this.json,
-            debug: io.env.KINSTACTL_DEBUG === '1',
-            color: io.isTTY && !io.env.NO_COLOR && io.env.TERM !== 'dumb',
-        });
+    get json(): boolean {
+        return this.ctx.json;
     }
 
-    /** Applies the parsed global options; called once Commander has parsed them. */
+    set json(value: boolean) {
+        this.ctx.json = value;
+    }
+
+    get interactive(): boolean {
+        return this.ctx.interactive;
+    }
+
+    get profile(): string | undefined {
+        return this.ctx.profile;
+    }
+
+    get sleep(): ((ms: number) => Promise<void>) | undefined {
+        return this.ctx.sleep;
+    }
+
     configure(opts: GlobalOptions): void {
-        this.json = opts.json === true;
-        this.profile = opts.profile;
-        this.interactive = this.computeInteractive(opts.input !== false);
-    }
-
-    private computeInteractive(inputAllowed: boolean): boolean {
-        const {isTTY, env} = this.io;
-        return (
-            isTTY &&
-            inputAllowed &&
-            env.KINSTACTL_NO_INPUT !== '1' &&
-            env.CI !== 'true' &&
-            !this.json
-        );
+        this.ctx.configure(opts);
     }
 
     now(): number {
-        return this.io.now ? this.io.now() : Date.now();
+        return this.ctx.now();
     }
 
     credentials(): Credentials {
-        this.cachedCredentials ??= resolveCredentials(this.io.env, {
-            profile: this.profile,
-        });
-        return this.cachedCredentials;
+        return this.config.credentials();
     }
 
     client(): KinstaClient {
-        if (!this.cachedClient) {
-            const {apiKey, companyId} = this.credentials();
-            this.cachedClient = this.clientFor(apiKey, companyId);
-        }
-        return this.cachedClient;
+        return this.clients.client();
     }
 
     /** A client for explicit credentials, e.g. a key that is not stored yet. */
     clientFor(apiKey: string, companyId: string): KinstaClient {
-        return new KinstaClient({
-            apiKey,
-            companyId,
-            fetchFn: this.io.fetchFn,
-            sleep: this.io.sleep,
-        });
+        return this.clients.clientFor(apiKey, companyId);
     }
 }

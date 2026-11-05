@@ -28,6 +28,10 @@ export class Output {
         this.c = pc.createColors(sink.color);
     }
 
+    get json(): boolean {
+        return this.sink.json();
+    }
+
     table<T>(rows: T[], columns: Column<T>[], json?: unknown): void {
         if (this.sink.json()) {
             this.sink.stdout(`${JSON.stringify(json ?? rows)}\n`);

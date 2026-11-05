@@ -11,8 +11,10 @@ import type {BaseCommand, CommandClass} from './commands/BaseCommand';
 import {COMMANDS, GROUPS, type LegacyEntry} from './commands/index';
 import {createContainer} from './container';
 import {toCliError} from './errors';
-import type {Io} from './io';
+import {IO, type Io} from './io';
+import {Output} from './output';
 import {Runtime} from './runtime';
+import {RunContext} from './services/RunContext';
 
 export interface CommandMeta {
     endpoints: EndpointKey[];
@@ -49,6 +51,9 @@ export function createProgramContainer(io: Io): DependencyContainer {
 
 export function buildProgram(container: DependencyContainer): Command {
     const rt = container.resolve(Runtime);
+    const ctx = container.resolve(RunContext);
+    const output = container.resolve(Output);
+    const io = container.resolve<Io>(IO);
     const registry = container.resolve(CommandRegistry);
     const program = new Command('kinstactl');
     program
@@ -56,15 +61,15 @@ export function buildProgram(container: DependencyContainer): Command {
         .exitOverride()
         .showSuggestionAfterError(true)
         .configureOutput({
-            writeOut: (s) => rt.io.stdout(s),
-            writeErr: (s) => rt.io.stderr(s),
+            writeOut: (s) => io.stdout(s),
+            writeErr: (s) => io.stderr(s),
             // Errors are rendered by run() through Output, in the right format for --json.
             outputError: () => {},
-            getOutHasColors: () => rt.output.color,
-            getErrHasColors: () => rt.output.color,
+            getOutHasColors: () => output.color,
+            getErrHasColors: () => output.color,
         });
     for (const def of GLOBAL_OPTIONS) program.addOption(toOption(def));
-    program.hook('preAction', () => rt.configure(program.opts()));
+    program.hook('preAction', () => ctx.configure(program.opts()));
 
     const resolved = registry.commands();
     let next = 0;
@@ -89,9 +94,8 @@ function isEpipe(e: unknown): boolean {
 /** Runs the CLI and returns the exit code. */
 export async function run(argv: string[], io: Io): Promise<number> {
     const container = createProgramContainer(io);
-    const rt = container.resolve(Runtime);
     // Parse errors happen before the preAction hook, and must still honor --json.
-    rt.json = argv.includes('--json');
+    container.resolve(RunContext).json = argv.includes('--json');
     const program = buildProgram(container);
     try {
         await program.parseAsync(argv, {from: 'user'});
@@ -108,7 +112,7 @@ export async function run(argv: string[], io: Io): Promise<number> {
             if (e.code === 'commander.help') return 2;
         }
         const err = toCliError(e);
-        rt.output.error(err);
+        container.resolve(Output).error(err);
         return err.exitCode;
     }
 }

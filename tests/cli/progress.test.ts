@@ -1,4 +1,5 @@
 import {describe, expect, test} from 'bun:test';
+import {createContainer} from '@/cli/container';
 import {toCliError} from '@/cli/errors';
 import {runOperation} from '@/cli/progress';
 import type {Io} from '@/cli/io';
@@ -51,7 +52,7 @@ async function exec(
         },
         prompts: {} as Io['prompts'],
     };
-    const rt = new Runtime(io);
+    const rt = createContainer(io).resolve(Runtime);
     rt.json = opts.json === true;
     let code = 0;
     try {

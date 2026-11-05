@@ -2,6 +2,7 @@ import {mkdtempSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {describe, expect, test} from 'bun:test';
+import {createContainer} from '@/cli/container';
 import {CliError} from '@/cli/errors';
 import type {Prompts} from '@/cli/prompts';
 import {resolveEnv, resolveSite, resolveTarget, suggest} from '@/cli/resolve';
@@ -63,7 +64,7 @@ function setup(
         },
         ...opts.prompts,
     } as Prompts;
-    const rt = new Runtime({
+    const rt = createContainer({
         stdout: (s) => {
             out += s;
         },
@@ -80,7 +81,7 @@ function setup(
         },
         fetchFn: fake.fetch,
         prompts,
-    });
+    }).resolve(Runtime);
     return {rt, calls: fake.calls, stderr: () => err, stdout: () => out};
 }
 

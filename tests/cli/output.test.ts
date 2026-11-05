@@ -83,6 +83,11 @@ describe('Output', () => {
         expect([b.out(), b.err()]).toEqual(['', 'working\n']);
     });
 
+    test('json getter follows the sink', () => {
+        expect(make(true).output.json).toBe(true);
+        expect(make(false).output.json).toBe(false);
+    });
+
     test('data and success switch on json mode', () => {
         const a = make(true);
         a.output.data({a: 1}, () => 'human');

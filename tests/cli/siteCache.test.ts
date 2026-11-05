@@ -2,6 +2,7 @@ import {mkdirSync, mkdtempSync, readFileSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {describe, expect, test} from 'bun:test';
+import {createContainer} from '@/cli/container';
 import type {Prompts} from '@/cli/prompts';
 import {Runtime} from '@/cli/runtime';
 import {SITE_CACHE_TTL_MS, loadSites, siteCachePath} from '@/cli/siteCache';
@@ -36,7 +37,7 @@ function setup() {
         HOME: dir,
         XDG_CACHE_HOME: join(dir, 'cache'),
     };
-    const rt = new Runtime({
+    const rt = createContainer({
         stdout: () => {},
         stderr: (s) => {
             err += s;
@@ -46,7 +47,7 @@ function setup() {
         fetchFn: fake.fetch,
         now: () => clock,
         prompts: {} as Prompts,
-    });
+    }).resolve(Runtime);
     return {
         rt,
         calls: fake.calls,

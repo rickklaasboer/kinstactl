@@ -1,5 +1,6 @@
 import {describe, expect, test} from 'bun:test';
 import {confirmDestructive} from '@/cli/confirm';
+import {createContainer} from '@/cli/container';
 import {CliError} from '@/cli/errors';
 import type {Io} from '@/cli/io';
 import {Runtime} from '@/cli/runtime';
@@ -22,7 +23,7 @@ function runtime(interactive: boolean, prompts: Partial<Prompts> = {}) {
         env: {},
         prompts: prompts as Prompts,
     };
-    return new Runtime(io);
+    return createContainer(io).resolve(Runtime);
 }
 
 async function failure(p: Promise<void>): Promise<CliError> {
