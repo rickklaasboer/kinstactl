@@ -63,6 +63,45 @@ describe('config file', () => {
   })
 })
 
+describe('config validation', () => {
+  function loadRaw(raw: string): CliError {
+    mkdirSync(join(dir, 'kinstactl'), { recursive: true })
+    writeFileSync(configPath(env), raw)
+    return catchCliError(() => loadConfig(env))
+  }
+
+  for (const raw of ['{}', '[]', 'null', '{"defaultProfile":"x"}', '{"profiles":[]}', '{"profiles":null}']) {
+    test(`rejects ${raw}`, () => {
+      const err = loadRaw(raw)
+      expect(err.code).toBe('USAGE')
+      expect(err.message).toContain(configPath(env))
+      expect(err.message).toContain('profiles')
+    })
+  }
+
+  test('rejects profile missing apiKey, naming profile and field', () => {
+    const err = loadRaw('{"profiles":{"work":{"companyId":"c"}}}')
+    expect(err.code).toBe('USAGE')
+    expect(err.message).toContain(configPath(env))
+    expect(err.message).toContain('work')
+    expect(err.message).toContain('apiKey')
+  })
+
+  test('rejects profile with empty companyId', () => {
+    const err = loadRaw('{"profiles":{"work":{"apiKey":"k","companyId":""}}}')
+    expect(err.message).toContain('work')
+    expect(err.message).toContain('companyId')
+  })
+
+  test('rejects non-object profile', () => {
+    expect(loadRaw('{"profiles":{"work":null}}').message).toContain('work')
+  })
+
+  test('rejects non-string defaultProfile', () => {
+    expect(loadRaw('{"defaultProfile":1,"profiles":{}}').message).toContain('defaultProfile')
+  })
+})
+
 describe('resolveCredentials', () => {
   test('KINSTA_API_KEY + KINSTA_COMPANY_ID beat the profile, no config needed', () => {
     expect(resolveCredentials({ ...env, KINSTA_API_KEY: 'k', KINSTA_COMPANY_ID: 'c' }, {})).toEqual({
@@ -78,6 +117,20 @@ describe('resolveCredentials', () => {
     const err = catchCliError(() => resolveCredentials({ ...env, KINSTA_API_KEY: 'k' }, {}))
     expect(err.code).toBe('AUTH_MISSING')
     expect(err.hints.join(' ')).toContain('KINSTA_COMPANY_ID')
+  })
+
+  test('KINSTA_COMPANY_ID without KINSTA_API_KEY throws AUTH_MISSING', () => {
+    saveConfig(env, cfg)
+    const err = catchCliError(() => resolveCredentials({ ...env, KINSTA_COMPANY_ID: 'c' }, {}))
+    expect(err.code).toBe('AUTH_MISSING')
+    expect(err.hints.join(' ')).toContain('KINSTA_API_KEY')
+  })
+
+  test('--profile wins over both env vars', () => {
+    saveConfig(env, cfg)
+    expect(
+      resolveCredentials({ ...env, KINSTA_API_KEY: 'k', KINSTA_COMPANY_ID: 'c' }, { profile: 'work' }),
+    ).toEqual({ apiKey: 'key-work', companyId: 'co-work', source: 'profile', profile: 'work' })
   })
 
   test('uses defaultProfile when nothing else is given', () => {
