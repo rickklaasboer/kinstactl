@@ -37,14 +37,15 @@ jobs:
             - name: Serve-test the docs image
               run: |
                   base=http://127.0.0.1:3005
-                  status() { curl -s --retry 10 --retry-connrefused -o /dev/null -w '%{http_code}' "$base$1"; }
+                  curl -s --retry 30 --retry-all-errors --retry-delay 1 -o /dev/null "$base/" || { echo "docs container never became ready"; docker logs docs; exit 1; }
+                  status() { curl -s --retry 10 --retry-all-errors -o /dev/null -w '%{http_code}' "$base$1"; }
                   expect_status() {
                       got="$(status "$1")"
                       test "$got" = "$2" || { echo "$1: expected $2, got $got"; exit 1; }
                   }
                   expect_status / 200
                   expect_status /getting-started/installation/ 200
-                  headers="$(curl -si --retry 10 --retry-connrefused "$base/getting-started/installation")"
+                  headers="$(curl -si --retry 10 --retry-all-errors "$base/getting-started/installation")"
                   echo "$headers" | head -1 | grep -qE ' (301|308) ' || { echo "no redirect"; echo "$headers"; exit 1; }
                   echo "$headers" | tr -d '\r' | grep -qi '^location: /getting-started/installation/$' || { echo "wrong Location"; echo "$headers"; exit 1; }
                   expect_status /llms.txt 200
