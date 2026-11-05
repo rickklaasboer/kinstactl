@@ -14,6 +14,7 @@ import {CacheEdgeDisableCommand} from './cache/CacheEdgeDisableCommand';
 import {CacheEdgeEnableCommand} from './cache/CacheEdgeEnableCommand';
 import type {CommandClass, GroupDef} from './BaseCommand';
 import {CommandsCommand} from './CommandsCommand';
+import {DbLoginCommand} from './db/DbLoginCommand';
 import {DnsRecordsAddCommand} from './dns/DnsRecordsAddCommand';
 import {DnsRecordsDeleteCommand} from './dns/DnsRecordsDeleteCommand';
 import {DnsRecordsListCommand} from './dns/DnsRecordsListCommand';
@@ -35,6 +36,7 @@ import {PluginsListCommand} from './plugins/PluginsListCommand';
 import {PluginsUpdateCommand} from './plugins/PluginsUpdateCommand';
 import {ThemesListCommand} from './plugins/ThemesListCommand';
 import {ThemesUpdateCommand} from './plugins/ThemesUpdateCommand';
+import {SearchReplaceCommand} from './search-replace/SearchReplaceCommand';
 import {SitesCloneCommand} from './sites/SitesCloneCommand';
 import {SitesCreateCommand} from './sites/SitesCreateCommand';
 import {SitesDeleteCommand} from './sites/SitesDeleteCommand';
@@ -42,6 +44,10 @@ import {SitesGetCommand} from './sites/SitesGetCommand';
 import {SitesListCommand} from './sites/SitesListCommand';
 import {SitesPhpAllocationCommand} from './sites/SitesPhpAllocationCommand';
 import {SitesResetCommand} from './sites/SitesResetCommand';
+import {WpLoginCommand} from './wp/WpLoginCommand';
+import {WpRunCommand} from './wp/WpRunCommand';
+import {WpUserCreateCommand} from './wp/WpUserCreateCommand';
+import {WpUserExistsCommand} from './wp/WpUserExistsCommand';
 
 export const COMMANDS: CommandClass[] = [
     AuthLoginCommand,
@@ -87,6 +93,12 @@ export const COMMANDS: CommandClass[] = [
     DnsRecordsAddCommand,
     DnsRecordsUpdateCommand,
     DnsRecordsDeleteCommand,
+    WpRunCommand,
+    WpLoginCommand,
+    WpUserCreateCommand,
+    WpUserExistsCommand,
+    DbLoginCommand,
+    SearchReplaceCommand,
 ];
 
 export const GROUPS: GroupDef[] = [
@@ -107,4 +119,7 @@ export const GROUPS: GroupDef[] = [
     {path: 'domains', description: 'Manage the domains of an environment'},
     {path: 'dns', description: 'Kinsta DNS zones and records'},
     {path: 'dns records', description: 'DNS records of a zone'},
+    {path: 'wp', description: 'WordPress tools of an environment'},
+    {path: 'wp user', description: 'WordPress admin users'},
+    {path: 'db', description: 'Database tools of an environment'},
 ];

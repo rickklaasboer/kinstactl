@@ -116,6 +116,32 @@ export function setImageOptimization(
     };
 }
 
+export const WP_COMMAND_PATTERN = /^wp\s+[a-zA-Z0-9_\-./:=@'\s]+$/;
+
+export function searchAndReplace(
+    envId: string,
+    opts: {
+        search: string;
+        replace: string;
+        apply: boolean;
+        clearCache: boolean;
+    },
+): RequestSpec {
+    const body: Schemas['searchAndReplace-Body'] = {
+        environment_id: envId,
+        search: opts.search,
+        replace: opts.replace,
+        perform_replacement: opts.apply,
+        is_clear_cache: opts.clearCache,
+    };
+    return {
+        endpoint: 'POST /sites/tools/search-and-replace',
+        method: 'POST',
+        path: '/sites/tools/search-and-replace',
+        body,
+    };
+}
+
 export const ENDPOINTS: EndpointKey[] = [
     'POST /sites/tools/clear-cache',
     'POST /sites/tools/restart-php',
@@ -124,4 +150,5 @@ export const ENDPOINTS: EndpointKey[] = [
     'POST /sites/cdn/clear-cache',
     'PUT /sites/edge-caching/status',
     'PUT /sites/cdn/image-optimization',
+    'POST /sites/tools/search-and-replace',
 ];

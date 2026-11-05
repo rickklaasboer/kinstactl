@@ -8,6 +8,7 @@ import {ENDPOINTS as operations} from './operations';
 import {ENDPOINTS as plugins} from './plugins';
 import {ENDPOINTS as sites} from './sites';
 import {ENDPOINTS as tools} from './tools';
+import {ENDPOINTS as wp} from './wp';
 import type {EndpointKey} from '@/client/request';
 
 export const ALL_ENDPOINTS: EndpointKey[] = [
@@ -21,4 +22,5 @@ export const ALL_ENDPOINTS: EndpointKey[] = [
     ...operations,
     ...domains,
     ...dns,
+    ...wp,
 ];

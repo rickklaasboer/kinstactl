@@ -2193,6 +2193,344 @@ exports[`commands --json is unchanged 1`] = `
       "options": [],
       "path": "dns",
     },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "the WP-CLI command, starting with "wp "",
+              "name": "command",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Run a WP-CLI command in an environment",
+          "destructive": "confirm",
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/environments/{env_id}/run-wp-cli-command",
+          ],
+          "name": "run",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "skip the confirmation prompt",
+              "flags": "--yes",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "wp run",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Create a one-time WordPress admin login link",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/environments/{env_id}/wpa-login-url",
+          ],
+          "name": "login",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "email of the WordPress admin user to log in as",
+              "flags": "--email <email>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "wp login",
+        },
+        {
+          "arguments": [],
+          "commands": [
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "description": "email of the new user",
+                  "name": "email",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Create a WordPress admin user",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "POST /sites/environments/{env_id}/wpa-create-user",
+              ],
+              "name": "create",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "first name of the user",
+                  "flags": "--first-name <name>",
+                },
+                {
+                  "description": "last name of the user",
+                  "flags": "--last-name <name>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "wp user create",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "description": "email of the user",
+                  "name": "email",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Check whether a WordPress admin user exists",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/wpa-user-exists",
+              ],
+              "name": "exists",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "wp user exists",
+            },
+          ],
+          "description": "WordPress admin users",
+          "destructive": null,
+          "endpoints": [],
+          "name": "user",
+          "options": [],
+          "path": "wp user",
+        },
+      ],
+      "description": "WordPress tools of an environment",
+      "destructive": null,
+      "endpoints": [],
+      "name": "wp",
+      "options": [],
+      "path": "wp",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Create a phpMyAdmin login link",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/environments/{env_id}/pma-login-token",
+          ],
+          "name": "login",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "db login",
+        },
+      ],
+      "description": "Database tools of an environment",
+      "destructive": null,
+      "endpoints": [],
+      "name": "db",
+      "options": [],
+      "path": "db",
+    },
+    {
+      "arguments": [
+        {
+          "description": "site name, display name or ID",
+          "name": "site",
+          "required": true,
+        },
+        {
+          "description": "text to search for",
+          "name": "search",
+          "required": true,
+        },
+        {
+          "description": "replacement text",
+          "name": "replace",
+          "required": true,
+        },
+      ],
+      "commands": [],
+      "description": "Search and replace in the database (dry run unless --apply)",
+      "destructive": "confirm",
+      "endpoints": [
+        "GET /sites",
+        "POST /sites/tools/search-and-replace",
+      ],
+      "name": "search-replace",
+      "options": [
+        {
+          "description": "environment name or ID",
+          "flags": "--env <environment>",
+        },
+        {
+          "description": "perform the replacement instead of reporting matches",
+          "flags": "--apply",
+        },
+        {
+          "description": "clear the cache after the replacement",
+          "flags": "--clear-cache",
+        },
+        {
+          "description": "print the resolved target and request; change nothing",
+          "flags": "--dry-run",
+        },
+        {
+          "description": "return the operation ID instead of waiting",
+          "flags": "--no-wait",
+        },
+        {
+          "description": "give up waiting after this many minutes (default 30)",
+          "flags": "--timeout <minutes>",
+        },
+        {
+          "description": "skip the confirmation prompt",
+          "flags": "--yes",
+        },
+        {
+          "description": "config profile to use",
+          "flags": "--profile <name>",
+        },
+        {
+          "description": "print machine-readable JSON",
+          "flags": "--json",
+        },
+        {
+          "description": "never prompt; fail instead",
+          "flags": "--no-input",
+        },
+      ],
+      "path": "search-replace",
+    },
   ],
   "description": "Command line client for the Kinsta API",
   "destructive": null,
@@ -2274,6 +2612,15 @@ dns  Kinsta DNS zones and records
     add <zone> <type> <name>  Add a DNS record to a zone
     update <zone> <type> <name>  Change the TTL or values of a DNS record
     delete <zone> <type> <name>  Delete a DNS record from a zone
+wp  WordPress tools of an environment
+  run <site> <command>  Run a WP-CLI command in an environment
+  login [site]  Create a one-time WordPress admin login link
+  user  WordPress admin users
+    create <site> <email>  Create a WordPress admin user
+    exists <site> <email>  Check whether a WordPress admin user exists
+db  Database tools of an environment
+  login [site]  Create a phpMyAdmin login link
+search-replace <site> <search> <replace>  Search and replace in the database (dry run unless --apply)
 "
 `;
 
@@ -2288,29 +2635,29 @@ exports[`help of every command and group is unchanged 1`] = `
 Command line client for the Kinsta API
 
 Options:
-  --profile <name>              config profile to use
-  --json                        print machine-readable JSON
-  --no-input                    never prompt; fail instead
-  -h, --help                    display help for command
+  --profile <name>                                    config profile to use
+  --json                                              print machine-readable JSON
+  --no-input                                          never prompt; fail instead
+  -h, --help                                          display help for command
 
 Commands:
-  auth                          Manage stored credentials
-  commands                      List all commands, their options and the API
-                                endpoints they use
-  operations                    Inspect and follow long-running Kinsta
-                                operations
-  logs [options] <site> [type]  Read the error, access or cache log of an
-                                environment
-  sites                         Manage Kinsta sites
-  env                           List and manage environments of a site
-  cache                         Clear the caches of a site environment
-  php                           Manage the PHP engine of a site environment
-  plugins                       List and update WordPress plugins
-  themes                        List and update WordPress themes
-  backups                       List, create, restore and delete backups
-  domains                       Manage the domains of an environment
-  dns                           Kinsta DNS zones and records
-  help [command]                display help for command
+  auth                                                Manage stored credentials
+  commands                                            List all commands, their options and the API endpoints they use
+  operations                                          Inspect and follow long-running Kinsta operations
+  logs [options] <site> [type]                        Read the error, access or cache log of an environment
+  sites                                               Manage Kinsta sites
+  env                                                 List and manage environments of a site
+  cache                                               Clear the caches of a site environment
+  php                                                 Manage the PHP engine of a site environment
+  plugins                                             List and update WordPress plugins
+  themes                                              List and update WordPress themes
+  backups                                             List, create, restore and delete backups
+  domains                                             Manage the domains of an environment
+  dns                                                 Kinsta DNS zones and records
+  wp                                                  WordPress tools of an environment
+  db                                                  Database tools of an environment
+  search-replace [options] <site> <search> <replace>  Search and replace in the database (dry run unless --apply)
+  help [command]                                      display help for command
 "
 ,
 }
@@ -3835,6 +4182,239 @@ Options:
 Examples:
   $ kinstactl dns records delete example.com A www
   $ kinstactl dns records delete example.com A www --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 59`] = `
+{
+  "code": 0,
+  "path": "wp",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl wp [options] [command]
+
+WordPress tools of an environment
+
+Options:
+  -h, --help                      display help for command
+
+Commands:
+  run [options] <site> <command>  Run a WP-CLI command in an environment
+  login [options] [site]          Create a one-time WordPress admin login link
+  user                            WordPress admin users
+  help [command]                  display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 60`] = `
+{
+  "code": 0,
+  "path": "wp run",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl wp run [options] <site> <command>
+
+Run a WP-CLI command in an environment
+
+Arguments:
+  site                 site name, display name or ID
+  command              the WP-CLI command, starting with "wp "
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl wp run klant-x "wp plugin list" --env live --yes
+  $ kinstactl wp run klant-x "wp core version" --env staging --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 61`] = `
+{
+  "code": 0,
+  "path": "wp login",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl wp login [options] [site]
+
+Create a one-time WordPress admin login link
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --email <email>      email of the WordPress admin user to log in as
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl wp login klant-x --env live --email admin@example.com
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 62`] = `
+{
+  "code": 0,
+  "path": "wp user",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl wp user [options] [command]
+
+WordPress admin users
+
+Options:
+  -h, --help                       display help for command
+
+Commands:
+  create [options] <site> <email>  Create a WordPress admin user
+  exists [options] <site> <email>  Check whether a WordPress admin user exists
+  help [command]                   display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 63`] = `
+{
+  "code": 0,
+  "path": "wp user create",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl wp user create [options] <site> <email>
+
+Create a WordPress admin user
+
+Arguments:
+  site                 site name, display name or ID
+  email                email of the new user
+
+Options:
+  --env <environment>  environment name or ID
+  --first-name <name>  first name of the user
+  --last-name <name>   last name of the user
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl wp user create klant-x ann@example.com --env live --first-name Ann --last-name Lee
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 64`] = `
+{
+  "code": 0,
+  "path": "wp user exists",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl wp user exists [options] <site> <email>
+
+Check whether a WordPress admin user exists
+
+Arguments:
+  site                 site name, display name or ID
+  email                email of the user
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl wp user exists klant-x ann@example.com --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 65`] = `
+{
+  "code": 0,
+  "path": "db",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl db [options] [command]
+
+Database tools of an environment
+
+Options:
+  -h, --help              display help for command
+
+Commands:
+  login [options] [site]  Create a phpMyAdmin login link
+  help [command]          display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 66`] = `
+{
+  "code": 0,
+  "path": "db login",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl db login [options] [site]
+
+Create a phpMyAdmin login link
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl db login klant-x --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 67`] = `
+{
+  "code": 0,
+  "path": "search-replace",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl search-replace [options] <site> <search> <replace>
+
+Search and replace in the database (dry run unless --apply)
+
+Arguments:
+  site                 site name, display name or ID
+  search               text to search for
+  replace              replacement text
+
+Options:
+  --env <environment>  environment name or ID
+  --apply              perform the replacement instead of reporting matches
+  --clear-cache        clear the cache after the replacement
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl search-replace klant-x http://old.example https://new.example --env live
+  $ kinstactl search-replace klant-x http://old.example https://new.example --env live --apply --clear-cache --yes
 "
 ,
 }
