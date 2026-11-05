@@ -29,7 +29,12 @@ export interface CommandNode {
     name: string;
     path: string;
     description: string;
-    arguments: {name: string; required: boolean; description: string}[];
+    arguments: {
+        name: string;
+        required: boolean;
+        description: string;
+        choices?: readonly string[];
+    }[];
     options: {flags: string; description: string}[];
     destructive: Destructive | null;
     endpoints: EndpointKey[];
@@ -138,6 +143,7 @@ export class CommandRegistry {
                     name: a.name,
                     required: a.required,
                     description: a.description,
+                    ...(a.choices && {choices: a.choices}),
                 })),
                 options: [
                     ...describeOptions(command.options),

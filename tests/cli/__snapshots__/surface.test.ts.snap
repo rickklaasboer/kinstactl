@@ -223,6 +223,11 @@ exports[`commands --json is unchanged 1`] = `
           "required": true,
         },
         {
+          "choices": [
+            "error",
+            "access",
+            "cache",
+          ],
           "description": "log type",
           "name": "type",
           "required": false,

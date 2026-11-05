@@ -282,6 +282,7 @@ describe('CommandRegistry', () => {
                                             name: 'type',
                                             required: false,
                                             description: 'log type',
+                                            choices: ['error', 'access'],
                                         },
                                     ],
                                     options: globals,

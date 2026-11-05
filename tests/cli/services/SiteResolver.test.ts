@@ -243,6 +243,42 @@ describe('resolveTarget', () => {
     });
 });
 
+describe('details', () => {
+    const routes = (envs: unknown[]) => ({
+        'GET /sites': {body: sitesBody},
+        'GET /sites/id-x/environments': {body: {site: {environments: envs}}},
+    });
+
+    test('returns the api environment of the target', async () => {
+        const {resolver, calls} = setup(
+            {},
+            routes([
+                {id: 'env-x-staging', cdn_cache_id: null},
+                {id: 'env-x-live', cdn_cache_id: 'cdn1'},
+            ]),
+        );
+        const target = await resolver.resolveTarget('klant-x', 'live', {
+            write: false,
+        });
+        const env = await resolver.details(target);
+        expect(env.cdn_cache_id).toBe('cdn1');
+        expect(calls.at(-1)!.url.pathname).toBe('/v2/sites/id-x/environments');
+    });
+
+    test('throws when the environment is missing from the response', async () => {
+        const {resolver} = setup(
+            {},
+            routes([{id: 'env-x-staging', cdn_cache_id: null}]),
+        );
+        const target = await resolver.resolveTarget('klant-x', 'live', {
+            write: false,
+        });
+        await expect(resolver.details(target)).rejects.toThrow(
+            'Environment env-x-live missing from the environments of klant-x',
+        );
+    });
+});
+
 describe('suggest', () => {
     test('orders by distance, is case-insensitive and honors max', () => {
         expect(suggest('KLNAT-X', ['klant-xyz', 'klant-x', 'other'])).toEqual([

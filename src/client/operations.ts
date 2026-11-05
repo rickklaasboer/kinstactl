@@ -19,6 +19,12 @@ export interface WaitOpts {
     random?: () => number;
 }
 
+/** From the 200 body of GET /operations/{operation_id}. */
+export interface OperationResult {
+    message: string | null;
+    data: unknown;
+}
+
 const DEFAULT_TIMEOUT_MS = 30 * 60_000;
 const FIRST_POLL_MS = 3_000;
 const START_INTERVAL_MS = 5_000;
@@ -54,7 +60,7 @@ export class Operation {
         }
     }
 
-    async wait(opts: WaitOpts = {}): Promise<void> {
+    async wait(opts: WaitOpts = {}): Promise<OperationResult> {
         const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS;
         const now = opts.now ?? Date.now;
         const sleep =
@@ -99,7 +105,11 @@ export class Operation {
                 );
             if (res.status === 200) {
                 opts.onPoll?.('done');
-                return;
+                const body = res.body as {data?: unknown} | null;
+                return {
+                    message: typeof message === 'string' ? message : null,
+                    data: body?.data,
+                };
             }
             if (res.status === 500) {
                 throw new OperationFailedError(

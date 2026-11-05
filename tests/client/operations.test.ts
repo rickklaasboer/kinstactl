@@ -82,6 +82,28 @@ describe('Operation.wait', () => {
         expect(time.now()).toBe(3_000 + 5_000 + 7_500);
     });
 
+    test('wait resolves with message and data of the finished operation', async () => {
+        const time = fakeTime();
+        const {transport} = fakeTransport([
+            {status: 202},
+            {
+                status: 200,
+                body: {message: 'Finished', status: 200, data: {out: 'x'}},
+            },
+        ]);
+        expect(await operationFor(transport, 'op-1').wait(base(time))).toEqual({
+            message: 'Finished',
+            data: {out: 'x'},
+        });
+        const bare = fakeTransport([
+            {status: 200, body: {message: 'Finished', status: 200}},
+        ]);
+        const result = await operationFor(bare.transport, 'op-1').wait(
+            base(fakeTime()),
+        );
+        expect(result.data).toBeUndefined();
+    });
+
     it('reports pending and done through onPoll after each poll', async () => {
         const time = fakeTime();
         const {transport} = fakeTransport([{status: 202}, {status: 200}]);

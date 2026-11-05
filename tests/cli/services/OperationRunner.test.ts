@@ -3,7 +3,10 @@ import {createContainer} from '@/cli/container';
 import {toCliError} from '@/cli/errors';
 import type {Io} from '@/cli/io';
 import {Output} from '@/cli/output';
-import {OperationRunner} from '@/cli/services/OperationRunner';
+import {
+    type ConfirmSpec,
+    OperationRunner,
+} from '@/cli/services/OperationRunner';
 import {RunContext} from '@/cli/services/RunContext';
 import type {RequestSpec} from '@/client/request';
 import {type FakeRoute, fakeKinsta} from '../../helpers/fakeKinsta';
@@ -28,9 +31,11 @@ async function exec(
     f: Partial<typeof flags> & {timeout?: number},
     opts: {
         json?: boolean;
-        confirm?: {action: string; level: 'confirm' | 'irreversible'};
+        confirm?: ConfirmSpec;
         spec?: RequestSpec;
         redact?: (body: unknown) => unknown;
+        via?: 'run' | 'send';
+        target?: false;
     } = {},
 ) {
     const fake = fakeKinsta(routes);
@@ -59,11 +64,12 @@ async function exec(
     const c = createContainer(io);
     c.resolve(RunContext).json = opts.json === true;
     let code = 0;
+    let result: unknown;
     try {
-        await c.resolve(OperationRunner).run({
+        result = await c.resolve(OperationRunner)[opts.via ?? 'run']({
             title: 'Clear cache',
             spec: opts.spec ?? spec,
-            target: {site, env},
+            target: opts.target === false ? undefined : {site, env},
             flags: {...flags, ...f},
             confirm: opts.confirm,
             redact: opts.redact,
@@ -73,7 +79,7 @@ async function exec(
         c.resolve(Output).error(err);
         code = err.exitCode;
     }
-    return {code, stdout, stderr, calls: fake.calls};
+    return {code, stdout, stderr, calls: fake.calls, result};
 }
 
 const started = {
@@ -248,5 +254,130 @@ describe('runOperation confirm ordering', () => {
         );
         expect(r.code).toBe(5);
         expect(r.calls).toEqual([]);
+    });
+
+    test('a confirm with where needs no target', async () => {
+        const r = await exec(
+            done,
+            {yes: true},
+            {
+                json: true,
+                target: false,
+                confirm: {...confirm, where: 'zone example.com'},
+            },
+        );
+        expect(r.code).toBe(0);
+        expect(r.calls[0]!.method).toBe('POST');
+    });
+
+    test('a confirm without target and without where is a programming error', async () => {
+        const r = await exec(done, {yes: true}, {target: false, confirm});
+        expect(r.calls).toEqual([]);
+        expect(r.stderr).toContain('confirm requires a target or where');
+    });
+});
+
+describe('runOperation result', () => {
+    test('run resolves with the operation result', async () => {
+        const r = await exec(
+            {
+                ...started,
+                'GET /operations/op1': {
+                    status: 200,
+                    body: {message: 'ok', status: 200},
+                },
+            },
+            {},
+            {json: true},
+        );
+        expect(r.result).toEqual({message: 'ok', data: undefined});
+    });
+
+    test('run resolves with undefined after a dry run and with --no-wait', async () => {
+        expect((await exec({}, {dryRun: true})).result).toBeUndefined();
+        expect((await exec(started, {wait: false})).result).toBeUndefined();
+    });
+});
+
+describe('send', () => {
+    const put: RequestSpec = {
+        endpoint: 'PUT /sites/tools/modify-php-version',
+        method: 'PUT',
+        path: '/zones/z1',
+        body: {a: 1},
+    };
+    const where = {
+        action: 'Overwrite zone',
+        level: 'confirm' as const,
+        where: 'zone example.com',
+    };
+    const sync = {'PUT /zones/z1': {body: {result: null}}};
+    const operation = {
+        'PUT /zones/z1': {body: {operation_id: 'op9', message: 'started'}},
+        'GET /operations/op9': {
+            status: 200,
+            body: {message: 'ok', status: 200},
+        },
+    };
+    const polled = (r: {calls: {url: URL}[]}) =>
+        r.calls.filter((c) => c.url.pathname.includes('/operations')).length;
+
+    test('sends a sync request after dry-run and confirmation and returns the body', async () => {
+        const r = await exec(
+            sync,
+            {yes: true},
+            {via: 'send', spec: put, target: false, confirm: where},
+        );
+        expect(r.code).toBe(0);
+        expect(r.result).toEqual({result: null});
+        expect(r.calls.map((c) => c.method)).toEqual(['PUT']);
+        expect(r.stdout).toBe('');
+    });
+
+    test('--dry-run sends nothing and resolves undefined', async () => {
+        const r = await exec(
+            sync,
+            {dryRun: true},
+            {via: 'send', spec: put, confirm: where},
+        );
+        expect(r.code).toBe(0);
+        expect(r.result).toBeUndefined();
+        expect(r.calls).toEqual([]);
+        expect(r.stdout).toContain('Dry run');
+    });
+
+    test('without --yes and without a TTY exits 5 and sends nothing', async () => {
+        const r = await exec(
+            sync,
+            {},
+            {
+                via: 'send',
+                spec: put,
+                target: false,
+                confirm: where,
+                json: true,
+            },
+        );
+        expect(r.code).toBe(5);
+        const error = JSON.parse(r.stderr).error;
+        expect(error.code).toBe('CONFIRMATION_REQUIRED');
+        expect(error.message).toContain('zone example.com');
+        expect(r.calls).toEqual([]);
+    });
+
+    test('waits when the body carries an operation_id', async () => {
+        const waited = await exec(operation, {}, {via: 'send', spec: put});
+        expect(waited.code).toBe(0);
+        expect(polled(waited)).toBe(1);
+        expect(waited.result).toEqual({
+            operation_id: 'op9',
+            message: 'started',
+        });
+        const unwaited = await exec(
+            operation,
+            {wait: false},
+            {via: 'send', spec: put},
+        );
+        expect(polled(unwaited)).toBe(0);
     });
 });

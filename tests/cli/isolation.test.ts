@@ -7,7 +7,15 @@ import type {Io} from '@/cli/io';
 import {Output} from '@/cli/output';
 import type {Prompts} from '@/cli/prompts';
 import {ClientProvider} from '@/cli/services/ClientProvider';
+import {BackupService} from '@/cli/commands/backups/BackupService';
+import {WpItemService} from '@/cli/commands/plugins/WpItemService';
+import {ConfigService} from '@/cli/services/ConfigService';
+import {ConfirmService} from '@/cli/services/ConfirmService';
+import {OperationRunner} from '@/cli/services/OperationRunner';
 import {RunContext} from '@/cli/services/RunContext';
+import {SecretInput} from '@/cli/services/SecretInput';
+import {SiteCache} from '@/cli/services/SiteCache';
+import {SiteResolver} from '@/cli/services/SiteResolver';
 import {runCli} from '../helpers/runCli';
 
 const sites = {
@@ -57,6 +65,36 @@ test('services are shared within a run and fresh per run', () => {
         expect(a.resolve(token)).toBe(a.resolve(token));
         expect(a.resolve(token)).not.toBe(b.resolve(token));
     }
+});
+
+test('every scoped service is run-scoped', () => {
+    const SCOPED: InjectionToken<object>[] = [
+        RunContext,
+        ConfigService,
+        ClientProvider,
+        SiteCache,
+        SiteResolver,
+        ConfirmService,
+        OperationRunner,
+        SecretInput,
+        WpItemService,
+        BackupService,
+    ];
+    const a = createContainer(io());
+    const b = createContainer(io());
+    for (const token of SCOPED) {
+        expect(a.resolve(token)).toBe(a.resolve(token));
+        expect(a.resolve(token)).not.toBe(b.resolve(token));
+    }
+    const files = readdirSync('src/cli', {
+        recursive: true,
+        encoding: 'utf8',
+    }).filter(
+        (f) =>
+            f.endsWith('.ts') &&
+            readFileSync(join('src/cli', f), 'utf8').includes('@scoped('),
+    );
+    expect(SCOPED.length).toBe(files.length);
 });
 
 test('src/cli uses no @singleton', () => {

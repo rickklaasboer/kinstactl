@@ -8,10 +8,12 @@ import type {EnvRef, SiteRef} from './SiteCache';
 
 export interface ConfirmArgs {
     action: string;
-    site: SiteRef;
+    site?: SiteRef;
     env?: EnvRef;
     flags: ActionFlags;
     level: Destructive;
+    /** Replaces the "<site display name> (<env>)" phrase; required when there is no site. */
+    where?: string;
 }
 
 /** Gates destructive actions behind --yes, --confirm or a prompt. */
@@ -29,9 +31,11 @@ export class ConfirmService {
      */
     async confirmDestructive(args: ConfirmArgs): Promise<void> {
         const {action, site, env, flags, level} = args;
-        const where = env
-            ? `${site.displayName} (${env.name})`
-            : site.displayName;
+        if (!site && args.where === undefined)
+            throw new Error('confirmDestructive: site or where is required');
+        const where =
+            args.where ??
+            (env ? `${site!.displayName} (${env.name})` : site!.displayName);
 
         if (level === 'confirm') {
             if (flags.yes) return;
@@ -48,6 +52,8 @@ export class ConfirmService {
                 );
             return;
         }
+
+        if (!site) throw new Error('irreversible confirmation needs a site');
 
         // Irreversible: --yes is deliberately not accepted, the site name must be typed or passed.
         const matches = (s: string) =>

@@ -74,6 +74,46 @@ describe('confirmDestructive: confirm level', () => {
     });
 });
 
+describe('confirmDestructive: where', () => {
+    test('where replaces the site phrase', async () => {
+        let asked = '';
+        const rt = runtime(true, {
+            confirm: async (m) => {
+                asked = m;
+                return true;
+            },
+        });
+        await rt.confirmDestructive({
+            action: 'Delete record',
+            where: 'zone example.com',
+            level: 'confirm',
+            flags: base,
+        });
+        expect(asked).toBe('Delete record on zone example.com?');
+    });
+
+    test('site or where is required', async () => {
+        await expect(
+            runtime(false).confirmDestructive({
+                action: 'Delete record',
+                level: 'confirm',
+                flags: {...base, yes: true},
+            }),
+        ).rejects.toThrow('confirmDestructive: site or where is required');
+    });
+
+    test('irreversible without a site throws', async () => {
+        await expect(
+            runtime(false).confirmDestructive({
+                action: 'Delete site',
+                where: 'somewhere',
+                level: 'irreversible',
+                flags: base,
+            }),
+        ).rejects.toThrow('irreversible confirmation needs a site');
+    });
+});
+
 describe('confirmDestructive: irreversible level', () => {
     const args = {
         action: 'Delete site',

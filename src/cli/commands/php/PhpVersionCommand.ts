@@ -1,11 +1,8 @@
 import {injectable} from 'tsyringe';
-import {listEnvironments} from '@/client/endpoints/environments';
 import {modifyPhpVersion} from '@/client/endpoints/tools';
-import type {components} from '@/client/generated/openapi';
 import type {EndpointKey} from '@/client/request';
 import {CliError} from '../../errors';
 import {Output} from '../../output';
-import {ClientProvider} from '../../services/ClientProvider';
 import {
     type ActionFlags,
     actionOptions,
@@ -18,8 +15,6 @@ import type {
     CommandArgs,
     OptionDef,
 } from '../BaseCommand';
-
-type EnvironmentsResponse = components['schemas']['GetEnvironments-Response'];
 
 type Options = {env?: string; autoUpdate: boolean} & ActionFlags;
 
@@ -61,7 +56,6 @@ export class PhpVersionCommand implements BaseCommand<Options> {
     constructor(
         private readonly resolver: SiteResolver,
         private readonly operations: OperationRunner,
-        private readonly clients: ClientProvider,
         private readonly output: Output,
     ) {}
 
@@ -75,16 +69,7 @@ export class PhpVersionCommand implements BaseCommand<Options> {
                 options.env,
                 {write: false},
             );
-            const res = await this.clients
-                .client()
-                .send<EnvironmentsResponse>(listEnvironments(target.site.id));
-            const env = res.site.environments.find(
-                (e) => e.id === target.env.id,
-            );
-            if (!env)
-                throw new Error(
-                    `Environment ${target.env.id} missing from the environments of ${target.site.name}`,
-                );
+            const env = await this.resolver.details(target);
             // The API reports "php8.3"; show it in the form the write command takes.
             const current = env.container_info.php_engine_version.replace(
                 /^php/,

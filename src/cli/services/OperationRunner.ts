@@ -1,7 +1,11 @@
 import {InvalidArgumentError} from 'commander';
 import {Listr, ListrLogger, PRESET_TIMER, ProcessOutput} from 'listr2';
 import {inject, Lifecycle, scoped} from 'tsyringe';
-import type {Operation} from '@/client/operations';
+import {
+    type Operation,
+    type OperationResult,
+    operationIdOf,
+} from '@/client/operations';
 import type {RequestSpec} from '@/client/request';
 import type {Destructive, OptionDef} from '../commands/BaseCommand';
 import {IO, type Io} from '../io';
@@ -67,13 +71,20 @@ export function actionOptions(o: {
     return defs;
 }
 
+export interface ConfirmSpec {
+    action: string;
+    level: Destructive;
+    /** Replaces the "<site> (<env>)" phrase; required when there is no target. */
+    where?: string;
+}
+
 export interface RunOperationArgs {
     title: string;
     spec: RequestSpec;
     target?: {site: SiteRef; env?: EnvRef};
     flags: ActionFlags;
     /** Destructive actions: dry-run returns first, then this confirms, then the request is sent. */
-    confirm?: {action: string; level: Destructive};
+    confirm?: ConfirmSpec;
     /** Applied to the body shown by --dry-run (JSON and human), never to the body that is sent. */
     redact?: (body: unknown) => unknown;
 }
@@ -97,7 +108,7 @@ export class OperationRunner {
         op: Operation,
         title: string,
         timeoutMinutes = DEFAULT_TIMEOUT_MINUTES,
-    ): Promise<void> {
+    ): Promise<OperationResult> {
         const waiting = op.wait({
             timeoutMs: timeoutMinutes * 60_000,
             sleep: this.ctx.sleep,
@@ -106,9 +117,9 @@ export class OperationRunner {
 
         if (!this.ctx.interactive) {
             this.output.info(`Waiting for ${title} (operation ${op.id})...`);
-            await waiting;
+            const result = await waiting;
             this.output.info(`${title} completed`);
-            return;
+            return result;
         }
 
         let renderError: unknown;
@@ -130,15 +141,17 @@ export class OperationRunner {
                 renderError = e;
             });
         // An operation failure rejects both promises; the operation's own error is the one to report.
-        await waiting;
+        const result = await waiting;
         await render;
         if (renderError !== undefined)
             this.output.info(
                 `Progress display failed (${renderError instanceof Error ? renderError.message : String(renderError)}); the operation itself completed`,
             );
+        return result;
     }
 
-    async run(args: RunOperationArgs): Promise<void> {
+    /** Dry-run print, then confirmation. False when nothing may be sent. */
+    private async prepare(args: RunOperationArgs): Promise<boolean> {
         const {title, spec, target, flags, confirm, redact} = args;
 
         if (flags.dryRun) {
@@ -179,20 +192,29 @@ export class OperationRunner {
                     return lines.join('\n');
                 },
             );
-            return;
+            return false;
         }
 
         if (confirm) {
-            if (!target)
-                throw new Error('runOperation: confirm requires a target');
+            if (!target && confirm.where === undefined)
+                throw new Error(
+                    'runOperation: confirm requires a target or where',
+                );
             await this.confirmer.confirmDestructive({
                 action: confirm.action,
-                site: target.site,
-                env: target.env,
+                site: target?.site,
+                env: target?.env,
                 flags,
                 level: confirm.level,
+                where: confirm.where,
             });
         }
+        return true;
+    }
+
+    async run(args: RunOperationArgs): Promise<OperationResult | undefined> {
+        if (!(await this.prepare(args))) return undefined;
+        const {title, spec, flags} = args;
 
         const op = await this.clients.client().start(spec);
 
@@ -203,13 +225,32 @@ export class OperationRunner {
                 status: 'pending',
             });
             this.output.info(`Follow with: kinstactl operations wait ${op.id}`);
-            return;
+            return undefined;
         }
 
-        await this.wait(op, title, flags.timeout);
+        const result = await this.wait(op, title, flags.timeout);
         this.output.success(`${title} completed`, {
             operation_id: op.id,
             status: 'completed',
         });
+        return result;
+    }
+
+    /**
+     * For endpoints that answer synchronously, or only sometimes start an operation: dry-run,
+     * confirmation, then one request. When the body carries an operation_id it is waited on like
+     * run() (unless flags.wait === false); resolves with the response body, or undefined after a
+     * dry run. Prints nothing on success: the caller prints its own result.
+     */
+    async send<T>(args: RunOperationArgs): Promise<T | undefined> {
+        if (!(await this.prepare(args))) return undefined;
+        const {title, spec, flags} = args;
+
+        const client = this.clients.client();
+        const body = await client.send<T>(spec);
+        const id = operationIdOf(body);
+        if (id !== null && flags.wait !== false)
+            await this.wait(client.operation(id), title, flags.timeout);
+        return body;
     }
 }

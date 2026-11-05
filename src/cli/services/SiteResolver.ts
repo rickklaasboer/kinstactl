@@ -1,9 +1,15 @@
 import {inject, Lifecycle, scoped} from 'tsyringe';
+import {listEnvironments} from '@/client/endpoints/environments';
+import type {components} from '@/client/generated/openapi';
 import {CliError} from '../errors';
 import {Output} from '../output';
 import {PROMPTS, type Prompts} from '../prompts';
+import {ClientProvider} from './ClientProvider';
 import {RunContext} from './RunContext';
 import {type EnvRef, SiteCache, type SiteRef} from './SiteCache';
+
+type EnvironmentsResponse = components['schemas']['GetEnvironments-Response'];
+export type ApiEnvironment = components['schemas']['Environment'];
 
 function distance(a: string, b: string): number {
     let prev = Array.from({length: b.length + 1}, (_, j) => j);
@@ -53,6 +59,7 @@ export class SiteResolver {
         private readonly cache: SiteCache,
         private readonly output: Output,
         @inject(PROMPTS) private readonly prompts: Prompts,
+        private readonly clients: ClientProvider,
     ) {}
 
     async resolveSite(
@@ -131,6 +138,22 @@ export class SiteResolver {
                 envs.map((e) => e.name),
             ),
         );
+    }
+
+    /** The environment as the API reports it (PHP version, CDN id, ...); always fresh. */
+    async details(target: {
+        site: SiteRef;
+        env: EnvRef;
+    }): Promise<ApiEnvironment> {
+        const res = await this.clients
+            .client()
+            .send<EnvironmentsResponse>(listEnvironments(target.site.id));
+        const env = res.site.environments.find((e) => e.id === target.env.id);
+        if (!env)
+            throw new Error(
+                `Environment ${target.env.id} missing from the environments of ${target.site.name}`,
+            );
+        return env;
     }
 
     /** Write commands always resolve against fresh data so a stale cache never targets a wrong ID. */
