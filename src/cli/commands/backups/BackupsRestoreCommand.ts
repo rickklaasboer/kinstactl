@@ -16,7 +16,11 @@ import type {
 } from '../BaseCommand';
 import {BackupService, formatTime, parseBackupId} from './BackupService';
 
-type Options = {env?: string; notify?: string} & ActionFlags;
+type Options = {
+    env?: string;
+    fromEnv?: string;
+    notify?: string;
+} & ActionFlags;
 
 @injectable()
 export class BackupsRestoreCommand implements BaseCommand<Options> {
@@ -36,6 +40,10 @@ export class BackupsRestoreCommand implements BaseCommand<Options> {
             description: 'environment to restore to (default: the only one)',
         },
         {
+            flags: '--from-env <environment>',
+            description: 'environment the backup was taken on (default: --env)',
+        },
+        {
             flags: '--notify <email>',
             description: 'company user to notify when the restore finishes',
         },
@@ -44,6 +52,7 @@ export class BackupsRestoreCommand implements BaseCommand<Options> {
     readonly examples = [
         'kinstactl backups restore klant-x 123456789 --notify rick@example.com',
         'kinstactl backups restore klant-x 123456789 --env staging --notify rick@example.com --yes',
+        'kinstactl backups restore klant-x 123456789 --from-env staging --env live --notify rick@example.com',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites/environments/{env_id}/backups',
@@ -60,20 +69,24 @@ export class BackupsRestoreCommand implements BaseCommand<Options> {
 
     async execute(args: CommandArgs, options: Options): Promise<void> {
         const id = parseBackupId(args.backupId as string);
-        const target = await this.resolver.resolveTarget(
-            args.site,
-            options.env,
-            {write: true},
-        );
-        const backup = await this.backups.findBackup(target, id);
+        const site = await this.resolver.resolveSite(args.site, {fresh: true});
+        const to = await this.resolver.resolveEnv(site, options.env);
+        const from =
+            options.fromEnv === undefined
+                ? to
+                : await this.resolver.resolveEnv(site, options.fromEnv, {
+                      flag: '--from-env',
+                      message: 'Restore a backup of which environment?',
+                  });
+        const backup = await this.backups.findBackup({site, env: from}, id);
         const userId = await this.backups.resolveNotifiedUser(options.notify);
         await this.operations.run({
-            title: `Restore backup ${id} to ${target.site.name} (${target.env.name})`,
-            spec: restoreBackup(target.env.id, id, userId),
-            target,
+            title: `Restore backup ${id} from ${from.name} to ${site.name} (${to.name})`,
+            spec: restoreBackup(to.id, id, userId),
+            target: {site, env: to},
             flags: options,
             confirm: {
-                action: `Restore backup ${id} (${formatTime(backup.created_at)})`,
+                action: `Restore backup ${id} (${formatTime(backup.created_at)}) from ${from.name}`,
                 level: 'confirm',
             },
         });

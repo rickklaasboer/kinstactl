@@ -263,6 +263,199 @@ describe('backups restore', () => {
     });
 });
 
+describe('backups restore --from-env', () => {
+    const SITES_2ENV = {
+        company: {
+            sites: [
+                {
+                    id: 'site-1',
+                    name: 'klant-x',
+                    display_name: 'Klant X',
+                    status: 'live',
+                    environments: [
+                        {id: 'env-live', name: 'live', display_name: 'Live'},
+                        {
+                            id: 'env-stg',
+                            name: 'staging',
+                            display_name: 'Staging',
+                        },
+                    ],
+                },
+            ],
+        },
+    };
+    const EMPTY = {environment: {display_name: 'Live', backups: []}};
+    const two = {
+        'GET /sites': {body: SITES_2ENV},
+        'GET /sites/environments/env-stg/backups': {body: BACKUPS},
+        'GET /sites/environments/env-live/backups': {body: EMPTY},
+        'GET /company/c1/users': {body: USERS},
+        'POST /sites/environments/env-live/backups/restore': {
+            status: 202,
+            body: {operation_id: 'op1'},
+        },
+        'GET /operations/op1': {status: 200},
+    };
+    const gets = <T extends {method: string; url: URL}>(calls: T[]) =>
+        calls
+            .filter((c) => c.method === 'GET')
+            .map((c) => c.url.pathname.replace(/^\/v2/, ''));
+
+    test('restore --from-env looks the backup up on the source and restores onto --env', async () => {
+        const r = await runCli(
+            [
+                'backups',
+                'restore',
+                'klant-x',
+                '123',
+                '--from-env',
+                'staging',
+                '--env',
+                'live',
+                '--notify',
+                'rick@example.com',
+                '--yes',
+                '--json',
+            ],
+            {routes: two},
+        );
+        expect(r.code).toBe(0);
+        const sent = posts(r.calls);
+        expect(sent).toHaveLength(1);
+        expect(sent[0]!.url.pathname).toEndWith(
+            '/sites/environments/env-live/backups/restore',
+        );
+        expect(sent[0]!.body).toEqual({
+            backup_id: 123,
+            notified_user_id: 'user-uuid-1',
+        });
+        expect(gets(r.calls)).toContain('/sites/environments/env-stg/backups');
+        expect(gets(r.calls)).not.toContain(
+            '/sites/environments/env-live/backups',
+        );
+    });
+
+    test('restore --from-env with a backup missing on the source names the source', async () => {
+        const r = await runCli(
+            [
+                'backups',
+                'restore',
+                'klant-x',
+                '123',
+                '--from-env',
+                'staging',
+                '--env',
+                'live',
+                '--notify',
+                'rick@example.com',
+                '--yes',
+                '--json',
+            ],
+            {
+                routes: {
+                    ...two,
+                    'GET /sites/environments/env-stg/backups': {body: EMPTY},
+                    'GET /sites/environments/env-live/backups': {
+                        body: BACKUPS,
+                    },
+                },
+            },
+        );
+        expect(r.code).toBe(2);
+        expect(JSON.parse(r.stderr).error.message).toBe(
+            'backup 123 not found on klant-x (staging)',
+        );
+        expect(posts(r.calls)).toHaveLength(0);
+    });
+
+    test('confirmation names both environments', async () => {
+        let message = '';
+        const r = await runCli(
+            [
+                'backups',
+                'restore',
+                'klant-x',
+                '123',
+                '--from-env',
+                'staging',
+                '--env',
+                'live',
+                '--notify',
+                'rick@example.com',
+            ],
+            {
+                routes: two,
+                tty: true,
+                prompts: {
+                    confirm: async (m: string) => {
+                        message = m;
+                        return true;
+                    },
+                },
+            },
+        );
+        expect(r.code).toBe(0);
+        expect(message).toContain('from staging');
+        expect(message).toContain('(live)');
+    });
+
+    test('non-interactive without --yes exits 5, naming both, and sends nothing', async () => {
+        const r = await runCli(
+            [
+                'backups',
+                'restore',
+                'klant-x',
+                '123',
+                '--from-env',
+                'staging',
+                '--env',
+                'live',
+                '--notify',
+                'rick@example.com',
+                '--json',
+            ],
+            {routes: two},
+        );
+        expect(r.code).toBe(5);
+        const message = JSON.parse(r.stderr).error.message;
+        expect(message).toContain('from staging');
+        expect(message).toContain('(live)');
+        expect(posts(r.calls)).toHaveLength(0);
+    });
+
+    test('--from-env equal to --env is a plain restore', async () => {
+        const r = await runCli(
+            [
+                'backups',
+                'restore',
+                'klant-x',
+                '123',
+                '--from-env',
+                'live',
+                '--env',
+                'live',
+                '--notify',
+                'rick@example.com',
+                '--yes',
+                '--json',
+            ],
+            {
+                routes: {
+                    ...two,
+                    'GET /sites/environments/env-live/backups': {
+                        body: BACKUPS,
+                    },
+                },
+            },
+        );
+        expect(r.code).toBe(0);
+        expect(posts(r.calls)).toHaveLength(1);
+        expect(gets(r.calls)).not.toContain(
+            '/sites/environments/env-stg/backups',
+        );
+    });
+});
+
 describe('backups delete', () => {
     const deleteRoute = {
         'DELETE /sites/environments/backups/123': {

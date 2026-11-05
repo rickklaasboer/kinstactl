@@ -1903,6 +1903,10 @@ exports[`commands --json is unchanged 1`] = `
               "flags": "--env <name>",
             },
             {
+              "description": "environment the backup was taken on (default: --env)",
+              "flags": "--from-env <environment>",
+            },
+            {
               "description": "company user to notify when the restore finishes",
               "flags": "--notify <email>",
             },
@@ -4473,21 +4477,24 @@ exports[`help of every command and group is unchanged 50`] = `
 Restore a backup, replacing the environment
 
 Arguments:
-  site                 site name or ID
-  backup-id            backup ID, see: backups list
+  site                      site name or ID
+  backup-id                 backup ID, see: backups list
 
 Options:
-  --env <name>         environment to restore to (default: the only one)
-  --notify <email>     company user to notify when the restore finishes
-  --dry-run            print the resolved target and request; change nothing
-  --no-wait            return the operation ID instead of waiting
-  --timeout <minutes>  give up waiting after this many minutes (default 30)
-  --yes                skip the confirmation prompt
-  -h, --help           display help for command
+  --env <name>              environment to restore to (default: the only one)
+  --from-env <environment>  environment the backup was taken on (default: --env)
+  --notify <email>          company user to notify when the restore finishes
+  --dry-run                 print the resolved target and request; change
+                            nothing
+  --no-wait                 return the operation ID instead of waiting
+  --timeout <minutes>       give up waiting after this many minutes (default 30)
+  --yes                     skip the confirmation prompt
+  -h, --help                display help for command
 
 Examples:
   $ kinstactl backups restore klant-x 123456789 --notify rick@example.com
   $ kinstactl backups restore klant-x 123456789 --env staging --notify rick@example.com --yes
+  $ kinstactl backups restore klant-x 123456789 --from-env staging --env live --notify rick@example.com
 "
 ,
 }
