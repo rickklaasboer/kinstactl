@@ -4,11 +4,12 @@ import type {components} from '@/client/generated/openapi';
 import {Output} from '../../output';
 import {ClientProvider} from '../../services/ClientProvider';
 import {SiteResolver} from '../../services/SiteResolver';
-import type {
-    ArgumentDef,
-    BaseCommand,
-    CommandArgs,
-    OptionDef,
+import {
+    type ArgumentDef,
+    type BaseCommand,
+    type CommandArgs,
+    type OptionDef,
+    siteArgument,
 } from '../BaseCommand';
 
 type SiteResponse = components['schemas']['SiteById-Response'];
@@ -17,13 +18,7 @@ type SiteResponse = components['schemas']['SiteById-Response'];
 export class SitesGetCommand implements BaseCommand {
     readonly name = 'sites get';
     readonly description = 'Show the details of a site';
-    readonly arguments: ArgumentDef[] = [
-        {
-            name: 'site',
-            required: true,
-            description: 'site name, display name or ID',
-        },
-    ];
+    readonly arguments: ArgumentDef[] = [siteArgument()];
     readonly options: OptionDef[] = [];
     readonly examples = [
         'kinstactl sites get klant-x',

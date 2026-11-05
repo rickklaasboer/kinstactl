@@ -3,11 +3,12 @@ import type {EndpointKey} from '@/client/request';
 import pc from 'picocolors';
 import {Output} from '../../output';
 import {SiteResolver} from '../../services/SiteResolver';
-import type {
-    ArgumentDef,
-    BaseCommand,
-    CommandArgs,
-    OptionDef,
+import {
+    type ArgumentDef,
+    type BaseCommand,
+    type CommandArgs,
+    type OptionDef,
+    siteArgument,
 } from '../BaseCommand';
 import {hasUpdate, type WpItemKind} from './WpItemKind';
 import {WpItemService} from './WpItemService';
@@ -34,9 +35,7 @@ export abstract class WpItemListCommand implements BaseCommand {
         return `List the ${this.kind.command} of an environment`;
     }
 
-    readonly arguments: ArgumentDef[] = [
-        {name: 'site', required: true, description: 'site name or ID'},
-    ];
+    readonly arguments: ArgumentDef[] = [siteArgument('site name or ID')];
 
     get options(): OptionDef[] {
         return [

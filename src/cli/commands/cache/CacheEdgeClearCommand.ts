@@ -6,24 +6,19 @@ import {
     OperationRunner,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
-import type {
-    ArgumentDef,
-    BaseCommand,
-    CommandArgs,
-    OptionDef,
+import {
+    type ArgumentDef,
+    type BaseCommand,
+    type CommandArgs,
+    type OptionDef,
+    siteArgument,
 } from '../BaseCommand';
 
 @injectable()
 export class CacheEdgeClearCommand implements BaseCommand {
     readonly name = 'cache edge clear';
     readonly description = 'Clear the edge cache of an environment';
-    readonly arguments: ArgumentDef[] = [
-        {
-            name: 'site',
-            required: true,
-            description: 'site name, display name or ID',
-        },
-    ];
+    readonly arguments: ArgumentDef[] = [siteArgument()];
     readonly options: OptionDef[] = [
         {flags: '--env <environment>', description: 'environment name or ID'},
         {flags: '--url <url>', description: 'clear only this URL'},

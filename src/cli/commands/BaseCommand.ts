@@ -17,6 +17,17 @@ export interface OptionDef {
     default?: unknown;
 }
 
+/**
+ * The optional `[site]` argument, which opens the site picker when omitted.
+ * Only valid as the last positional: with another positional after it,
+ * Commander would put that value into `site`.
+ */
+export function siteArgument(
+    description = 'site name, display name or ID',
+): ArgumentDef {
+    return {name: 'site', required: false, description};
+}
+
 /** Positional values by the camelCase of their name ('backup-id' becomes 'backupId'). */
 export type CommandArgs = Record<string, string | undefined>;
 

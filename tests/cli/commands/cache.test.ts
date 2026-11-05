@@ -69,6 +69,38 @@ describe('cache clear', () => {
         });
     });
 
+    test('cache clear without a site opens the site picker on a TTY', async () => {
+        let searchCalls = 0;
+        const r = await runCli(['cache', 'clear', '--env', 'live'], {
+            tty: true,
+            prompts: {
+                search: (async (
+                    _message: string,
+                    options: {value: unknown; label: string}[],
+                ) => {
+                    searchCalls++;
+                    return options.find((o) => o.label.includes('klant-x'))!
+                        .value;
+                }) as never,
+            },
+            routes: {
+                ...sites,
+                'POST /sites/tools/clear-cache': started('op1'),
+                'GET /operations/op1': {status: 200},
+            },
+        });
+        expect(r.code).toBe(0);
+        expect(searchCalls).toBe(1);
+        const post = r.calls.find((c) => c.method === 'POST')!;
+        expect(post.body).toEqual({environment_id: 'env-live'});
+    });
+
+    test('cache clear without a site fails without a TTY', async () => {
+        const r = await runCli(['cache', 'clear', '--env', 'live']);
+        expect(r.code).toBe(2);
+        expect(r.stderr).toContain('Missing <site>');
+    });
+
     test('several environments without --env exits 2', async () => {
         const r = await runCli(['cache', 'clear', 'klant-x', '--json'], {
             routes: sites,

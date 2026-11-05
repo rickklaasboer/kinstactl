@@ -2,11 +2,12 @@ import {injectable} from 'tsyringe';
 import type {EndpointKey} from '@/client/request';
 import {Output} from '../../output';
 import {SiteResolver} from '../../services/SiteResolver';
-import type {
-    ArgumentDef,
-    BaseCommand,
-    CommandArgs,
-    OptionDef,
+import {
+    type ArgumentDef,
+    type BaseCommand,
+    type CommandArgs,
+    type OptionDef,
+    siteArgument,
 } from '../BaseCommand';
 import {BackupService, formatTime} from './BackupService';
 
@@ -14,9 +15,7 @@ import {BackupService, formatTime} from './BackupService';
 export class BackupsListCommand implements BaseCommand {
     readonly name = 'backups list';
     readonly description = 'List the backups of an environment, newest first';
-    readonly arguments: ArgumentDef[] = [
-        {name: 'site', required: true, description: 'site name or ID'},
-    ];
+    readonly arguments: ArgumentDef[] = [siteArgument('site name or ID')];
     readonly options: OptionDef[] = [
         {
             flags: '--env <name>',

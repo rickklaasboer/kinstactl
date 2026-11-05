@@ -307,6 +307,24 @@ describe('CommandRegistry', () => {
         });
     });
 
+    test('site is optional unless another positional follows it', () => {
+        for (const entry of COMMANDS) {
+            if (!('prototype' in entry)) continue;
+            const command = createProgramContainer(io()).resolve(
+                entry as new (
+                    ...deps: unknown[]
+                ) => BaseCommand,
+            );
+            const index = command.arguments.findIndex((a) => a.name === 'site');
+            if (index === -1) continue;
+            const isLast = index === command.arguments.length - 1;
+            expect({
+                command: command.name,
+                required: command.arguments[index]?.required,
+            }).toEqual({command: command.name, required: !isLast});
+        }
+    });
+
     test('every command class resolves from a fresh container', () => {
         for (const entry of COMMANDS) {
             if (!('prototype' in entry)) continue;

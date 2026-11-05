@@ -308,7 +308,7 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name, display name or ID",
               "name": "site",
-              "required": true,
+              "required": false,
             },
           ],
           "commands": [],
@@ -351,7 +351,7 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name, display name or ID",
               "name": "site",
-              "required": true,
+              "required": false,
             },
           ],
           "commands": [],
@@ -383,7 +383,7 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name, display name or ID",
               "name": "site",
-              "required": true,
+              "required": false,
             },
           ],
           "commands": [],
@@ -466,7 +466,7 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name, display name or ID",
               "name": "site",
-              "required": true,
+              "required": false,
             },
           ],
           "commands": [],
@@ -516,7 +516,7 @@ exports[`commands --json is unchanged 1`] = `
                 {
                   "description": "site name, display name or ID",
                   "name": "site",
-                  "required": true,
+                  "required": false,
                 },
               ],
               "commands": [],
@@ -582,7 +582,7 @@ exports[`commands --json is unchanged 1`] = `
                 {
                   "description": "site name, display name or ID",
                   "name": "site",
-                  "required": true,
+                  "required": false,
                 },
               ],
               "commands": [],
@@ -649,7 +649,7 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name, display name or ID",
               "name": "site",
-              "required": true,
+              "required": false,
             },
           ],
           "commands": [],
@@ -764,7 +764,7 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name or ID",
               "name": "site",
-              "required": true,
+              "required": false,
             },
           ],
           "commands": [],
@@ -872,7 +872,7 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name or ID",
               "name": "site",
-              "required": true,
+              "required": false,
             },
           ],
           "commands": [],
@@ -980,7 +980,7 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name or ID",
               "name": "site",
-              "required": true,
+              "required": false,
             },
           ],
           "commands": [],
@@ -1019,7 +1019,7 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name or ID",
               "name": "site",
-              "required": true,
+              "required": false,
             },
           ],
           "commands": [],
@@ -1228,28 +1228,28 @@ operations  Inspect and follow long-running Kinsta operations
 logs <site> [type]  Read the error, access or cache log of an environment
 sites  List and inspect Kinsta sites
   list  List the sites of the company
-  get <site>  Show the details of a site
+  get [site]  Show the details of a site
 env  List and manage environments of a site
-  list <site>  List the environments of a site
-  push <site>  Push the database and/or files of one environment to another
+  list [site]  List the environments of a site
+  push [site]  Push the database and/or files of one environment to another
 cache  Clear the caches of a site environment
-  clear <site>  Clear the site cache of an environment
+  clear [site]  Clear the site cache of an environment
   edge  Edge cache
-    clear <site>  Clear the edge cache of an environment
+    clear [site]  Clear the edge cache of an environment
   cdn  CDN cache
-    clear <site>  Clear the CDN cache of an environment
+    clear [site]  Clear the CDN cache of an environment
 php  Manage the PHP engine of a site environment
-  restart <site>  Restart the PHP engine of an environment
+  restart [site]  Restart the PHP engine of an environment
   version <site> [version]  Show the PHP version of an environment, or change it
 plugins  List and update WordPress plugins
-  list <site>  List the plugins of an environment
+  list [site]  List the plugins of an environment
   update <site> [name]  Update one plugin, or all plugins with an update
 themes  List and update WordPress themes
-  list <site>  List the themes of an environment
+  list [site]  List the themes of an environment
   update <site> [name]  Update one theme, or all themes with an update
 backups  List, create, restore and delete backups
-  list <site>  List the backups of an environment, newest first
-  create <site>  Create a manual backup
+  list [site]  List the backups of an environment, newest first
+  create [site]  Create a manual backup
   restore <site> <backup-id>  Restore a backup, replacing the environment
   delete <site> <backup-id>  Delete a backup
 "
@@ -1543,7 +1543,7 @@ Options:
 
 Commands:
   list [options]  List the sites of the company
-  get <site>      Show the details of a site
+  get [site]      Show the details of a site
   help [command]  display help for command
 "
 ,
@@ -1579,7 +1579,7 @@ exports[`help of every command and group is unchanged 14`] = `
   "path": "sites get",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl sites get [options] <site>
+"Usage: kinstactl sites get [options] [site]
 
 Show the details of a site
 
@@ -1611,8 +1611,8 @@ Options:
   -h, --help             display help for command
 
 Commands:
-  list <site>            List the environments of a site
-  push [options] <site>  Push the database and/or files of one environment to
+  list [site]            List the environments of a site
+  push [options] [site]  Push the database and/or files of one environment to
                          another
   help [command]         display help for command
 "
@@ -1626,7 +1626,7 @@ exports[`help of every command and group is unchanged 16`] = `
   "path": "env list",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl env list [options] <site>
+"Usage: kinstactl env list [options] [site]
 
 List the environments of a site
 
@@ -1650,7 +1650,7 @@ exports[`help of every command and group is unchanged 17`] = `
   "path": "env push",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl env push [options] <site>
+"Usage: kinstactl env push [options] [site]
 
 Push the database and/or files of one environment to another
 
@@ -1692,7 +1692,7 @@ Options:
   -h, --help              display help for command
 
 Commands:
-  clear [options] <site>  Clear the site cache of an environment
+  clear [options] [site]  Clear the site cache of an environment
   edge                    Edge cache
   cdn                     CDN cache
   help [command]          display help for command
@@ -1707,7 +1707,7 @@ exports[`help of every command and group is unchanged 19`] = `
   "path": "cache clear",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl cache clear [options] <site>
+"Usage: kinstactl cache clear [options] [site]
 
 Clear the site cache of an environment
 
@@ -1743,7 +1743,7 @@ Options:
   -h, --help              display help for command
 
 Commands:
-  clear [options] <site>  Clear the edge cache of an environment
+  clear [options] [site]  Clear the edge cache of an environment
   help [command]          display help for command
 "
 ,
@@ -1756,7 +1756,7 @@ exports[`help of every command and group is unchanged 21`] = `
   "path": "cache edge clear",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl cache edge clear [options] <site>
+"Usage: kinstactl cache edge clear [options] [site]
 
 Clear the edge cache of an environment
 
@@ -1794,7 +1794,7 @@ Options:
   -h, --help              display help for command
 
 Commands:
-  clear [options] <site>  Clear the CDN cache of an environment
+  clear [options] [site]  Clear the CDN cache of an environment
   help [command]          display help for command
 "
 ,
@@ -1807,7 +1807,7 @@ exports[`help of every command and group is unchanged 23`] = `
   "path": "cache cdn clear",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl cache cdn clear [options] <site>
+"Usage: kinstactl cache cdn clear [options] [site]
 
 Clear the CDN cache of an environment
 
@@ -1843,7 +1843,7 @@ Options:
   -h, --help                          display help for command
 
 Commands:
-  restart [options] <site>            Restart the PHP engine of an environment
+  restart [options] [site]            Restart the PHP engine of an environment
   version [options] <site> [version]  Show the PHP version of an environment, or
                                       change it
   help [command]                      display help for command
@@ -1858,7 +1858,7 @@ exports[`help of every command and group is unchanged 25`] = `
   "path": "php restart",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl php restart [options] <site>
+"Usage: kinstactl php restart [options] [site]
 
 Restart the PHP engine of an environment
 
@@ -1925,7 +1925,7 @@ Options:
   -h, --help                      display help for command
 
 Commands:
-  list [options] <site>           List the plugins of an environment
+  list [options] [site]           List the plugins of an environment
   update [options] <site> [name]  Update one plugin, or all plugins with an
                                   update
   help [command]                  display help for command
@@ -1940,7 +1940,7 @@ exports[`help of every command and group is unchanged 28`] = `
   "path": "plugins list",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl plugins list [options] <site>
+"Usage: kinstactl plugins list [options] [site]
 
 List the plugins of an environment
 
@@ -2004,7 +2004,7 @@ Options:
   -h, --help                      display help for command
 
 Commands:
-  list [options] <site>           List the themes of an environment
+  list [options] [site]           List the themes of an environment
   update [options] <site> [name]  Update one theme, or all themes with an update
   help [command]                  display help for command
 "
@@ -2018,7 +2018,7 @@ exports[`help of every command and group is unchanged 31`] = `
   "path": "themes list",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl themes list [options] <site>
+"Usage: kinstactl themes list [options] [site]
 
 List the themes of an environment
 
@@ -2082,9 +2082,9 @@ Options:
   -h, --help                            display help for command
 
 Commands:
-  list [options] <site>                 List the backups of an environment,
+  list [options] [site]                 List the backups of an environment,
                                         newest first
-  create [options] <site>               Create a manual backup
+  create [options] [site]               Create a manual backup
   restore [options] <site> <backup-id>  Restore a backup, replacing the
                                         environment
   delete [options] <site> <backup-id>   Delete a backup
@@ -2100,7 +2100,7 @@ exports[`help of every command and group is unchanged 34`] = `
   "path": "backups list",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl backups list [options] <site>
+"Usage: kinstactl backups list [options] [site]
 
 List the backups of an environment, newest first
 
@@ -2126,7 +2126,7 @@ exports[`help of every command and group is unchanged 35`] = `
   "path": "backups create",
   "stderr": "",
   "stdout": 
-"Usage: kinstactl backups create [options] <site>
+"Usage: kinstactl backups create [options] [site]
 
 Create a manual backup
 

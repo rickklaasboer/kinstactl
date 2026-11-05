@@ -7,11 +7,12 @@ import {
     OperationRunner,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
-import type {
-    ArgumentDef,
-    BaseCommand,
-    CommandArgs,
-    OptionDef,
+import {
+    type ArgumentDef,
+    type BaseCommand,
+    type CommandArgs,
+    type OptionDef,
+    siteArgument,
 } from '../BaseCommand';
 
 interface PushOptions extends ActionFlags {
@@ -28,13 +29,7 @@ export class EnvPushCommand implements BaseCommand {
     readonly name = 'env push';
     readonly description =
         'Push the database and/or files of one environment to another';
-    readonly arguments: ArgumentDef[] = [
-        {
-            name: 'site',
-            required: true,
-            description: 'site name, display name or ID',
-        },
-    ];
+    readonly arguments: ArgumentDef[] = [siteArgument()];
     readonly options: OptionDef[] = [
         {flags: '--from <env>', description: 'source environment'},
         {

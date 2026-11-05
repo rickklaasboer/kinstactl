@@ -7,20 +7,19 @@ import {
     OperationRunner,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
-import type {
-    ArgumentDef,
-    BaseCommand,
-    CommandArgs,
-    OptionDef,
+import {
+    type ArgumentDef,
+    type BaseCommand,
+    type CommandArgs,
+    type OptionDef,
+    siteArgument,
 } from '../BaseCommand';
 
 @injectable()
 export class BackupsCreateCommand implements BaseCommand {
     readonly name = 'backups create';
     readonly description = 'Create a manual backup';
-    readonly arguments: ArgumentDef[] = [
-        {name: 'site', required: true, description: 'site name or ID'},
-    ];
+    readonly arguments: ArgumentDef[] = [siteArgument('site name or ID')];
     readonly options: OptionDef[] = [
         {
             flags: '--env <name>',

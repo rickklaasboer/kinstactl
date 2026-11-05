@@ -6,24 +6,19 @@ import {
     OperationRunner,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
-import type {
-    ArgumentDef,
-    BaseCommand,
-    CommandArgs,
-    OptionDef,
+import {
+    type ArgumentDef,
+    type BaseCommand,
+    type CommandArgs,
+    type OptionDef,
+    siteArgument,
 } from '../BaseCommand';
 
 @injectable()
 export class PhpRestartCommand implements BaseCommand {
     readonly name = 'php restart';
     readonly description = 'Restart the PHP engine of an environment';
-    readonly arguments: ArgumentDef[] = [
-        {
-            name: 'site',
-            required: true,
-            description: 'site name, display name or ID',
-        },
-    ];
+    readonly arguments: ArgumentDef[] = [siteArgument()];
     readonly options: OptionDef[] = [
         {flags: '--env <environment>', description: 'environment name or ID'},
         ...actionOptions({dryRun: true, wait: true}),
