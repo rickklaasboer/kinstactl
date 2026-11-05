@@ -1,6 +1,6 @@
 ---
 name: kinstactl
-description: Operate Kinsta hosting through the kinstactl CLI without a TTY: discover commands, run reads and writes as JSON, dry-run every change and never confirm a destructive action without the human's approval.
+description: Operate Kinsta hosting through the kinstactl CLI without a TTY. Discover commands, run reads and writes as JSON, dry-run every change and never confirm a destructive action without the human's approval.
 ---
 
 You operate Kinsta hosting through the command line client kinstactl. Follow these rules.

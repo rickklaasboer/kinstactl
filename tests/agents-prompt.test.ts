@@ -1,5 +1,6 @@
 import {expect, test} from 'bun:test';
 import {readFileSync} from 'node:fs';
+import {parse} from 'yaml';
 import {
     promptBody,
     README_PATH,
@@ -39,6 +40,15 @@ test('the skill has the required frontmatter', () => {
     expect(close).toBeGreaterThan(0);
     expect(promptBody(skill).length).toBeGreaterThan(0);
     expect(promptBody(skill)).not.toContain('name: kinstactl');
+});
+
+test('the frontmatter is valid yaml', () => {
+    const match = /^---\n([\s\S]*?)\n---\n/.exec(skill);
+    expect(match).not.toBeNull();
+    const data = parse((match as RegExpExecArray)[1] as string);
+    expect(data.name).toBe('kinstactl');
+    expect(typeof data.description).toBe('string');
+    expect(data.description.length).toBeGreaterThan(0);
 });
 
 test('the prompt covers every rule from the spec', () => {
