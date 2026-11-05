@@ -634,6 +634,40 @@ exports[`commands --json is unchanged 1`] = `
           ],
           "path": "sites php-allocation",
         },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Visits, bandwidth and CDN bandwidth of a site this month",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/{site_id}/usage/visits/this-month",
+            "GET /sites/{site_id}/usage/bandwidth/this-month",
+            "GET /sites/{site_id}/usage/cdn-bandwidth/this-month",
+          ],
+          "name": "usage",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "sites usage",
+        },
       ],
       "description": "Manage Kinsta sites",
       "destructive": null,
@@ -3458,6 +3492,100 @@ exports[`commands --json is unchanged 1`] = `
       "options": [],
       "path": "security",
     },
+    {
+      "arguments": [
+        {
+          "choices": [
+            "visits",
+            "bandwidth",
+            "cdn-bandwidth",
+            "diskspace",
+            "top-countries",
+            "top-cities",
+            "top-ips",
+            "top-asns",
+            "top-browsers",
+            "top-hosts",
+            "top-referrers",
+            "top-user-agents",
+            "visits-dispersion",
+            "response-codes",
+            "bot-traffic-flow",
+            "bot-requests",
+            "bot-protection-results",
+            "bot-top-breakdown",
+          ],
+          "description": "metric: visits, bandwidth, cdn-bandwidth, diskspace, top-countries, top-cities, top-ips, top-asns, top-browsers, top-hosts, top-referrers, top-user-agents, visits-dispersion, response-codes, bot-traffic-flow, bot-requests, bot-protection-results, bot-top-breakdown",
+          "name": "metric",
+          "required": true,
+        },
+        {
+          "description": "site name, display name or ID",
+          "name": "site",
+          "required": false,
+        },
+      ],
+      "commands": [],
+      "description": "Traffic, bandwidth, disk and bot analytics of an environment",
+      "destructive": null,
+      "endpoints": [
+        "GET /sites",
+        "GET /sites/environments/{env_id}/analytics/visits",
+        "GET /sites/environments/{env_id}/analytics/bandwidth",
+        "GET /sites/environments/{env_id}/analytics/cdn-bandwidth",
+        "GET /sites/environments/{env_id}/analytics/top-countries",
+        "GET /sites/environments/{env_id}/analytics/top-cities",
+        "GET /sites/environments/{env_id}/analytics/top-client-ips",
+        "GET /sites/environments/{env_id}/analytics/top-asns",
+        "GET /sites/environments/{env_id}/analytics/top-browsers",
+        "GET /sites/environments/{env_id}/analytics/top-hosts",
+        "GET /sites/environments/{env_id}/analytics/top-referrers",
+        "GET /sites/environments/{env_id}/analytics/top-uas",
+        "GET /sites/environments/{env_id}/analytics/visits-dispersion",
+        "GET /sites/environments/{env_id}/analytics/response-codes",
+        "GET /sites/environments/{env_id}/analytics/bot-protection/traffic-flow",
+        "GET /sites/environments/{env_id}/analytics/bot-protection/requests",
+        "GET /sites/environments/{env_id}/analytics/bot-protection/protection-results",
+        "GET /sites/environments/{env_id}/analytics/bot-protection/top-breakdown",
+        "GET /sites/environments/{env_id}/analytics/diskspace",
+      ],
+      "name": "analytics",
+      "options": [
+        {
+          "description": "environment name or ID",
+          "flags": "--env <environment>",
+        },
+        {
+          "description": "time span: 24h, 7d, 30d, 60d",
+          "flags": "--span <span>",
+        },
+        {
+          "description": "start date (instead of --span)",
+          "flags": "--from <date>",
+        },
+        {
+          "description": "end date",
+          "flags": "--to <date>",
+        },
+        {
+          "description": "UTC offset for diskspace, e.g. 02:00 (default: local time zone)",
+          "flags": "--time-zone <offset>",
+        },
+        {
+          "description": "config profile to use",
+          "flags": "--profile <name>",
+        },
+        {
+          "description": "print machine-readable JSON",
+          "flags": "--json",
+        },
+        {
+          "description": "never prompt; fail instead",
+          "flags": "--no-input",
+        },
+      ],
+      "path": "analytics",
+    },
   ],
   "description": "Command line client for the Kinsta API",
   "destructive": null,
@@ -3500,6 +3628,7 @@ sites  Manage Kinsta sites
   delete [site]  Delete a site with all its environments
   reset [site]  Reset a site to a fresh WordPress install (all environments)
   php-allocation [site]  Change the PHP allocation of the live and standard staging environments
+  usage [site]  Visits, bandwidth and CDN bandwidth of a site this month
 env  List and manage environments of a site
   list [site]  List the environments of a site
   push [site]  Push the database and/or files of one environment to another
@@ -3568,6 +3697,7 @@ security  Security settings of an environment
       list [site]  List the bot protection exception rules of an environment
       add <site> <type> <action> <value>  Add a bot protection exception rule
       delete <site> <rule-id>  Delete a bot protection exception rule
+analytics <metric> [site]  Traffic, bandwidth, disk and bot analytics of an environment
 "
 `;
 
@@ -3605,6 +3735,7 @@ Commands:
   db                                                  Database tools of an environment
   search-replace [options] <site> <search> <replace>  Search and replace in the database (dry run unless --apply)
   security                                            Security settings of an environment
+  analytics [options] <metric> [site]                 Traffic, bandwidth, disk and bot analytics of an environment
   help [command]                                      display help for command
 "
 ,
@@ -3868,6 +3999,7 @@ Commands:
   delete [options] [site]                Delete a site with all its environments
   reset [options] [site]                 Reset a site to a fresh WordPress install (all environments)
   php-allocation [options] [site]        Change the PHP allocation of the live and standard staging environments
+  usage [site]                           Visits, bandwidth and CDN bandwidth of a site this month
   help [command]                         display help for command
 "
 ,
@@ -4082,6 +4214,30 @@ Examples:
 exports[`help of every command and group is unchanged 20`] = `
 {
   "code": 0,
+  "path": "sites usage",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sites usage [options] [site]
+
+Visits, bandwidth and CDN bandwidth of a site this month
+
+Arguments:
+  site        site name, display name or ID
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl sites usage klant-x
+  $ kinstactl sites usage klant-x --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 21`] = `
+{
+  "code": 0,
   "path": "env",
   "stderr": "",
   "stdout": 
@@ -4107,7 +4263,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 21`] = `
+exports[`help of every command and group is unchanged 22`] = `
 {
   "code": 0,
   "path": "env list",
@@ -4131,7 +4287,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 22`] = `
+exports[`help of every command and group is unchanged 23`] = `
 {
   "code": 0,
   "path": "env push",
@@ -4165,7 +4321,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 23`] = `
+exports[`help of every command and group is unchanged 24`] = `
 {
   "code": 0,
   "path": "env create",
@@ -4207,7 +4363,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 24`] = `
+exports[`help of every command and group is unchanged 25`] = `
 {
   "code": 0,
   "path": "env clone",
@@ -4237,7 +4393,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 25`] = `
+exports[`help of every command and group is unchanged 26`] = `
 {
   "code": 0,
   "path": "env delete",
@@ -4266,7 +4422,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 26`] = `
+exports[`help of every command and group is unchanged 27`] = `
 {
   "code": 0,
   "path": "env php-allocation",
@@ -4295,7 +4451,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 27`] = `
+exports[`help of every command and group is unchanged 28`] = `
 {
   "code": 0,
   "path": "env webroot",
@@ -4326,7 +4482,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 28`] = `
+exports[`help of every command and group is unchanged 29`] = `
 {
   "code": 0,
   "path": "env files",
@@ -4351,7 +4507,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 29`] = `
+exports[`help of every command and group is unchanged 30`] = `
 {
   "code": 0,
   "path": "cache",
@@ -4374,7 +4530,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 30`] = `
+exports[`help of every command and group is unchanged 31`] = `
 {
   "code": 0,
   "path": "cache clear",
@@ -4402,7 +4558,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 31`] = `
+exports[`help of every command and group is unchanged 32`] = `
 {
   "code": 0,
   "path": "cache edge",
@@ -4425,7 +4581,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 32`] = `
+exports[`help of every command and group is unchanged 33`] = `
 {
   "code": 0,
   "path": "cache edge clear",
@@ -4455,7 +4611,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 33`] = `
+exports[`help of every command and group is unchanged 34`] = `
 {
   "code": 0,
   "path": "cache edge enable",
@@ -4483,7 +4639,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 34`] = `
+exports[`help of every command and group is unchanged 35`] = `
 {
   "code": 0,
   "path": "cache edge disable",
@@ -4511,7 +4667,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 35`] = `
+exports[`help of every command and group is unchanged 36`] = `
 {
   "code": 0,
   "path": "cache cdn",
@@ -4533,7 +4689,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 36`] = `
+exports[`help of every command and group is unchanged 37`] = `
 {
   "code": 0,
   "path": "cache cdn clear",
@@ -4561,7 +4717,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 37`] = `
+exports[`help of every command and group is unchanged 38`] = `
 {
   "code": 0,
   "path": "cache cdn image-optimization",
@@ -4591,7 +4747,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 38`] = `
+exports[`help of every command and group is unchanged 39`] = `
 {
   "code": 0,
   "path": "php",
@@ -4614,7 +4770,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 39`] = `
+exports[`help of every command and group is unchanged 40`] = `
 {
   "code": 0,
   "path": "php restart",
@@ -4642,7 +4798,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 40`] = `
+exports[`help of every command and group is unchanged 41`] = `
 {
   "code": 0,
   "path": "php version",
@@ -4673,7 +4829,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 41`] = `
+exports[`help of every command and group is unchanged 42`] = `
 {
   "code": 0,
   "path": "plugins",
@@ -4696,7 +4852,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 42`] = `
+exports[`help of every command and group is unchanged 43`] = `
 {
   "code": 0,
   "path": "plugins list",
@@ -4722,7 +4878,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 43`] = `
+exports[`help of every command and group is unchanged 44`] = `
 {
   "code": 0,
   "path": "plugins update",
@@ -4752,7 +4908,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 44`] = `
+exports[`help of every command and group is unchanged 45`] = `
 {
   "code": 0,
   "path": "themes",
@@ -4774,7 +4930,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 45`] = `
+exports[`help of every command and group is unchanged 46`] = `
 {
   "code": 0,
   "path": "themes list",
@@ -4800,7 +4956,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 46`] = `
+exports[`help of every command and group is unchanged 47`] = `
 {
   "code": 0,
   "path": "themes update",
@@ -4830,7 +4986,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 47`] = `
+exports[`help of every command and group is unchanged 48`] = `
 {
   "code": 0,
   "path": "backups",
@@ -4857,7 +5013,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 48`] = `
+exports[`help of every command and group is unchanged 49`] = `
 {
   "code": 0,
   "path": "backups list",
@@ -4883,7 +5039,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 49`] = `
+exports[`help of every command and group is unchanged 50`] = `
 {
   "code": 0,
   "path": "backups create",
@@ -4912,7 +5068,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 50`] = `
+exports[`help of every command and group is unchanged 51`] = `
 {
   "code": 0,
   "path": "backups restore",
@@ -4946,7 +5102,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 51`] = `
+exports[`help of every command and group is unchanged 52`] = `
 {
   "code": 0,
   "path": "backups delete",
@@ -4976,7 +5132,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 52`] = `
+exports[`help of every command and group is unchanged 53`] = `
 {
   "code": 0,
   "path": "backups downloadable",
@@ -5001,7 +5157,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 53`] = `
+exports[`help of every command and group is unchanged 54`] = `
 {
   "code": 0,
   "path": "backups downloadable list",
@@ -5025,7 +5181,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 54`] = `
+exports[`help of every command and group is unchanged 55`] = `
 {
   "code": 0,
   "path": "backups downloadable create",
@@ -5053,7 +5209,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 55`] = `
+exports[`help of every command and group is unchanged 56`] = `
 {
   "code": 0,
   "path": "backups downloadable quota",
@@ -5077,7 +5233,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 56`] = `
+exports[`help of every command and group is unchanged 57`] = `
 {
   "code": 0,
   "path": "domains",
@@ -5102,7 +5258,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 57`] = `
+exports[`help of every command and group is unchanged 58`] = `
 {
   "code": 0,
   "path": "domains list",
@@ -5127,7 +5283,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 58`] = `
+exports[`help of every command and group is unchanged 59`] = `
 {
   "code": 0,
   "path": "domains add",
@@ -5161,7 +5317,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 59`] = `
+exports[`help of every command and group is unchanged 60`] = `
 {
   "code": 0,
   "path": "domains remove",
@@ -5191,7 +5347,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 60`] = `
+exports[`help of every command and group is unchanged 61`] = `
 {
   "code": 0,
   "path": "domains primary",
@@ -5222,7 +5378,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 61`] = `
+exports[`help of every command and group is unchanged 62`] = `
 {
   "code": 0,
   "path": "domains verification",
@@ -5248,7 +5404,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 62`] = `
+exports[`help of every command and group is unchanged 63`] = `
 {
   "code": 0,
   "path": "dns",
@@ -5270,7 +5426,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 63`] = `
+exports[`help of every command and group is unchanged 64`] = `
 {
   "code": 0,
   "path": "dns zones",
@@ -5291,7 +5447,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 64`] = `
+exports[`help of every command and group is unchanged 65`] = `
 {
   "code": 0,
   "path": "dns records",
@@ -5315,7 +5471,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 65`] = `
+exports[`help of every command and group is unchanged 66`] = `
 {
   "code": 0,
   "path": "dns records list",
@@ -5338,7 +5494,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 66`] = `
+exports[`help of every command and group is unchanged 67`] = `
 {
   "code": 0,
   "path": "dns records add",
@@ -5369,7 +5525,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 67`] = `
+exports[`help of every command and group is unchanged 68`] = `
 {
   "code": 0,
   "path": "dns records update",
@@ -5401,7 +5557,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 68`] = `
+exports[`help of every command and group is unchanged 69`] = `
 {
   "code": 0,
   "path": "dns records delete",
@@ -5431,7 +5587,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 69`] = `
+exports[`help of every command and group is unchanged 70`] = `
 {
   "code": 0,
   "path": "wp",
@@ -5454,7 +5610,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 70`] = `
+exports[`help of every command and group is unchanged 71`] = `
 {
   "code": 0,
   "path": "wp run",
@@ -5484,7 +5640,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 71`] = `
+exports[`help of every command and group is unchanged 72`] = `
 {
   "code": 0,
   "path": "wp login",
@@ -5510,7 +5666,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 72`] = `
+exports[`help of every command and group is unchanged 73`] = `
 {
   "code": 0,
   "path": "wp user",
@@ -5532,7 +5688,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 73`] = `
+exports[`help of every command and group is unchanged 74`] = `
 {
   "code": 0,
   "path": "wp user create",
@@ -5560,7 +5716,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 74`] = `
+exports[`help of every command and group is unchanged 75`] = `
 {
   "code": 0,
   "path": "wp user exists",
@@ -5585,7 +5741,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 75`] = `
+exports[`help of every command and group is unchanged 76`] = `
 {
   "code": 0,
   "path": "db",
@@ -5606,7 +5762,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 76`] = `
+exports[`help of every command and group is unchanged 77`] = `
 {
   "code": 0,
   "path": "db login",
@@ -5631,7 +5787,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 77`] = `
+exports[`help of every command and group is unchanged 78`] = `
 {
   "code": 0,
   "path": "search-replace",
@@ -5664,7 +5820,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 78`] = `
+exports[`help of every command and group is unchanged 79`] = `
 {
   "code": 0,
   "path": "security",
@@ -5687,7 +5843,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 79`] = `
+exports[`help of every command and group is unchanged 80`] = `
 {
   "code": 0,
   "path": "security force-https",
@@ -5719,7 +5875,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 80`] = `
+exports[`help of every command and group is unchanged 81`] = `
 {
   "code": 0,
   "path": "security bot-protection",
@@ -5743,7 +5899,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 81`] = `
+exports[`help of every command and group is unchanged 82`] = `
 {
   "code": 0,
   "path": "security bot-protection level",
@@ -5774,7 +5930,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 82`] = `
+exports[`help of every command and group is unchanged 83`] = `
 {
   "code": 0,
   "path": "security bot-protection ai-crawlers",
@@ -5804,7 +5960,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 83`] = `
+exports[`help of every command and group is unchanged 84`] = `
 {
   "code": 0,
   "path": "security bot-protection wp-automations",
@@ -5834,7 +5990,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 84`] = `
+exports[`help of every command and group is unchanged 85`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions",
@@ -5857,7 +6013,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 85`] = `
+exports[`help of every command and group is unchanged 86`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions list",
@@ -5881,7 +6037,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 86`] = `
+exports[`help of every command and group is unchanged 87`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions add",
@@ -5914,7 +6070,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 87`] = `
+exports[`help of every command and group is unchanged 88`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions delete",
@@ -5938,6 +6094,49 @@ Options:
 
 Examples:
   $ kinstactl security bot-protection exceptions delete klant-x ip:skip:192.0.2.1 --env live --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 89`] = `
+{
+  "code": 0,
+  "path": "analytics",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl analytics [options] <metric> [site]
+
+Traffic, bandwidth, disk and bot analytics of an environment
+
+Arguments:
+  metric                metric: visits, bandwidth, cdn-bandwidth, diskspace,
+                        top-countries, top-cities, top-ips, top-asns,
+                        top-browsers, top-hosts, top-referrers, top-user-agents,
+                        visits-dispersion, response-codes, bot-traffic-flow,
+                        bot-requests, bot-protection-results, bot-top-breakdown
+                        (choices: "visits", "bandwidth", "cdn-bandwidth",
+                        "diskspace", "top-countries", "top-cities", "top-ips",
+                        "top-asns", "top-browsers", "top-hosts",
+                        "top-referrers", "top-user-agents", "visits-dispersion",
+                        "response-codes", "bot-traffic-flow", "bot-requests",
+                        "bot-protection-results", "bot-top-breakdown")
+  site                  site name, display name or ID
+
+Options:
+  --env <environment>   environment name or ID
+  --span <span>         time span: 24h, 7d, 30d, 60d (default: "7d")
+  --from <date>         start date (instead of --span)
+  --to <date>           end date
+  --time-zone <offset>  UTC offset for diskspace, e.g. 02:00 (default: local
+                        time zone)
+  -h, --help            display help for command
+
+Examples:
+  $ kinstactl analytics visits klant-x --env live
+  $ kinstactl analytics top-countries klant-x --env live --span 30d
+  $ kinstactl analytics diskspace klant-x --env live --time-zone 02:00
+  $ kinstactl analytics bot-traffic-flow klant-x --env live --json
 "
 ,
 }

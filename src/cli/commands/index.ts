@@ -1,3 +1,4 @@
+import {AnalyticsCommand} from './analytics/AnalyticsCommand';
 import {AuthLoginCommand} from './auth/AuthLoginCommand';
 import {AuthLogoutCommand} from './auth/AuthLogoutCommand';
 import {AuthProfilesCommand} from './auth/AuthProfilesCommand';
@@ -60,6 +61,7 @@ import {SitesGetCommand} from './sites/SitesGetCommand';
 import {SitesListCommand} from './sites/SitesListCommand';
 import {SitesPhpAllocationCommand} from './sites/SitesPhpAllocationCommand';
 import {SitesResetCommand} from './sites/SitesResetCommand';
+import {SitesUsageCommand} from './sites/SitesUsageCommand';
 import {WpLoginCommand} from './wp/WpLoginCommand';
 import {WpRunCommand} from './wp/WpRunCommand';
 import {WpUserCreateCommand} from './wp/WpUserCreateCommand';
@@ -81,6 +83,7 @@ export const COMMANDS: CommandClass[] = [
     SitesDeleteCommand,
     SitesResetCommand,
     SitesPhpAllocationCommand,
+    SitesUsageCommand,
     EnvListCommand,
     EnvPushCommand,
     EnvCreateCommand,
@@ -131,6 +134,7 @@ export const COMMANDS: CommandClass[] = [
     SecurityBotProtectionExceptionsListCommand,
     SecurityBotProtectionExceptionsAddCommand,
     SecurityBotProtectionExceptionsDeleteCommand,
+    AnalyticsCommand,
 ];
 
 export const GROUPS: GroupDef[] = [
