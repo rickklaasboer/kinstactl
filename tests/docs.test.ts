@@ -1,5 +1,5 @@
 import {expect, test} from 'bun:test';
-import {readdirSync, readFileSync} from 'node:fs';
+import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {type CommandNode, CommandRegistry} from '@/cli/CommandRegistry';
 import type {Io} from '@/cli/io';
@@ -201,6 +201,41 @@ test('every kinstactl example in the docs and the readme is a real command with 
         }
     }
     expect(failures).toEqual([]);
+});
+
+test('every top-level command has a page', () => {
+    const missing = tree.commands
+        .map((c) => `${DOCS_DIR}/commands/${c.name}.mdx`)
+        .filter((file) => !existsSync(file));
+    expect(missing).toEqual([]);
+});
+
+test('every command is referenced on its group page', () => {
+    const missing: string[] = [];
+    for (const path of leafPaths(tree)) {
+        const page = `${DOCS_DIR}/commands/${path.split(' ')[0]}.mdx`;
+        const reference = `<CommandRef path="${path}" />`;
+        if (
+            !existsSync(page) ||
+            !readFileSync(page, 'utf8').includes(reference)
+        )
+            missing.push(path);
+    }
+    expect(missing).toEqual([]);
+});
+
+test('a page documents only its own commands', () => {
+    const foreign: string[] = [];
+    const dir = `${DOCS_DIR}/commands`;
+    for (const file of readdirSync(dir).filter((f) => f.endsWith('.mdx'))) {
+        const group = file.replace(/\.mdx$/, '');
+        const source = readFileSync(join(dir, file), 'utf8');
+        for (const match of source.matchAll(/<CommandRef path="([^"]+)"/g)) {
+            const path = match[1] as string;
+            if (path.split(' ')[0] !== group) foreign.push(`${file}: ${path}`);
+        }
+    }
+    expect(foreign).toEqual([]);
 });
 
 test('every CommandRef points at a command', () => {
