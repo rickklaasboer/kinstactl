@@ -100,6 +100,7 @@ test('the job graph publishes nothing before the binaries pass the smoke test', 
         'release',
         'binaries',
         'smoke',
+        'smoke-macos',
         'publish-binaries',
         'npm',
         'docker',
@@ -107,12 +108,42 @@ test('the job graph publishes nothing before the binaries pass the smoke test', 
     expect(release.jobs['publish-binaries'].needs).toContain('smoke');
     expect(release.jobs.docker.needs).toContain('smoke');
 
-    const include = release.jobs.smoke.strategy.matrix.include;
+    const include: {artifact: string}[] =
+        release.jobs.smoke.strategy.matrix.include;
     const known = Object.keys(TARGETS).map(artifactName);
-    expect(include.length).toBeGreaterThanOrEqual(4);
     for (const entry of include) {
         expect(known).toContain(entry.artifact);
     }
+});
+
+test('a missing macOS runner cannot block publishing', () => {
+    for (const job of Object.values<{needs?: string | string[]}>(
+        release.jobs,
+    )) {
+        expect([job.needs ?? []].flat()).not.toContain('smoke-macos');
+    }
+
+    const macos = release.jobs['smoke-macos'];
+    expect(macos['runs-on']).toBe('macos-latest');
+    expect(macos['timeout-minutes']).toBeGreaterThan(0);
+    expect(macos.needs).toEqual(['release', 'binaries']);
+    const smokeStep = macos.steps.find(
+        (step: {uses?: string}) => step.uses === './.github/actions/smoke',
+    );
+    expect(smokeStep.with.artifact).toBe('kinstactl-darwin-arm64');
+
+    // darwin-x64 stays untested, as before
+    const include: {artifact: string}[] =
+        release.jobs.smoke.strategy.matrix.include;
+    const tested = [
+        ...include.map((entry) => entry.artifact),
+        smokeStep.with.artifact,
+    ].sort();
+    const built = Object.keys(TARGETS)
+        .map(artifactName)
+        .filter((name) => name !== 'kinstactl-darwin-x64')
+        .sort();
+    expect(tested).toEqual(built);
 });
 
 test('binary uploads overwrite on a re-run', () => {

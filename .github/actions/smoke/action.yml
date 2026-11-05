@@ -1,0 +1,43 @@
+name: Smoke test a standalone binary
+description: Download the built binaries and check the version and command listing of one of them.
+
+inputs:
+    artifact:
+        description: File name of the binary to test, for example kinstactl-linux-x64
+        required: true
+    version:
+        description: Version the binary must report
+        required: true
+
+runs:
+    using: composite
+    steps:
+        - uses: actions/download-artifact@v4
+          with:
+              name: binaries
+              path: bin
+
+        - name: Make executable
+          if: runner.os != 'Windows'
+          shell: bash
+          run: chmod +x "bin/$ARTIFACT"
+          env:
+              ARTIFACT: ${{ inputs.artifact }}
+
+        - name: Check version and command listing
+          shell: bash
+          run: |
+              actual="$("./bin/$ARTIFACT" --version)"
+              if [ "$actual" != "$VERSION" ]; then
+                echo "Expected version $VERSION, got $actual" >&2
+                exit 1
+              fi
+              commands="$("./bin/$ARTIFACT" commands --json)"
+              head="${commands:0:19}"
+              if [ "$head" != '{"name":"kinstactl"' ]; then
+                echo "Unexpected commands output start: $head" >&2
+                exit 1
+              fi
+          env:
+              ARTIFACT: ${{ inputs.artifact }}
+              VERSION: ${{ inputs.version }}
