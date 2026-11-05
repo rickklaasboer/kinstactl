@@ -63,9 +63,36 @@ describe('wp run', () => {
             {routes: {...sites, ...route}},
         );
         expect(r.code).toBe(0);
-        expect(r.stdout).toContain('akismet 5.3');
+        expect(r.stdout).toBe('akismet 5.3\n');
+        expect(r.stdout).not.toContain('✔');
         const post = r.calls.find((c) => c.method === 'POST')!;
         expect(post.body).toEqual({wp_command: 'wp plugin list'});
+    });
+});
+
+describe('wp run --json', () => {
+    test('prints exactly one JSON document', async () => {
+        const r = await runCli(
+            ['wp', 'run', 'klant-x', 'wp plugin list', '--yes', '--json'],
+            {
+                routes: {
+                    ...sites,
+                    'POST /sites/environments/env-live/run-wp-cli-command': {
+                        body: {operation_id: 'op1', message: 'x', status: 202},
+                    },
+                    'GET /operations/op1': {
+                        status: 200,
+                        body: {message: 'ok', status: 200, data: 'akismet'},
+                    },
+                },
+            },
+        );
+        expect(JSON.parse(r.stdout)).toEqual({
+            operation_id: 'op1',
+            status: 'completed',
+            message: 'ok',
+            data: 'akismet',
+        });
     });
 });
 

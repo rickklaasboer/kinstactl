@@ -6,6 +6,7 @@ import {
     type ActionFlags,
     actionOptions,
     OperationRunner,
+    printOperationResult,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
 import type {
@@ -89,15 +90,8 @@ export class SearchReplaceCommand implements BaseCommand<Options> {
                       level: 'confirm',
                   }
                 : undefined,
+            quiet: true,
         });
-        if (result === undefined) return;
-        const {data} = result;
-        this.output.data(result, () =>
-            typeof data === 'string'
-                ? data
-                : data === undefined || data === null
-                  ? (result.message ?? '')
-                  : JSON.stringify(data, null, 2),
-        );
+        if (result !== undefined) printOperationResult(this.output, result);
     }
 }

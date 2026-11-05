@@ -48,7 +48,19 @@ describe('search-replace', () => {
             perform_replacement: false,
             is_clear_cache: false,
         });
-        expect(r.stdout).toContain('3 matches');
+        expect(r.stdout).toBe('3 matches\n');
+        expect(r.stdout).not.toContain('✔');
+    });
+
+    test('--json prints exactly one JSON document', async () => {
+        const r = await runCli(
+            ['search-replace', 'klant-x', 'old', 'new', '--json'],
+            {routes},
+        );
+        const out = JSON.parse(r.stdout);
+        expect(out.operation_id).toBe('op1');
+        expect(out.status).toBe('completed');
+        expect(out.data).toBe('3 matches');
     });
 
     test('--apply without --yes exits 5 and sends nothing', async () => {

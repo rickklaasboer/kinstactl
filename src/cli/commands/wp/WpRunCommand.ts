@@ -8,6 +8,7 @@ import {
     type ActionFlags,
     actionOptions,
     OperationRunner,
+    printOperationResult,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
 import type {
@@ -74,15 +75,8 @@ export class WpRunCommand implements BaseCommand<Options> {
             target,
             flags: options,
             confirm: {action: `Run "${command}"`, level: 'confirm'},
+            quiet: true,
         });
-        if (result === undefined) return;
-        const {data} = result;
-        this.output.data(result, () =>
-            typeof data === 'string'
-                ? data
-                : data === undefined || data === null
-                  ? (result.message ?? '')
-                  : JSON.stringify(data, null, 2),
-        );
+        if (result !== undefined) printOperationResult(this.output, result);
     }
 }

@@ -87,6 +87,32 @@ export interface RunOperationArgs {
     confirm?: ConfirmSpec;
     /** Applied to the body shown by --dry-run (JSON and human), never to the body that is sent. */
     redact?: (body: unknown) => unknown;
+    /** run() prints nothing on success; the caller prints the result (see printOperationResult). */
+    quiet?: boolean;
+}
+
+export type CompletedOperation = OperationResult & {operationId: string};
+
+/** The single result payload of an operation whose output is the point (wp run, search-replace). */
+export function printOperationResult(
+    output: Output,
+    result: CompletedOperation,
+): void {
+    const {data, message} = result;
+    output.data(
+        {
+            operation_id: result.operationId,
+            status: 'completed',
+            message,
+            data,
+        },
+        () =>
+            typeof data === 'string'
+                ? data
+                : data === undefined || data === null
+                  ? (message ?? '')
+                  : JSON.stringify(data, null, 2),
+    );
 }
 
 /** Runs an API operation: dry-run, confirmation, request, then waiting. */
@@ -212,7 +238,7 @@ export class OperationRunner {
         return true;
     }
 
-    async run(args: RunOperationArgs): Promise<OperationResult | undefined> {
+    async run(args: RunOperationArgs): Promise<CompletedOperation | undefined> {
         if (!(await this.prepare(args))) return undefined;
         const {title, spec, flags} = args;
 
@@ -229,11 +255,15 @@ export class OperationRunner {
         }
 
         const result = await this.wait(op, title, flags.timeout);
-        this.output.success(`${title} completed`, {
-            operation_id: op.id,
-            status: 'completed',
-        });
-        return result;
+        if (!args.quiet)
+            this.output.success(`${title} completed`, {
+                operation_id: op.id,
+                status: 'completed',
+            });
+        // Non-enumerable, so the result still compares equal to a plain OperationResult.
+        return Object.defineProperty({...result}, 'operationId', {
+            value: op.id,
+        }) as CompletedOperation;
     }
 
     /**
