@@ -11,7 +11,11 @@ export interface ConfirmArgs {
     level: 'confirm' | 'irreversible';
 }
 
-/** Resolves when the action may proceed; throws a CliError (exit 5) otherwise. */
+/**
+ * Resolves when the action may proceed; throws a CliError (exit 5) otherwise.
+ * Operation commands must pass `confirm` to runOperation instead of calling this, so the order
+ * dry-run, confirm, request is enforced there. Use this directly only for non-operation writes.
+ */
 export async function confirmDestructive(
     rt: Runtime,
     args: ConfirmArgs,

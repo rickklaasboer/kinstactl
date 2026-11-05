@@ -3,6 +3,7 @@ import {InvalidArgumentError} from 'commander';
 import {Listr, ListrLogger, PRESET_TIMER, ProcessOutput} from 'listr2';
 import type {Operation} from '@/client/operations';
 import type {RequestSpec} from '@/client/request';
+import {confirmDestructive} from './confirm';
 import type {Runtime} from './runtime';
 import type {EnvRef, SiteRef} from './siteCache';
 
@@ -113,9 +114,11 @@ export async function runOperation(
         spec: RequestSpec;
         target?: {site: SiteRef; env?: EnvRef};
         flags: ActionFlags;
+        /** Destructive actions: dry-run returns first, then this confirms, then the request is sent. */
+        confirm?: {action: string; level: 'confirm' | 'irreversible'};
     },
 ): Promise<void> {
-    const {title, spec, target, flags} = args;
+    const {title, spec, target, flags, confirm} = args;
 
     if (flags.dryRun) {
         const request = {
@@ -152,6 +155,17 @@ export async function runOperation(
             },
         );
         return;
+    }
+
+    if (confirm) {
+        if (!target) throw new Error('runOperation: confirm requires a target');
+        await confirmDestructive(rt, {
+            action: confirm.action,
+            site: target.site,
+            env: target.env,
+            flags,
+            level: confirm.level,
+        });
     }
 
     const op = await rt.client().start(spec);

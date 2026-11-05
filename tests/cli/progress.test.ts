@@ -23,7 +23,10 @@ const flags = {wait: true, dryRun: false, yes: false};
 async function exec(
     routes: Record<string, FakeRoute | FakeRoute[]>,
     f: Partial<typeof flags> & {timeout?: number},
-    opts: {json?: boolean} = {},
+    opts: {
+        json?: boolean;
+        confirm?: {action: string; level: 'confirm' | 'irreversible'};
+    } = {},
 ) {
     const fake = fakeKinsta(routes);
     let clock = 0;
@@ -56,6 +59,7 @@ async function exec(
             spec,
             target: {site, env},
             flags: {...flags, ...f},
+            confirm: opts.confirm,
         });
     } catch (e) {
         const err = toCliError(e);
@@ -148,5 +152,46 @@ describe('runOperation', () => {
         );
         expect(r.code).toBe(4);
         expect(JSON.parse(r.stderr).error.code).toBe('OPERATION_TIMEOUT');
+    });
+});
+
+describe('runOperation confirm ordering', () => {
+    const done = {
+        ...started,
+        'GET /operations/op1': {status: 200},
+    };
+    const confirm = {action: 'Clear cache', level: 'confirm' as const};
+    const irreversible = {
+        action: 'Delete site',
+        level: 'irreversible' as const,
+    };
+
+    test('dry-run returns before confirming, without --yes', async () => {
+        const r = await exec({}, {dryRun: true}, {json: true, confirm});
+        expect(r.code).toBe(0);
+        expect(r.calls).toEqual([]);
+    });
+
+    test('unconfirmed destructive operation sends nothing', async () => {
+        const r = await exec(done, {}, {json: true, confirm});
+        expect(r.code).toBe(5);
+        expect(JSON.parse(r.stderr).error.code).toBe('CONFIRMATION_REQUIRED');
+        expect(r.calls).toEqual([]);
+    });
+
+    test('--yes lets the request through', async () => {
+        const r = await exec(done, {yes: true}, {json: true, confirm});
+        expect(r.code).toBe(0);
+        expect(r.calls[0]!.method).toBe('POST');
+    });
+
+    test('irreversible with only --yes sends nothing', async () => {
+        const r = await exec(
+            done,
+            {yes: true},
+            {json: true, confirm: irreversible},
+        );
+        expect(r.code).toBe(5);
+        expect(r.calls).toEqual([]);
     });
 });
