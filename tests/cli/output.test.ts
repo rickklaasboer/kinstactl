@@ -36,6 +36,30 @@ describe('Output', () => {
         ]);
     });
 
+    test('column color names map to the output palette', () => {
+        const out: string[] = [];
+        const output = new Output({
+            stdout: (s) => out.push(s),
+            stderr: () => {},
+            json: () => false,
+            color: true,
+        });
+        output.table(
+            [{n: 'a'}],
+            [
+                {header: 'R', value: (r) => r.n, color: () => 'red'},
+                {header: 'Y', value: (r) => r.n, color: () => 'yellow'},
+                {header: 'G', value: (r) => r.n, color: () => 'green'},
+                {header: 'D', value: (r) => r.n, color: () => 'dim'},
+            ],
+        );
+        const text = out.join('');
+        expect(text).toContain('\x1b[31ma\x1b[39m');
+        expect(text).toContain('\x1b[33ma\x1b[39m');
+        expect(text).toContain('\x1b[32ma\x1b[39m');
+        expect(text).toContain('\x1b[2ma\x1b[22m');
+    });
+
     test('table prints only the rows as JSON in json mode', () => {
         const {output, out, err} = make(true);
         output.table(rows, cols);

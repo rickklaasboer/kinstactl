@@ -1,6 +1,5 @@
 import {injectable} from 'tsyringe';
 import type {EndpointKey} from '@/client/request';
-import pc from 'picocolors';
 import {Output} from '../../output';
 import {SiteResolver} from '../../services/SiteResolver';
 import {
@@ -80,12 +79,12 @@ export abstract class WpItemListCommand implements BaseCommand {
                     header: 'UPDATE',
                     value: (i) =>
                         hasUpdate(i) ? (i.update_version ?? i.update) : '',
-                    color: () => pc.yellow,
+                    color: () => 'yellow',
                 },
                 {
                     header: 'VULNERABLE',
                     value: (i) => (i.is_version_vulnerable ? 'yes' : ''),
-                    color: () => pc.red,
+                    color: () => 'red',
                 },
             ],
             items,

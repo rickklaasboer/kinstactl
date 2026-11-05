@@ -2,10 +2,12 @@ import pc from 'picocolors';
 import type {CliError} from './errors';
 import {renderTable} from './table';
 
+export type ColorName = 'red' | 'yellow' | 'green' | 'dim';
+
 export interface Column<T> {
     header: string;
     value: (r: T) => string;
-    color?: (r: T) => (s: string) => string;
+    color?: (r: T) => ColorName;
 }
 
 export interface OutputSink {
@@ -40,7 +42,7 @@ export class Output {
         const cells = rows.map((r) =>
             columns.map((col) => {
                 const text = col.value(r);
-                return col.color ? col.color(r)(text) : text;
+                return col.color ? this.c[col.color(r)](text) : text;
             }),
         );
         this.sink.stdout(

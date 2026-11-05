@@ -88,6 +88,24 @@ describe('plugins list', () => {
         expect(r.stdout).toContain('5.3');
     });
 
+    test('plugin table has no color when NO_COLOR is set, even on a TTY', async () => {
+        const r = await runCli(
+            ['plugins', 'list', 'klant-x', '--env', 'live'],
+            {routes, tty: true},
+        );
+        expect(r.code).toBe(0);
+        expect(r.stdout).not.toContain('\x1b[');
+    });
+
+    test('plugin table colors updates on a color TTY', async () => {
+        const r = await runCli(
+            ['plugins', 'list', 'klant-x', '--env', 'live'],
+            {routes, tty: true, env: {NO_COLOR: undefined}},
+        );
+        expect(r.code).toBe(0);
+        expect(r.stdout).toContain('\x1b[33m5.3\x1b[39m');
+    });
+
     test('--updates filters to items with an update', async () => {
         const r = await runCli(
             ['plugins', 'list', 'klant-x', '--env', 'live', '--updates'],
