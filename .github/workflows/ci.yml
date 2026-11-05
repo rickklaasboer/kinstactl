@@ -1,0 +1,50 @@
+name: CI
+
+on:
+    push:
+    pull_request:
+
+permissions:
+    contents: read
+
+env:
+    NO_COLOR: "1"
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+            - run: bun install --frozen-lockfile
+            - run: bun run lint
+            - run: bun test
+            - run: bun run typecheck
+    docs:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+            - run: bun install --frozen-lockfile
+            - run: bun install --frozen-lockfile
+              working-directory: docs
+            - run: bun run docs:build
+    package:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v2
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+            - run: bun install --frozen-lockfile
+            - run: bun run smoke:package
+            - run: bun run build:bin linux-x64
+            - run: test "$(./dist/bin/kinstactl-linux-x64 --version)" = "$(node -p 'require("./package.json").version')"
+            - run: cd dist/bin && sha256sum -c SHA256SUMS
+            - run: out="$(./dist/bin/kinstactl-linux-x64 commands --json)" && test "${out:0:19}" = '{"name":"kinstactl"'
+            - run: docker build -t kinstactl:ci .
+            - run: docker run --rm kinstactl:ci kinstactl --version

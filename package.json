@@ -1,0 +1,69 @@
+{
+    "name": "kinstactl",
+    "version": "0.0.0",
+    "description": "Command line client and typed TypeScript client for the Kinsta API",
+    "keywords": [
+        "kinsta",
+        "wordpress",
+        "cli",
+        "api-client"
+    ],
+    "type": "module",
+    "license": "MIT",
+    "author": "Rick Klaasboer <rick@standout.nl>",
+    "repository": "rickklaasboer/kinstactl",
+    "bin": {
+        "kinstactl": "dist/kinstactl.js"
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
+    "files": [
+        "dist",
+        "!dist/bin"
+    ],
+    "engines": {
+        "node": ">=22.12",
+        "bun": ">=1.3.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "start": "bun run src/cli/main.ts",
+        "test": "bun test",
+        "typecheck": "tsc --noEmit",
+        "lint": "biome check .",
+        "format": "biome check --write .",
+        "gen:types": "openapi-typescript openapi/kinsta-openapi.yaml -o src/client/generated/openapi.ts",
+        "build": "bun run build:cli && bun run build:lib && bun run build:types",
+        "build:cli": "bun build src/cli/main.ts --target=node --outfile dist/kinstactl.js --banner '#!/usr/bin/env node'",
+        "build:lib": "bun build src/index.ts --target=node --outfile dist/index.js",
+        "build:types": "tsc -p tsconfig.build.json",
+        "prepack": "bun run build",
+        "build:bin": "bun scripts/build-binaries.ts",
+        "smoke:package": "bash scripts/smoke-package.sh",
+        "docs:build": "cd docs && bun run build",
+        "docs:dev": "cd docs && bun run dev"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^2.6.5",
+        "@clack/prompts": "^1.8.1",
+        "@release-it/conventional-changelog": "^12.0.2",
+        "bun-types": "^1.4.4",
+        "commander": "^15.0.0",
+        "listr2": "^11.4.0",
+        "openapi-typescript": "^7.13.0",
+        "picocolors": "^1.1.1",
+        "reflect-metadata": "^0.2.2",
+        "release-it": "^21.1.2",
+        "tsyringe": "^4.10.0",
+        "typescript": "5",
+        "yaml": "^2.9.1"
+    }
+}

@@ -1,0 +1,100 @@
+import pc from 'picocolors';
+import type {CliError} from './errors';
+import {renderTable} from './table';
+
+export type ColorName = 'red' | 'yellow' | 'green' | 'dim';
+
+export interface Column<T> {
+    header: string;
+    value: (r: T) => string;
+    /** Undefined leaves the cell uncolored. */
+    color?: (r: T) => ColorName | undefined;
+}
+
+export interface OutputSink {
+    stdout: (s: string) => void;
+    stderr: (s: string) => void;
+    /** Read on every call: the flag is only known after Commander parsed the arguments. */
+    json: () => boolean;
+    color: boolean;
+    /** Adds the stack of unexpected errors to JSON error output. */
+    debug?: boolean;
+}
+
+export class Output {
+    private readonly c: ReturnType<typeof pc.createColors>;
+
+    readonly color: boolean;
+
+    constructor(private readonly sink: OutputSink) {
+        this.color = sink.color;
+        this.c = pc.createColors(sink.color);
+    }
+
+    get json(): boolean {
+        return this.sink.json();
+    }
+
+    table<T>(rows: T[], columns: Column<T>[], json?: unknown): void {
+        if (this.sink.json()) {
+            this.sink.stdout(`${JSON.stringify(json ?? rows)}\n`);
+            return;
+        }
+        const cells = rows.map((r) =>
+            columns.map((col) => {
+                const text = col.value(r);
+                const color = col.color?.(r);
+                return color ? this.c[color](text) : text;
+            }),
+        );
+        this.sink.stdout(
+            `${renderTable(
+                columns.map((col) => this.c.bold(col.header)),
+                cells,
+            )}\n`,
+        );
+    }
+
+    data(json: unknown, human: () => string): void {
+        this.sink.stdout(
+            `${this.sink.json() ? JSON.stringify(json) : human()}\n`,
+        );
+    }
+
+    info(msg: string): void {
+        if (this.sink.json()) return;
+        this.sink.stderr(`${msg}\n`);
+    }
+
+    success(msg: string, json?: unknown): void {
+        if (this.sink.json()) {
+            if (json !== undefined)
+                this.sink.stdout(`${JSON.stringify(json)}\n`);
+            return;
+        }
+        this.sink.stdout(`${this.c.green('✔')} ${msg}\n`);
+    }
+
+    error(e: CliError): void {
+        const stack =
+            e.code === 'INTERNAL' && e.cause instanceof Error
+                ? e.cause.stack
+                : undefined;
+        if (this.sink.json()) {
+            this.sink.stderr(
+                `${JSON.stringify({
+                    error: {
+                        code: e.code,
+                        message: e.message,
+                        hints: e.hints,
+                        ...(this.sink.debug && stack ? {stack} : {}),
+                    },
+                })}\n`,
+            );
+            return;
+        }
+        this.sink.stderr(`${this.c.red(e.message)}\n`);
+        for (const hint of e.hints) this.sink.stderr(`${this.c.dim(hint)}\n`);
+        if (stack) this.sink.stderr(`${this.c.dim(stack)}\n`);
+    }
+}
