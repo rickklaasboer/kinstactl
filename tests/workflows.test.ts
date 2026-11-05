@@ -1,12 +1,12 @@
 import {expect, test} from 'bun:test';
 import {readFileSync} from 'node:fs';
 import {parse} from 'yaml';
+import releaseIt, {whatBump} from '../.release-it';
 import {artifactName, TARGETS} from '../scripts/build-binaries';
 
 const releaseSource = readFileSync('.github/workflows/release.yml', 'utf8');
 const release = parse(releaseSource);
 const ci = parse(readFileSync('.github/workflows/ci.yml', 'utf8'));
-const releaseIt = JSON.parse(readFileSync('.release-it.json', 'utf8'));
 
 function runs(job: {steps: {run?: string}[]}): string[] {
     return job.steps.flatMap((step) => (step.run ? [step.run] : []));
@@ -37,14 +37,62 @@ test('the release job fast-forwards to the latest main after checkout', () => {
     expect(pull).toBeGreaterThan(checkout);
 });
 
-test('a push to main releases a patch and the manual trigger offers the four increments', () => {
+test('release-it derives the bump from angular commits', () => {
+    expect(
+        releaseIt.plugins['@release-it/conventional-changelog'].preset,
+    ).toEqual({name: 'angular'});
+
+    const commit = (type: string, breaking = false) => ({
+        type,
+        notes: breaking ? [{title: 'BREAKING CHANGE'}] : [],
+    });
+    expect(whatBump([])).toBeNull();
+    expect(
+        whatBump([commit('docs'), commit('chore'), commit('ci')]),
+    ).toBeNull();
+    expect(whatBump([commit('docs'), commit('fix')])).toEqual({level: 2});
+    expect(whatBump([commit('perf')])).toEqual({level: 2});
+    expect(whatBump([commit('fix'), commit('feat'), commit('fix')])).toEqual({
+        level: 1,
+    });
+    expect(whatBump([commit('feat'), commit('chore', true)])).toEqual({
+        level: 0,
+    });
+});
+
+test('a push to main releases from commits and the manual trigger can force a bump', () => {
     expect(release.on.push.branches).toEqual(['main']);
-    const options = release.on.workflow_dispatch.inputs.increment.options;
-    expect(options).toHaveLength(4);
-    expect(options).toContain(
+    const input = release.on.workflow_dispatch.inputs.increment;
+    expect(input.default).toBe('auto (from commits)');
+    expect(input.options).toEqual([
+        'auto (from commits)',
+        'patch',
+        'minor',
+        'major',
         'none (release the current package.json version)',
-    );
+    ]);
     expect(release.concurrency.group).toBe('release');
+});
+
+test('the first automatic release is a major bump (0.0.0 to 1.0.0)', () => {
+    const run = runs(release.jobs.release).find((r) =>
+        r.includes('bunx release-it --ci'),
+    );
+    expect(run).toContain("git tag --list 'v*'");
+    expect(run).toContain('bunx release-it major --ci');
+});
+
+test('a run without a new version skips every publish job', () => {
+    expect(release.jobs.release.outputs.released).toBe(
+        `\${{ steps.version.outputs.released }}`,
+    );
+    // smoke, publish-binaries and docker hang off binaries, so they skip too
+    for (const name of ['binaries', 'npm']) {
+        expect(release.jobs[name].if).toBe(
+            "needs.release.outputs.released == 'true'",
+        );
+    }
+    expect(release.jobs.smoke.needs).toContain('binaries');
 });
 
 test('the job graph publishes nothing before the binaries pass the smoke test', () => {

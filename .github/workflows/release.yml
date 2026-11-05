@@ -1,7 +1,9 @@
 name: Release
 
-# Every push to main releases automatically (patch bump). The manual trigger
-# stays for minor/major jumps. Everything happens in this single run (version
+# Every push to main releases automatically, with the bump derived from the
+# Angular commits since the last tag (see .release-it.js); a push with only
+# docs/chore/ci/... commits releases nothing and skips the other jobs. The
+# manual trigger can force a bump. Everything happens in this single run (version
 # bump, tag, GitHub release, binaries, package publish, Docker image) because a
 # release created with the built-in GITHUB_TOKEN does not trigger other
 # workflows - which also means the version-bump commit this workflow pushes
@@ -14,8 +16,9 @@ on:
             increment:
                 description: Version bump
                 type: choice
-                default: patch
+                default: auto (from commits)
                 options:
+                    - auto (from commits)
                     - patch
                     - minor
                     - major
@@ -39,6 +42,7 @@ jobs:
             contents: write
         outputs:
             version: ${{ steps.version.outputs.version }}
+            released: ${{ steps.version.outputs.released }}
         steps:
             - uses: actions/checkout@v4
               with:
@@ -61,25 +65,49 @@ jobs:
                   git config user.name "github-actions[bot]"
                   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+            - name: Read current version
+              id: before
+              run: echo "version=$(bun -e 'console.log(require("./package.json").version)')" >> "$GITHUB_OUTPUT"
+
             - name: Run release-it
               run: |
-                  if [ "$INCREMENT" = "none (release the current package.json version)" ]; then
-                    bunx release-it --no-increment --ci
-                  else
-                    bunx release-it "${INCREMENT:-patch}" --ci # empty on push events -> patch
-                  fi
+                  case "$INCREMENT" in
+                    "none (release the current package.json version)") bunx release-it --no-increment --ci ;;
+                    patch|minor|major) bunx release-it "$INCREMENT" --ci ;;
+                    *)
+                      # push events and "auto": bump from commits, except the
+                      # very first release, which goes from 0.0.0 to 1.0.0
+                      if [ -n "$(git tag --list 'v*')" ]; then
+                        bunx release-it --ci
+                      else
+                        bunx release-it major --ci
+                      fi
+                      ;;
+                  esac
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   INCREMENT: ${{ inputs.increment }}
 
             - name: Read released version
               id: version
-              run: echo "version=$(bun -e 'console.log(require("./package.json").version)')" >> "$GITHUB_OUTPUT"
+              run: |
+                  version="$(bun -e 'console.log(require("./package.json").version)')"
+                  echo "version=$version" >> "$GITHUB_OUTPUT"
+                  if [ "$version" != "$BEFORE" ] || [ "$INCREMENT" = "none (release the current package.json version)" ]; then
+                    echo "released=true" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "No releasable commits since the last tag; skipping the publish jobs."
+                    echo "released=false" >> "$GITHUB_OUTPUT"
+                  fi
+              env:
+                  BEFORE: ${{ steps.before.outputs.version }}
+                  INCREMENT: ${{ inputs.increment }}
 
     binaries:
         name: Build standalone binaries
         runs-on: ubuntu-latest
         needs: release
+        if: needs.release.outputs.released == 'true'
         permissions:
             contents: read
         steps:
@@ -172,6 +200,7 @@ jobs:
         name: Publish to npm
         runs-on: ubuntu-latest
         needs: release
+        if: needs.release.outputs.released == 'true'
         permissions:
             contents: read
             id-token: write
