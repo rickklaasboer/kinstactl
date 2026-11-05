@@ -146,39 +146,37 @@ jobs:
                       artifact: kinstactl-linux-x64
                     - os: ubuntu-24.04-arm
                       artifact: kinstactl-linux-arm64
-                    - os: macos-latest
-                      artifact: kinstactl-darwin-arm64
                     - os: windows-latest
                       artifact: kinstactl-windows-x64.exe
         steps:
-            - uses: actions/download-artifact@v4
+            - uses: actions/checkout@v4
               with:
-                  name: binaries
-                  path: bin
+                  ref: v${{ needs.release.outputs.version }}
 
-            - name: Make executable
-              if: runner.os != 'Windows'
-              run: chmod +x "bin/$ARTIFACT"
-              env:
-                  ARTIFACT: ${{ matrix.artifact }}
+            - uses: ./.github/actions/smoke
+              with:
+                  artifact: ${{ matrix.artifact }}
+                  version: ${{ needs.release.outputs.version }}
 
-            - name: Check version and command listing
-              shell: bash
-              run: |
-                  actual="$("./bin/$ARTIFACT" --version)"
-                  if [ "$actual" != "$VERSION" ]; then
-                    echo "Expected version $VERSION, got $actual" >&2
-                    exit 1
-                  fi
-                  commands="$("./bin/$ARTIFACT" commands --json)"
-                  head="${commands:0:19}"
-                  if [ "$head" != '{"name":"kinstactl"' ]; then
-                    echo "Unexpected commands output start: $head" >&2
-                    exit 1
-                  fi
-              env:
-                  ARTIFACT: ${{ matrix.artifact }}
-                  VERSION: ${{ needs.release.outputs.version }}
+    # Not in the needs of any other job, so it does not gate publishing: macOS
+    # arm64 runner capacity on GitHub can leave the job unstarted, while it
+    # still reports a broken macOS binary as a failed job.
+    smoke-macos:
+        name: Smoke test kinstactl-darwin-arm64
+        runs-on: macos-latest
+        needs: [release, binaries]
+        timeout-minutes: 20
+        permissions:
+            contents: read
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  ref: v${{ needs.release.outputs.version }}
+
+            - uses: ./.github/actions/smoke
+              with:
+                  artifact: kinstactl-darwin-arm64
+                  version: ${{ needs.release.outputs.version }}
 
     publish-binaries:
         name: Attach binaries to the GitHub release
