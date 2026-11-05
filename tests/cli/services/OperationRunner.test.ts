@@ -290,7 +290,11 @@ describe('runOperation result', () => {
             {},
             {json: true},
         );
-        expect(r.result).toEqual({message: 'ok', data: undefined});
+        expect(r.result).toEqual({
+            message: 'ok',
+            data: undefined,
+            operationId: 'op1',
+        });
     });
 
     test('run resolves with undefined after a dry run and with --no-wait', async () => {

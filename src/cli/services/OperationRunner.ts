@@ -260,10 +260,7 @@ export class OperationRunner {
                 operation_id: op.id,
                 status: 'completed',
             });
-        // Non-enumerable, so the result still compares equal to a plain OperationResult.
-        return Object.defineProperty({...result}, 'operationId', {
-            value: op.id,
-        }) as CompletedOperation;
+        return {...result, operationId: op.id};
     }
 
     /**
