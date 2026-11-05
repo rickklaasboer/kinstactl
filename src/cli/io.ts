@@ -11,6 +11,8 @@ export interface Io {
     sleep?: (ms: number) => Promise<void>;
     /** Clock in epoch milliseconds; injectable for the site cache TTL. */
     now?: () => number;
+    /** The stream listr2 renders progress to; keeps stdout clean for results. */
+    progressOutput: NodeJS.WriteStream;
     prompts: Prompts;
     /** Reads all of stdin; used for `--api-key -`. */
     stdin?: () => Promise<string>;

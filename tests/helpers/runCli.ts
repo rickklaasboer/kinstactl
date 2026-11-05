@@ -66,6 +66,7 @@ export async function runCli(
         env,
         fetchFn: fake.fetch,
         sleep: async () => {},
+        progressOutput: process.stderr,
         prompts: {
             select: unanswered('select'),
             search: unanswered('search'),

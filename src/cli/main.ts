@@ -14,6 +14,7 @@ process.exitCode = await run(process.argv.slice(2), {
     stderr: (s) => void process.stderr.write(s),
     isTTY: Boolean(process.stdin.isTTY && process.stdout.isTTY),
     env: process.env,
+    progressOutput: process.stderr,
     prompts: clackPrompts,
     stdin: async () => {
         process.stdin.setEncoding('utf8');

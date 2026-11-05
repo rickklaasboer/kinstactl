@@ -4,9 +4,12 @@ import {join} from 'node:path';
 import {describe, expect, test} from 'bun:test';
 import {createContainer} from '@/cli/container';
 import type {Prompts} from '@/cli/prompts';
-import {Runtime} from '@/cli/runtime';
-import {SITE_CACHE_TTL_MS, loadSites, siteCachePath} from '@/cli/siteCache';
-import {fakeKinsta} from '../helpers/fakeKinsta';
+import {
+    SITE_CACHE_TTL_MS,
+    SiteCache,
+    siteCachePath,
+} from '@/cli/services/SiteCache';
+import {fakeKinsta} from '../../helpers/fakeKinsta';
 
 const body = {
     company: {
@@ -37,7 +40,7 @@ function setup() {
         HOME: dir,
         XDG_CACHE_HOME: join(dir, 'cache'),
     };
-    const rt = createContainer({
+    const cache = createContainer({
         stdout: () => {},
         stderr: (s) => {
             err += s;
@@ -46,10 +49,11 @@ function setup() {
         env,
         fetchFn: fake.fetch,
         now: () => clock,
+        progressOutput: process.stderr,
         prompts: {} as Prompts,
-    }).resolve(Runtime);
+    }).resolve(SiteCache);
     return {
-        rt,
+        cache,
         calls: fake.calls,
         stderr: () => err,
         path: siteCachePath(env, 'c1'),
@@ -61,8 +65,8 @@ function setup() {
 
 describe('loadSites', () => {
     test('maps the API response and writes the cache file', async () => {
-        const {rt, path} = setup();
-        const sites = await loadSites(rt, {fresh: false});
+        const {cache, path} = setup();
+        const sites = await cache.load({fresh: false});
         expect(sites).toEqual([
             {
                 id: 's1',
@@ -84,26 +88,26 @@ describe('loadSites', () => {
     });
 
     test('a second call within the TTL makes no request', async () => {
-        const {rt, calls, advance} = setup();
-        await loadSites(rt, {fresh: false});
+        const {cache, calls, advance} = setup();
+        await cache.load({fresh: false});
         advance(SITE_CACHE_TTL_MS - 1);
-        await loadSites(rt, {fresh: false});
+        await cache.load({fresh: false});
         expect(calls).toHaveLength(1);
     });
 
     test('an expired cache is refetched', async () => {
-        const {rt, calls, advance} = setup();
-        await loadSites(rt, {fresh: false});
+        const {cache, calls, advance} = setup();
+        await cache.load({fresh: false});
         advance(SITE_CACHE_TTL_MS);
-        await loadSites(rt, {fresh: false});
+        await cache.load({fresh: false});
         expect(calls).toHaveLength(2);
     });
 
     test('fresh bypasses the cache and rewrites it', async () => {
-        const {rt, calls, advance, path} = setup();
-        await loadSites(rt, {fresh: false});
+        const {cache, calls, advance, path} = setup();
+        await cache.load({fresh: false});
         advance(1000);
-        await loadSites(rt, {fresh: true});
+        await cache.load({fresh: true});
         expect(calls).toHaveLength(2);
         expect(JSON.parse(readFileSync(path, 'utf8')).fetchedAt).toBe(
             1_001_000,
@@ -119,10 +123,10 @@ describe('loadSites', () => {
     ])(
         'a corrupt cache (%s) is reported and refetched',
         async (_n, content) => {
-            const {rt, calls, path, stderr} = setup();
+            const {cache, calls, path, stderr} = setup();
             mkdirSync(join(path, '..'), {recursive: true});
             writeFileSync(path, content);
-            const sites = await loadSites(rt, {fresh: false});
+            const sites = await cache.load({fresh: false});
             expect(sites).toHaveLength(1);
             expect(calls).toHaveLength(1);
             expect(stderr()).toContain('Ignoring corrupt site cache');

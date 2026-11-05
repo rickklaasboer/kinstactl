@@ -1,10 +1,9 @@
 import {describe, expect, test} from 'bun:test';
-import {confirmDestructive} from '@/cli/confirm';
 import {createContainer} from '@/cli/container';
 import {CliError} from '@/cli/errors';
 import type {Io} from '@/cli/io';
-import {Runtime} from '@/cli/runtime';
 import type {Prompts} from '@/cli/prompts';
+import {ConfirmService} from '@/cli/services/ConfirmService';
 
 const site = {
     id: 's1',
@@ -21,9 +20,10 @@ function runtime(interactive: boolean, prompts: Partial<Prompts> = {}) {
         stderr() {},
         isTTY: interactive,
         env: {},
+        progressOutput: process.stderr,
         prompts: prompts as Prompts,
     };
-    return createContainer(io).resolve(Runtime);
+    return createContainer(io).resolve(ConfirmService);
 }
 
 async function failure(p: Promise<void>): Promise<CliError> {
@@ -40,7 +40,7 @@ describe('confirmDestructive: confirm level', () => {
     const args = {action: 'Restart PHP', site, env, level: 'confirm' as const};
 
     test('--yes passes without prompting', async () => {
-        await confirmDestructive(runtime(false), {
+        await runtime(false).confirmDestructive({
             ...args,
             flags: {...base, yes: true},
         });
@@ -54,20 +54,20 @@ describe('confirmDestructive: confirm level', () => {
                 return true;
             },
         });
-        await confirmDestructive(rt, {...args, flags: base});
+        await rt.confirmDestructive({...args, flags: base});
         expect(asked).toBe('Restart PHP on Klant X (live)?');
     });
 
     test('interactive decline is CONFIRMATION_DECLINED', async () => {
         const rt = runtime(true, {confirm: async () => false});
-        const e = await failure(confirmDestructive(rt, {...args, flags: base}));
+        const e = await failure(rt.confirmDestructive({...args, flags: base}));
         expect(e.code).toBe('CONFIRMATION_DECLINED');
         expect(e.exitCode).toBe(5);
     });
 
     test('non-interactive without --yes requires confirmation', async () => {
         const e = await failure(
-            confirmDestructive(runtime(false), {...args, flags: base}),
+            runtime(false).confirmDestructive({...args, flags: base}),
         );
         expect(e.code).toBe('CONFIRMATION_REQUIRED');
         expect(e.hints).toContain('Pass --yes');
@@ -83,7 +83,7 @@ describe('confirmDestructive: irreversible level', () => {
 
     test('--yes alone is rejected', async () => {
         const e = await failure(
-            confirmDestructive(runtime(false), {
+            runtime(false).confirmDestructive({
                 ...args,
                 flags: {...base, yes: true},
             }),
@@ -93,7 +93,7 @@ describe('confirmDestructive: irreversible level', () => {
     });
 
     test('--confirm with the site name passes, case-insensitive', async () => {
-        await confirmDestructive(runtime(false), {
+        await runtime(false).confirmDestructive({
             ...args,
             flags: {...base, confirm: 'klant-x'},
         });
@@ -101,7 +101,7 @@ describe('confirmDestructive: irreversible level', () => {
 
     test('--confirm with another name is rejected', async () => {
         const e = await failure(
-            confirmDestructive(runtime(false), {
+            runtime(false).confirmDestructive({
                 ...args,
                 flags: {...base, confirm: 'other'},
             }),
@@ -111,11 +111,9 @@ describe('confirmDestructive: irreversible level', () => {
 
     test('interactive typed name must match', async () => {
         const ok = runtime(true, {text: async () => 'klant-x'});
-        await confirmDestructive(ok, {...args, flags: base});
+        await ok.confirmDestructive({...args, flags: base});
         const bad = runtime(true, {text: async () => 'nope'});
-        const e = await failure(
-            confirmDestructive(bad, {...args, flags: base}),
-        );
+        const e = await failure(bad.confirmDestructive({...args, flags: base}));
         expect(e.code).toBe('CONFIRMATION_DECLINED');
     });
 
@@ -127,7 +125,7 @@ describe('confirmDestructive: irreversible level', () => {
                 return 'KLANT-X';
             },
         });
-        await confirmDestructive(rt, {
+        await rt.confirmDestructive({
             ...args,
             flags: {...base, yes: true},
         });

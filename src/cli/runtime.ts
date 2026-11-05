@@ -6,7 +6,11 @@ import {Output} from './output';
 import {PROMPTS, type Prompts} from './prompts';
 import {ClientProvider} from './services/ClientProvider';
 import {ConfigService} from './services/ConfigService';
+import {ConfirmService} from './services/ConfirmService';
+import {OperationRunner} from './services/OperationRunner';
 import {type GlobalOptions, RunContext} from './services/RunContext';
+import {SiteCache} from './services/SiteCache';
+import {SiteResolver} from './services/SiteResolver';
 
 /** Facade over the run-scoped services, for code that predates them. */
 @scoped(Lifecycle.ContainerScoped)
@@ -18,6 +22,10 @@ export class Runtime {
         @inject(PROMPTS) readonly prompts: Prompts,
         private readonly config: ConfigService,
         private readonly clients: ClientProvider,
+        readonly sites: SiteCache,
+        readonly resolver: SiteResolver,
+        readonly confirmer: ConfirmService,
+        readonly operations: OperationRunner,
     ) {}
 
     get json(): boolean {

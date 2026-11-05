@@ -1,11 +1,12 @@
 import {describe, expect, test} from 'bun:test';
 import {createContainer} from '@/cli/container';
 import {toCliError} from '@/cli/errors';
-import {runOperation} from '@/cli/progress';
 import type {Io} from '@/cli/io';
-import {Runtime} from '@/cli/runtime';
+import {Output} from '@/cli/output';
+import {OperationRunner} from '@/cli/services/OperationRunner';
+import {RunContext} from '@/cli/services/RunContext';
 import type {RequestSpec} from '@/client/request';
-import {type FakeRoute, fakeKinsta} from '../helpers/fakeKinsta';
+import {type FakeRoute, fakeKinsta} from '../../helpers/fakeKinsta';
 
 const site = {
     id: 's1',
@@ -28,6 +29,8 @@ async function exec(
     opts: {
         json?: boolean;
         confirm?: {action: string; level: 'confirm' | 'irreversible'};
+        spec?: RequestSpec;
+        redact?: (body: unknown) => unknown;
     } = {},
 ) {
     const fake = fakeKinsta(routes);
@@ -50,22 +53,24 @@ async function exec(
             clock += 60_000;
             return clock;
         },
+        progressOutput: process.stderr,
         prompts: {} as Io['prompts'],
     };
-    const rt = createContainer(io).resolve(Runtime);
-    rt.json = opts.json === true;
+    const c = createContainer(io);
+    c.resolve(RunContext).json = opts.json === true;
     let code = 0;
     try {
-        await runOperation(rt, {
+        await c.resolve(OperationRunner).run({
             title: 'Clear cache',
-            spec,
+            spec: opts.spec ?? spec,
             target: {site, env},
             flags: {...flags, ...f},
             confirm: opts.confirm,
+            redact: opts.redact,
         });
     } catch (e) {
         const err = toCliError(e);
-        rt.output.error(err);
+        c.resolve(Output).error(err);
         code = err.exitCode;
     }
     return {code, stdout, stderr, calls: fake.calls};
@@ -154,6 +159,40 @@ describe('runOperation', () => {
         );
         expect(r.code).toBe(4);
         expect(JSON.parse(r.stderr).error.code).toBe('OPERATION_TIMEOUT');
+    });
+});
+
+describe('runOperation redact', () => {
+    const secretSpec: RequestSpec = {...spec, body: {password: 'secret'}};
+    const redact = (b: unknown) => ({...(b as object), password: '***'});
+
+    test('dry-run shows the redacted body', async () => {
+        const json = await exec(
+            {},
+            {dryRun: true},
+            {json: true, spec: secretSpec, redact},
+        );
+        expect(JSON.parse(json.stdout).request.body.password).toBe('***');
+        const human = await exec(
+            {},
+            {dryRun: true},
+            {spec: secretSpec, redact},
+        );
+        expect(human.stdout).toContain('"password":"***"');
+        expect(human.stdout).not.toContain('secret');
+    });
+
+    test('redact does not touch the sent body', async () => {
+        const r = await exec(
+            started,
+            {wait: false},
+            {json: true, spec: secretSpec, redact},
+        );
+        expect(r.code).toBe(0);
+        expect(r.calls[0]!.method).toBe('POST');
+        expect((r.calls[0]!.body as {password: string}).password).toBe(
+            'secret',
+        );
     });
 });
 

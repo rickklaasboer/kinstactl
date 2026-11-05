@@ -143,6 +143,7 @@ function claimedByCommands(): Set<EndpointKey> {
         stderr() {},
         isTTY: false,
         env: {},
+        progressOutput: process.stderr,
         prompts: {} as Io['prompts'],
     };
     const claimed = new Set<EndpointKey>();

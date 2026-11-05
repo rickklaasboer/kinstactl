@@ -96,6 +96,7 @@ function io(): Io {
         stderr() {},
         isTTY: false,
         env: {},
+        progressOutput: process.stderr,
         prompts: {} as Io['prompts'],
     };
 }
