@@ -12,6 +12,7 @@
     "license": "MIT",
     "author": "Rick Klaasboer <rick@standout.nl>",
     "repository": "rickklaasboer/kinstactl",
+    "homepage": "https://kinstactl.rickklaasboer.nl",
     "bin": {
         "kinstactl": "dist/kinstactl.js"
     },
