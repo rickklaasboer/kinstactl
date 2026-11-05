@@ -2751,7 +2751,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 38`] = `
+exports[`help of every command and group is unchanged 41`] = `
 {
   "code": 0,
   "path": "domains",
@@ -2776,7 +2776,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 39`] = `
+exports[`help of every command and group is unchanged 42`] = `
 {
   "code": 0,
   "path": "domains list",
@@ -2801,7 +2801,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 40`] = `
+exports[`help of every command and group is unchanged 43`] = `
 {
   "code": 0,
   "path": "domains add",
@@ -2835,7 +2835,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 41`] = `
+exports[`help of every command and group is unchanged 44`] = `
 {
   "code": 0,
   "path": "domains remove",
@@ -2865,7 +2865,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 42`] = `
+exports[`help of every command and group is unchanged 45`] = `
 {
   "code": 0,
   "path": "domains primary",
@@ -2896,7 +2896,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 43`] = `
+exports[`help of every command and group is unchanged 46`] = `
 {
   "code": 0,
   "path": "domains verification",
