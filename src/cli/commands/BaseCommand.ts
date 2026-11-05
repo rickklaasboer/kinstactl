@@ -50,7 +50,8 @@ export interface BaseCommand<O extends object = never> {
     execute(args: CommandArgs, options: O): Promise<void> | void;
 }
 
-export type CommandClass = new (...deps: never[]) => BaseCommand;
+// biome-ignore lint/suspicious/noExplicitAny: tsyringe resolves constructors with any args
+export type CommandClass = new (...deps: any[]) => BaseCommand;
 
 /** A command group such as 'cache' or 'cache edge'. */
 export interface GroupDef {

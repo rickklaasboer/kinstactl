@@ -56,12 +56,7 @@ export class CommandRegistry {
     /** The command instances, resolved once, in class order. */
     commands(): BaseCommand[] {
         this.resolved ??= this.classes.map((cls) =>
-            // CommandClass takes never[] so any constructor fits; tsyringe wants any[].
-            this.container.resolve(
-                cls as new (
-                    ...deps: unknown[]
-                ) => BaseCommand,
-            ),
+            this.container.resolve(cls),
         );
         return this.resolved;
     }
