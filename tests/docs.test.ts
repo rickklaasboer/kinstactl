@@ -2,6 +2,7 @@ import {expect, test} from 'bun:test';
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {type CommandNode, CommandRegistry} from '@/cli/CommandRegistry';
+import {EXIT_CODES} from '@/cli/errors';
 import type {Io} from '@/cli/io';
 import {createProgramContainer} from '@/cli/program';
 
@@ -251,4 +252,46 @@ test('every CommandRef points at a command', () => {
         }
     }
     expect(unknown).toEqual([]);
+});
+
+// --- scripting and library pages (task 6) ---
+
+test('the scripting page lists every error code with its exit code', () => {
+    const page = readFileSync(join(DOCS_DIR, 'scripting-and-ci.md'), 'utf8');
+    const parsed: Record<string, number> = {};
+    for (const match of page.matchAll(/^\| `([A-Z_]+)` \| (\d) \|/gm))
+        parsed[match[1] as string] = Number(match[2]);
+    expect(parsed).toEqual(EXIT_CODES);
+});
+
+test('every environment variable the cli reads is documented', () => {
+    const page = readFileSync(join(DOCS_DIR, 'scripting-and-ci.md'), 'utf8');
+    const vars = new Set(['CI']);
+    for (const file of readdirSync('src/cli', {recursive: true}) as string[]) {
+        if (!file.endsWith('.ts')) continue;
+        const source = readFileSync(join('src/cli', file), 'utf8');
+        for (const m of source.matchAll(
+            /\b(KINSTA(?:CTL)?_[A-Z_]+|NO_COLOR|XDG_[A-Z_]+)\b/g,
+        ))
+            vars.add(m[1] as string);
+    }
+    const missing = [...vars].filter((v) => !page.includes(v));
+    expect(missing).toEqual([]);
+});
+
+test('the library page uses only exported names', async () => {
+    const page = readFileSync(join(DOCS_DIR, 'library.md'), 'utf8');
+    const exported = Object.keys(await import('@/index'));
+    const names: string[] = [];
+    let inTable = false;
+    for (const line of page.split('\n')) {
+        if (/^\| Export \|/.test(line)) inTable = true;
+        else if (inTable && !line.startsWith('|')) inTable = false;
+        else if (inTable) {
+            const m = line.match(/^\| `([A-Za-z]+)` \|/);
+            if (m) names.push(m[1] as string);
+        }
+    }
+    expect(names.length).toBeGreaterThan(0);
+    expect(names.filter((n) => !exported.includes(n))).toEqual([]);
 });
