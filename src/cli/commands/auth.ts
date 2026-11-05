@@ -1,6 +1,6 @@
 import type { Command } from 'commander'
 import { validate } from '@/client/endpoints/account'
-import { loadConfig, saveConfig } from '../config'
+import { loadConfig, saveConfig, selectedProfileName } from '../config'
 import { CliError } from '../errors'
 import { meta } from '../program'
 import type { Runtime } from '../runtime'
@@ -39,8 +39,8 @@ export function registerAuth(program: Command, rt: Runtime): void {
         const res = await rt.clientFor(apiKey, '').send<ValidateResponse>(validate())
         if (!res.company) throw new CliError('API_ERROR', 'Kinsta /validate returned no company ID')
 
-        const name = rt.profile ?? 'default'
         const cfg = loadConfig(rt.io.env)
+        const name = selectedProfileName(rt.io.env, { profile: rt.profile }, cfg)
         cfg.profiles[name] = { apiKey, companyId: res.company, keyName: res.name }
         cfg.defaultProfile ??= name
         saveConfig(rt.io.env, cfg)
@@ -90,7 +90,7 @@ export function registerAuth(program: Command, rt: Runtime): void {
       .addHelpText('after', '\nExamples:\n  $ kinstactl auth logout\n  $ kinstactl auth logout --profile work')
       .action(() => {
         const cfg = loadConfig(rt.io.env)
-        const name = rt.profile ?? cfg.defaultProfile ?? 'default'
+        const name = selectedProfileName(rt.io.env, { profile: rt.profile }, cfg)
         if (!cfg.profiles[name]) {
           throw new CliError('USAGE', `Profile "${name}" not found`, [
             `Existing profiles: ${Object.keys(cfg.profiles).join(', ') || 'none'}`,

@@ -74,6 +74,11 @@ export function saveConfig(env: NodeJS.ProcessEnv, cfg: ConfigFile): void {
   chmodSync(path, 0o600)
 }
 
+/** Flag > KINSTA_PROFILE > config defaultProfile > 'default'. */
+export function selectedProfileName(env: NodeJS.ProcessEnv, flags: { profile?: string }, cfg: ConfigFile): string {
+  return flags.profile || env.KINSTA_PROFILE || cfg.defaultProfile || 'default'
+}
+
 export function resolveCredentials(env: NodeJS.ProcessEnv, flags: { profile?: string }): Credentials {
   if (!flags.profile && (env.KINSTA_API_KEY || env.KINSTA_COMPANY_ID)) {
     if (!env.KINSTA_COMPANY_ID) {
@@ -91,7 +96,7 @@ export function resolveCredentials(env: NodeJS.ProcessEnv, flags: { profile?: st
 
   const cfg = loadConfig(env)
   const names = Object.keys(cfg.profiles)
-  const name = flags.profile || env.KINSTA_PROFILE || cfg.defaultProfile || 'default'
+  const name = selectedProfileName(env, flags, cfg)
   const profile = cfg.profiles[name]
   if (!profile) {
     const explicit = flags.profile || env.KINSTA_PROFILE || cfg.defaultProfile

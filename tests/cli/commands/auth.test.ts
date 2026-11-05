@@ -22,6 +22,28 @@ describe('auth login', () => {
     expect(r.stdout).toBe('')
   })
 
+  const noPrompt: Array<[string, string[], Record<string, string>]> = [
+    ['--no-input', ['--no-input'], {}],
+    ['KINSTACTL_NO_INPUT=1', [], { KINSTACTL_NO_INPUT: '1' }],
+    ['CI=true', [], { CI: 'true' }],
+    ['--json', ['--json'], {}],
+  ]
+  for (const [name, flags, env] of noPrompt) {
+    test(`login on a TTY with ${name} never prompts`, async () => {
+      const r = await runCli(['auth', 'login', ...flags], { tty: true, env })
+      expect(r.code).toBe(2)
+      expect(r.stderr).toContain('No API key given')
+    })
+  }
+
+  test('login honors KINSTA_PROFILE', async () => {
+    const r = await runCli(['auth', 'login', '--api-key', 'k'], {
+      env: { KINSTA_PROFILE: 'work' },
+      routes: { 'GET /validate': { body: validate } },
+    })
+    expect(Object.keys(loadConfig(r.env).profiles)).toEqual(['work'])
+  })
+
   test('interactive login prompts for the key as a secret', async () => {
     let secret: boolean | undefined
     const r = await runCli(['auth', 'login'], {
@@ -103,6 +125,12 @@ describe('auth logout and profiles', () => {
     const cfg = loadConfig(r.env)
     expect(Object.keys(cfg.profiles)).toEqual(['other'])
     expect(cfg.defaultProfile).toBeUndefined()
+  })
+
+  test('logout honors KINSTA_PROFILE', async () => {
+    const r = await runCli(['auth', 'logout'], { config, env: { KINSTA_PROFILE: 'other' } })
+    expect(r.code).toBe(0)
+    expect(Object.keys(loadConfig(r.env).profiles)).toEqual(['work'])
   })
 
   test('logout of an unknown profile is a usage error', async () => {
