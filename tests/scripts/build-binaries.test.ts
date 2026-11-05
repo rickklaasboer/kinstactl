@@ -1,8 +1,12 @@
 import {expect, test} from 'bun:test';
+import {mkdtempSync, readdirSync, rmSync, writeFileSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 import {
     artifactName,
     buildBinaries,
     checksumLine,
+    prepareOutDir,
     TARGETS,
 } from '../../scripts/build-binaries';
 
@@ -25,6 +29,14 @@ test('checksum lines are sha256sum compatible', () => {
     expect(checksumLine('ab', 'kinstactl-linux-x64')).toBe(
         'ab  kinstactl-linux-x64',
     );
+});
+
+test('prepareOutDir removes stale files', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'kinstactl-bin-'));
+    writeFileSync(join(dir, 'SHA256SUMS'), 'stale');
+    prepareOutDir(dir);
+    expect(readdirSync(dir)).toEqual([]);
+    rmSync(dir, {recursive: true});
 });
 
 test('an unknown target is an error', () => {

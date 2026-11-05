@@ -1,6 +1,6 @@
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
+import {mkdirSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 
 export const TARGETS: Record<string, string> = {
@@ -19,6 +19,12 @@ export function checksumLine(hex: string, file: string): string {
     return `${hex}  ${file}`;
 }
 
+// Removes stale binaries and SHA256SUMS from earlier runs
+export function prepareOutDir(outDir: string): void {
+    rmSync(outDir, {recursive: true, force: true});
+    mkdirSync(outDir, {recursive: true});
+}
+
 export function buildBinaries(targets: string[], outDir = 'dist/bin'): void {
     const unknown = targets.filter((target) => !(target in TARGETS));
     if (unknown.length > 0) {
@@ -27,12 +33,12 @@ export function buildBinaries(targets: string[], outDir = 'dist/bin'): void {
         );
     }
 
-    mkdirSync(outDir, {recursive: true});
+    prepareOutDir(outDir);
 
     const files: string[] = [];
     for (const target of targets) {
         const file = artifactName(target);
-        // A cwd bunfig.toml would otherwise be read at runtime and can break the binary
+        // Like the node bundle, the binary must not read a cwd bunfig.toml or .env
         const result = spawnSync(
             'bun',
             [
@@ -40,6 +46,7 @@ export function buildBinaries(targets: string[], outDir = 'dist/bin'): void {
                 'src/cli/main.ts',
                 '--compile',
                 '--no-compile-autoload-bunfig',
+                '--no-compile-autoload-dotenv',
                 `--target=${TARGETS[target]}`,
                 '--outfile',
                 join(outDir, file),
