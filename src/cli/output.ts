@@ -7,7 +7,8 @@ export type ColorName = 'red' | 'yellow' | 'green' | 'dim';
 export interface Column<T> {
     header: string;
     value: (r: T) => string;
-    color?: (r: T) => ColorName;
+    /** Undefined leaves the cell uncolored. */
+    color?: (r: T) => ColorName | undefined;
 }
 
 export interface OutputSink {
@@ -42,7 +43,8 @@ export class Output {
         const cells = rows.map((r) =>
             columns.map((col) => {
                 const text = col.value(r);
-                return col.color ? this.c[col.color(r)](text) : text;
+                const color = col.color?.(r);
+                return color ? this.c[color](text) : text;
             }),
         );
         this.sink.stdout(

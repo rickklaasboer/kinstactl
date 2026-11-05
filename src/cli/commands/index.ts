@@ -18,6 +18,15 @@ import {CacheEdgeDisableCommand} from './cache/CacheEdgeDisableCommand';
 import {CacheEdgeEnableCommand} from './cache/CacheEdgeEnableCommand';
 import type {CommandClass, GroupDef} from './BaseCommand';
 import {CommandsCommand} from './CommandsCommand';
+import {CompanyActivityCommand} from './company/CompanyActivityCommand';
+import {CompanyApiKeysCommand} from './company/CompanyApiKeysCommand';
+import {CompanyPluginsCommand} from './company/CompanyPluginsCommand';
+import {CompanyRegionsCommand} from './company/CompanyRegionsCommand';
+import {CompanyThemesCommand} from './company/CompanyThemesCommand';
+import {CompanyUsersGetCommand} from './company/CompanyUsersGetCommand';
+import {CompanyUsersListCommand} from './company/CompanyUsersListCommand';
+import {CompanyUsersRoleCommand} from './company/CompanyUsersRoleCommand';
+import {CompanyUsersSiteRoleCommand} from './company/CompanyUsersSiteRoleCommand';
 import {DbLoginCommand} from './db/DbLoginCommand';
 import {DnsRecordsAddCommand} from './dns/DnsRecordsAddCommand';
 import {DnsRecordsDeleteCommand} from './dns/DnsRecordsDeleteCommand';
@@ -135,6 +144,15 @@ export const COMMANDS: CommandClass[] = [
     SecurityBotProtectionExceptionsAddCommand,
     SecurityBotProtectionExceptionsDeleteCommand,
     AnalyticsCommand,
+    CompanyUsersListCommand,
+    CompanyUsersGetCommand,
+    CompanyUsersRoleCommand,
+    CompanyUsersSiteRoleCommand,
+    CompanyApiKeysCommand,
+    CompanyRegionsCommand,
+    CompanyActivityCommand,
+    CompanyPluginsCommand,
+    CompanyThemesCommand,
 ];
 
 export const GROUPS: GroupDef[] = [
@@ -165,4 +183,6 @@ export const GROUPS: GroupDef[] = [
         path: 'security bot-protection exceptions',
         description: 'Bot protection exception rules',
     },
+    {path: 'company', description: 'Company-wide settings and inventories'},
+    {path: 'company users', description: 'Company users and roles'},
 ];

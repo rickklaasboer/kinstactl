@@ -43,7 +43,11 @@ export function suggest(
         .map((x) => x.c);
 }
 
-function match<T>(input: string, items: T[], keys: (t: T) => string[]): T[] {
+export function match<T>(
+    input: string,
+    items: T[],
+    keys: (t: T) => string[],
+): T[] {
     const needle = input.toLowerCase();
     const lowered = (t: T) => keys(t).map((k) => k.toLowerCase());
     const exact = items.filter((t) => lowered(t).includes(needle));

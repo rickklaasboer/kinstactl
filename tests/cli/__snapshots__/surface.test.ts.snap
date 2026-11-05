@@ -3586,6 +3586,360 @@ exports[`commands --json is unchanged 1`] = `
       ],
       "path": "analytics",
     },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [],
+          "commands": [
+            {
+              "arguments": [],
+              "commands": [],
+              "description": "List the users of the company with their roles",
+              "destructive": null,
+              "endpoints": [
+                "GET /company/{id}/users",
+              ],
+              "name": "list",
+              "options": [
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "company users list",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "email, full name or ID, see: company users list",
+                  "name": "user",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Show a company user and the roles they hold",
+              "destructive": null,
+              "endpoints": [
+                "GET /company/{id}/users",
+                "GET /company/{id}/users/{id_user}",
+              ],
+              "name": "get",
+              "options": [
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "company users get",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "email, full name or ID, see: company users list",
+                  "name": "user",
+                  "required": true,
+                },
+                {
+                  "choices": [
+                    "company-admin",
+                    "company-developer",
+                    "company-billing",
+                  ],
+                  "description": "company role",
+                  "name": "role",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Set the company-wide role of a user",
+              "destructive": null,
+              "endpoints": [
+                "GET /company/{id}/users",
+                "POST /company/{company_id}/users/company-capabilities",
+              ],
+              "name": "role",
+              "options": [
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "company users role",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "email, full name or ID, see: company users list",
+                  "name": "user",
+                  "required": true,
+                },
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "choices": [
+                    "site-admin",
+                    "site-developer",
+                  ],
+                  "description": "site role",
+                  "name": "role",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Set the role of a user on one site",
+              "destructive": null,
+              "endpoints": [
+                "GET /company/{id}/users",
+                "GET /sites",
+                "POST /company/{company_id}/users/site-capabilities",
+              ],
+              "name": "site-role",
+              "options": [
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "company users site-role",
+            },
+          ],
+          "description": "Company users and roles",
+          "destructive": null,
+          "endpoints": [],
+          "name": "users",
+          "options": [],
+          "path": "company users",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "List the API keys of the company",
+          "destructive": null,
+          "endpoints": [
+            "GET /company/{id}/api-keys",
+          ],
+          "name": "api-keys",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "company api-keys",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "List the regions a site can be created in",
+          "destructive": null,
+          "endpoints": [
+            "GET /company/{id}/available-regions",
+          ],
+          "name": "regions",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "company regions",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "Show the activity log of the company",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /company/{id}/activity-logs",
+          ],
+          "name": "activity",
+          "options": [
+            {
+              "description": "number of entries",
+              "flags": "--limit <n>",
+            },
+            {
+              "description": "entries to skip",
+              "flags": "--offset <n>",
+            },
+            {
+              "description": "one of: siteActions, kinstaDns, migrations, billing, notifications, userManagement, personalSettings, samlSso",
+              "flags": "--category <category>",
+            },
+            {
+              "description": "only entries of this site (name, display name or ID)",
+              "flags": "--site <site>",
+            },
+            {
+              "description": "language of the descriptions: da, de, en, es, fr, it, ja, nl, pt, sv",
+              "flags": "--language <code>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "company activity",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "List the plugins in use across the company (filters apply client-side)",
+          "destructive": null,
+          "endpoints": [
+            "GET /company/{id}/wp-plugins",
+          ],
+          "name": "plugins",
+          "options": [
+            {
+              "description": "only plugins with an update available",
+              "flags": "--updates",
+            },
+            {
+              "description": "only plugins whose latest version is vulnerable",
+              "flags": "--vulnerable",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "company plugins",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "List the themes in use across the company (filters apply client-side)",
+          "destructive": null,
+          "endpoints": [
+            "GET /company/{id}/wp-themes",
+          ],
+          "name": "themes",
+          "options": [
+            {
+              "description": "only themes with an update available",
+              "flags": "--updates",
+            },
+            {
+              "description": "only themes whose latest version is vulnerable",
+              "flags": "--vulnerable",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "company themes",
+        },
+      ],
+      "description": "Company-wide settings and inventories",
+      "destructive": null,
+      "endpoints": [],
+      "name": "company",
+      "options": [],
+      "path": "company",
+    },
   ],
   "description": "Command line client for the Kinsta API",
   "destructive": null,
@@ -3698,6 +4052,17 @@ security  Security settings of an environment
       add <site> <type> <action> <value>  Add a bot protection exception rule
       delete <site> <rule-id>  Delete a bot protection exception rule
 analytics <metric> [site]  Traffic, bandwidth, disk and bot analytics of an environment
+company  Company-wide settings and inventories
+  users  Company users and roles
+    list  List the users of the company with their roles
+    get <user>  Show a company user and the roles they hold
+    role <user> <role>  Set the company-wide role of a user
+    site-role <user> <site> <role>  Set the role of a user on one site
+  api-keys  List the API keys of the company
+  regions  List the regions a site can be created in
+  activity  Show the activity log of the company
+  plugins  List the plugins in use across the company (filters apply client-side)
+  themes  List the themes in use across the company (filters apply client-side)
 "
 `;
 
@@ -3736,6 +4101,7 @@ Commands:
   search-replace [options] <site> <search> <replace>  Search and replace in the database (dry run unless --apply)
   security                                            Security settings of an environment
   analytics [options] <metric> [site]                 Traffic, bandwidth, disk and bot analytics of an environment
+  company                                             Company-wide settings and inventories
   help [command]                                      display help for command
 "
 ,
@@ -6137,6 +6503,273 @@ Examples:
   $ kinstactl analytics top-countries klant-x --env live --span 30d
   $ kinstactl analytics diskspace klant-x --env live --time-zone 02:00
   $ kinstactl analytics bot-traffic-flow klant-x --env live --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 90`] = `
+{
+  "code": 0,
+  "path": "company",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company [options] [command]
+
+Company-wide settings and inventories
+
+Options:
+  -h, --help          display help for command
+
+Commands:
+  users               Company users and roles
+  api-keys            List the API keys of the company
+  regions             List the regions a site can be created in
+  activity [options]  Show the activity log of the company
+  plugins [options]   List the plugins in use across the company (filters apply
+                      client-side)
+  themes [options]    List the themes in use across the company (filters apply
+                      client-side)
+  help [command]      display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 91`] = `
+{
+  "code": 0,
+  "path": "company users",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company users [options] [command]
+
+Company users and roles
+
+Options:
+  -h, --help                                display help for command
+
+Commands:
+  list                                      List the users of the company with their roles
+  get <user>                                Show a company user and the roles they hold
+  role [options] <user> <role>              Set the company-wide role of a user
+  site-role [options] <user> <site> <role>  Set the role of a user on one site
+  help [command]                            display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 92`] = `
+{
+  "code": 0,
+  "path": "company users list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company users list [options]
+
+List the users of the company with their roles
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl company users list
+  $ kinstactl company users list --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 93`] = `
+{
+  "code": 0,
+  "path": "company users get",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company users get [options] <user>
+
+Show a company user and the roles they hold
+
+Arguments:
+  user        email, full name or ID, see: company users list
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl company users get jan@example.com
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 94`] = `
+{
+  "code": 0,
+  "path": "company users role",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company users role [options] <user> <role>
+
+Set the company-wide role of a user
+
+Arguments:
+  user                 email, full name or ID, see: company users list
+  role                 company role (choices: "company-admin",
+                       "company-developer", "company-billing")
+
+Options:
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl company users role jan@example.com company-developer
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 95`] = `
+{
+  "code": 0,
+  "path": "company users site-role",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company users site-role [options] <user> <site> <role>
+
+Set the role of a user on one site
+
+Arguments:
+  user                 email, full name or ID, see: company users list
+  site                 site name, display name or ID
+  role                 site role (choices: "site-admin", "site-developer")
+
+Options:
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl company users site-role jan@example.com klant-x site-developer
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 96`] = `
+{
+  "code": 0,
+  "path": "company api-keys",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company api-keys [options]
+
+List the API keys of the company
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl company api-keys
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 97`] = `
+{
+  "code": 0,
+  "path": "company regions",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company regions [options]
+
+List the regions a site can be created in
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl company regions
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 98`] = `
+{
+  "code": 0,
+  "path": "company activity",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company activity [options]
+
+Show the activity log of the company
+
+Options:
+  --limit <n>            number of entries (default: 10)
+  --offset <n>           entries to skip
+  --category <category>  one of: siteActions, kinstaDns, migrations, billing,
+                         notifications, userManagement, personalSettings,
+                         samlSso
+  --site <site>          only entries of this site (name, display name or ID)
+  --language <code>      language of the descriptions: da, de, en, es, fr, it,
+                         ja, nl, pt, sv
+  -h, --help             display help for command
+
+Examples:
+  $ kinstactl company activity
+  $ kinstactl company activity --category siteActions --site klant-x --limit 25
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 99`] = `
+{
+  "code": 0,
+  "path": "company plugins",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company plugins [options]
+
+List the plugins in use across the company (filters apply client-side)
+
+Options:
+  --updates     only plugins with an update available
+  --vulnerable  only plugins whose latest version is vulnerable
+  -h, --help    display help for command
+
+Examples:
+  $ kinstactl company plugins
+  $ kinstactl company plugins --updates --vulnerable
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 100`] = `
+{
+  "code": 0,
+  "path": "company themes",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl company themes [options]
+
+List the themes in use across the company (filters apply client-side)
+
+Options:
+  --updates     only themes with an update available
+  --vulnerable  only themes whose latest version is vulnerable
+  -h, --help    display help for command
+
+Examples:
+  $ kinstactl company themes
+  $ kinstactl company themes --updates --vulnerable
 "
 ,
 }

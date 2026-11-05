@@ -25,8 +25,6 @@ function specOperations(): Set<EndpointKey> {
 
 // Not yet implemented; plan 2 drives this to empty.
 const PENDING = new Set<EndpointKey>([
-    'GET /company/{id}/users/{id_user}',
-    'GET /company/{id}/api-keys',
     'GET /sites/tools/denied-ips',
     'PUT /sites/tools/denied-ips',
     'PUT /sites/environments/{env_id}/additional-sftp-accounts/toggle-status',
@@ -35,7 +33,6 @@ const PENDING = new Set<EndpointKey>([
     'DELETE /sites/environments/additional-sftp-accounts/{sftp_account_id}',
     'GET /sites/environments/{env_id}/redirect-rules',
     'POST /sites/environments/{env_id}/redirect-rules',
-    'GET /company/{id}/activity-logs',
     'POST /sites/environments/{env_id}/ssh/set-status',
     'GET /sites/environments/{env_id}/ssh/get-status',
     'POST /sites/environments/{env_id}/ssh/set-password-status',
@@ -45,10 +42,6 @@ const PENDING = new Set<EndpointKey>([
     'GET /sites/{site_id}/environments/{env_id}/ssh/config',
     'POST /sites/environments/{env_id}/ssh/change-expiration-interval',
     'GET /sites/environments/{env_id}/ssh/password',
-    'GET /company/{id}/wp-plugins',
-    'GET /company/{id}/wp-themes',
-    'POST /company/{company_id}/users/company-capabilities',
-    'POST /company/{company_id}/users/site-capabilities',
 ]);
 
 test('every spec operation is implemented or pending', () => {
