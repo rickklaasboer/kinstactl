@@ -2,7 +2,7 @@
 
 TypeScript/Bun CLI and client library for the Kinsta API.
 
-- Commands: `bun test`, `bun run typecheck`, `bun run gen:types` (regenerates types from `openapi/kinsta-openapi.yaml`).
+- Commands: `bun test`, `bun run typecheck`, `bun run lint`, `bun run format`, `bun run gen:types` (regenerates types from `openapi/kinsta-openapi.yaml`).
 - `src/client/**` is the library: it must not import from `src/cli/**`, tsyringe, Commander, picocolors, listr2 or @clack/prompts.
 - No Bun-only APIs in `src/` (`Bun.*`, `bun:*`); tests may use `bun:test`.
 - Never edit `src/client/generated/`; change the OpenAPI spec and run `bun run gen:types`.
