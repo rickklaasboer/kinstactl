@@ -8,8 +8,8 @@ const sites = {
                 sites: [
                     {
                         id: 'id-x',
-                        name: 'klant-x',
-                        display_name: 'Klant X',
+                        name: 'my-site',
+                        display_name: 'My Site',
                         status: 'live',
                         environments: [
                             {
@@ -41,7 +41,7 @@ describe('wp run', () => {
 
     test('rejects a command without the wp prefix', async () => {
         const r = await runCli(
-            ['wp', 'run', 'klant-x', 'plugin list', '--yes', '--json'],
+            ['wp', 'run', 'my-site', 'plugin list', '--yes', '--json'],
             {routes: {...sites, ...route}},
         );
         expect(r.code).toBe(2);
@@ -50,7 +50,7 @@ describe('wp run', () => {
     });
 
     test('needs --yes', async () => {
-        const r = await runCli(['wp', 'run', 'klant-x', 'wp plugin list'], {
+        const r = await runCli(['wp', 'run', 'my-site', 'wp plugin list'], {
             routes: {...sites, ...route},
         });
         expect(r.code).toBe(5);
@@ -59,7 +59,7 @@ describe('wp run', () => {
 
     test('prints the operation data', async () => {
         const r = await runCli(
-            ['wp', 'run', 'klant-x', 'wp plugin list', '--yes'],
+            ['wp', 'run', 'my-site', 'wp plugin list', '--yes'],
             {routes: {...sites, ...route}},
         );
         expect(r.code).toBe(0);
@@ -73,7 +73,7 @@ describe('wp run', () => {
 describe('wp run --json', () => {
     test('prints exactly one JSON document', async () => {
         const r = await runCli(
-            ['wp', 'run', 'klant-x', 'wp plugin list', '--yes', '--json'],
+            ['wp', 'run', 'my-site', 'wp plugin list', '--yes', '--json'],
             {
                 routes: {
                     ...sites,
@@ -105,7 +105,7 @@ describe('wp login', () => {
 
     test('prints the link', async () => {
         const r = await runCli(
-            ['wp', 'login', 'klant-x', '--email', 'a@example.com'],
+            ['wp', 'login', 'my-site', '--email', 'a@example.com'],
             {routes: {...sites, ...route}},
         );
         expect(r.code).toBe(0);
@@ -117,7 +117,7 @@ describe('wp login', () => {
 
     test('--dry-run sends nothing', async () => {
         const r = await runCli(
-            ['wp', 'login', 'klant-x', '--email', 'a@example.com', '--dry-run'],
+            ['wp', 'login', 'my-site', '--email', 'a@example.com', '--dry-run'],
             {routes: {...sites, ...route}},
         );
         expect(r.code).toBe(0);
@@ -125,7 +125,7 @@ describe('wp login', () => {
     });
 
     test('needs --email', async () => {
-        const r = await runCli(['wp', 'login', 'klant-x', '--json'], {
+        const r = await runCli(['wp', 'login', 'my-site', '--json'], {
             routes: {...sites, ...route},
         });
         expect(r.code).toBe(2);
@@ -140,7 +140,7 @@ describe('wp user', () => {
                 'wp',
                 'user',
                 'create',
-                'klant-x',
+                'my-site',
                 'a@example.com',
                 '--first-name',
                 'Ann',
@@ -169,7 +169,7 @@ describe('wp user', () => {
 
     test('exists prints no', async () => {
         const r = await runCli(
-            ['wp', 'user', 'exists', 'klant-x', 'a@example.com'],
+            ['wp', 'user', 'exists', 'my-site', 'a@example.com'],
             {
                 routes: {
                     ...sites,
@@ -185,7 +185,7 @@ describe('wp user', () => {
 
     test('exists --json', async () => {
         const r = await runCli(
-            ['wp', 'user', 'exists', 'klant-x', 'a@example.com', '--json'],
+            ['wp', 'user', 'exists', 'my-site', 'a@example.com', '--json'],
             {
                 routes: {
                     ...sites,
@@ -204,7 +204,7 @@ describe('wp user', () => {
 
 describe('db login', () => {
     test('prints the url', async () => {
-        const r = await runCli(['db', 'login', 'klant-x'], {
+        const r = await runCli(['db', 'login', 'my-site'], {
             routes: {
                 ...sites,
                 'POST /sites/environments/env-live/pma-login-token': {

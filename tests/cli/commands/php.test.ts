@@ -8,8 +8,8 @@ const routes = {
                 sites: [
                     {
                         id: 'id-x',
-                        name: 'klant-x',
-                        display_name: 'Klant X',
+                        name: 'my-site',
+                        display_name: 'My Site',
                         status: 'live',
                         environments: [
                             {
@@ -48,7 +48,7 @@ const routes = {
 
 describe('php version', () => {
     test('without a version prints the current one and writes nothing', async () => {
-        const r = await runCli(['php', 'version', 'klant-x', '--env', 'live'], {
+        const r = await runCli(['php', 'version', 'my-site', '--env', 'live'], {
             routes,
         });
         expect(r.code).toBe(0);
@@ -61,7 +61,7 @@ describe('php version', () => {
             [
                 'php',
                 'version',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
                 '--no-auto-update',
@@ -78,11 +78,11 @@ describe('php version', () => {
 
     test('without a version in json', async () => {
         const r = await runCli(
-            ['php', 'version', 'klant-x', '--env', 'staging', '--json'],
+            ['php', 'version', 'my-site', '--env', 'staging', '--json'],
             {routes},
         );
         expect(JSON.parse(r.stdout)).toEqual({
-            site: 'klant-x',
+            site: 'my-site',
             environment: 'staging',
             php_version: '8.3',
         });
@@ -93,7 +93,7 @@ describe('php version', () => {
             [
                 'php',
                 'version',
-                'klant-x',
+                'my-site',
                 '8.3',
                 '--env',
                 'staging',
@@ -115,7 +115,7 @@ describe('php version', () => {
             [
                 'php',
                 'version',
-                'klant-x',
+                'my-site',
                 '8.3',
                 '--env',
                 'staging',
@@ -134,7 +134,7 @@ describe('php version', () => {
 
     test('changing the version sends PUT and waits', async () => {
         const r = await runCli(
-            ['php', 'version', 'klant-x', '8.3', '--env', 'live', '--json'],
+            ['php', 'version', 'my-site', '8.3', '--env', 'live', '--json'],
             {
                 routes: {
                     ...routes,
@@ -153,7 +153,7 @@ describe('php version', () => {
 describe('php restart', () => {
     test('sends the environment id', async () => {
         const r = await runCli(
-            ['php', 'restart', 'klant-x', '--env', 'live', '--json'],
+            ['php', 'restart', 'my-site', '--env', 'live', '--json'],
             {
                 routes: {
                     ...routes,

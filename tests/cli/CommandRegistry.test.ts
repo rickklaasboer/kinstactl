@@ -151,7 +151,7 @@ describe('CommandRegistry', () => {
             [
                 'grp',
                 'do',
-                'klant-x',
+                'my-site',
                 '42',
                 '--lines',
                 '5',
@@ -162,13 +162,13 @@ describe('CommandRegistry', () => {
             ],
             {from: 'user'},
         );
-        expect(calls[0]!.args).toEqual({site: 'klant-x', backupId: '42'});
+        expect(calls[0]!.args).toEqual({site: 'my-site', backupId: '42'});
         expect(calls[0]!.opts.lines).toBe(5);
         expect(calls[0]!.opts.db).toBe(false);
         expect(calls[0]!.opts.path).toEqual(['a', 'b']);
 
-        await program.parseAsync(['grp', 'do', 'klant-x'], {from: 'user'});
-        expect(calls[1]!.args.site).toBe('klant-x');
+        await program.parseAsync(['grp', 'do', 'my-site'], {from: 'user'});
+        expect(calls[1]!.args.site).toBe('my-site');
         expect(calls[1]!.opts.lines).toBe(1000);
     });
 

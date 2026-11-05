@@ -1,15 +1,15 @@
 import type {ApiEnvironment} from '@/cli/services/SiteResolver';
 import type {FakeRoute} from './fakeKinsta';
 
-/** 'GET /sites' body: klant-x (id-x) with a live and a staging environment. */
+/** 'GET /sites' body: my-site (id-x) with a live and a staging environment. */
 export const SITES: FakeRoute = {
     body: {
         company: {
             sites: [
                 {
                     id: 'id-x',
-                    name: 'klant-x',
-                    display_name: 'Klant X',
+                    name: 'my-site',
+                    display_name: 'My Site',
                     status: 'live',
                     environments: [
                         {

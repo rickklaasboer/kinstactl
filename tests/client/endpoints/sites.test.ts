@@ -13,13 +13,13 @@ describe('sites lifecycle builders', () => {
     test('createSite', () => {
         const body = {
             company: 'c1',
-            display_name: 'Klant Y',
+            display_name: 'My Other Site',
             region: 'europe-west4',
             install_mode: 'new' as const,
             admin_user: 'admin',
             admin_email: 'a@b.nl',
             admin_password: 's3cret',
-            site_title: 'Klant Y',
+            site_title: 'My Other Site',
             wp_language: 'en_US',
         };
         expect(createSite(body)).toEqual({
@@ -31,26 +31,26 @@ describe('sites lifecycle builders', () => {
         });
     });
     test('createPlainSite', () => {
-        expect(createPlainSite('c1', 'Klant Y', 'europe-west4')).toEqual({
+        expect(createPlainSite('c1', 'My Other Site', 'europe-west4')).toEqual({
             endpoint: 'POST /sites/plain',
             method: 'POST',
             path: '/sites/plain',
             body: {
                 company: 'c1',
-                display_name: 'Klant Y',
+                display_name: 'My Other Site',
                 region: 'europe-west4',
             },
             creation: true,
         });
     });
     test('cloneSite', () => {
-        expect(cloneSite('c1', 'Klant Y', 'env-stg')).toEqual({
+        expect(cloneSite('c1', 'My Other Site', 'env-stg')).toEqual({
             endpoint: 'POST /sites/clone',
             method: 'POST',
             path: '/sites/clone',
             body: {
                 company: 'c1',
-                display_name: 'Klant Y',
+                display_name: 'My Other Site',
                 source_env_id: 'env-stg',
             },
             creation: true,

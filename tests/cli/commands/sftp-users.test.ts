@@ -11,8 +11,8 @@ const sites = {
                 sites: [
                     {
                         id: 'id-x',
-                        name: 'klant-x',
-                        display_name: 'Klant X',
+                        name: 'my-site',
+                        display_name: 'My Site',
                         status: 'live',
                         environments: [
                             {
@@ -61,7 +61,7 @@ const writes = (calls: FakeCall[]) => calls.filter((c) => c.method !== 'GET');
 
 describe('sftp-users list', () => {
     test('list shows accounts, the enabled state and the port', async () => {
-        const r = await runCli(['sftp-users', 'list', 'klant-x'], {
+        const r = await runCli(['sftp-users', 'list', 'my-site'], {
             routes: {
                 ...sites,
                 ...listRoute,
@@ -99,7 +99,7 @@ describe('sftp-users add', () => {
         const args = [
             'sftp-users',
             'add',
-            'klant-x',
+            'my-site',
             'carol',
             '--password',
             '-',
@@ -129,7 +129,7 @@ describe('sftp-users add', () => {
 
     test('add with empty stdin exits 2 and sends nothing', async () => {
         const r = await runCli(
-            ['sftp-users', 'add', 'klant-x', 'carol', '--password', '-'],
+            ['sftp-users', 'add', 'my-site', 'carol', '--password', '-'],
             {routes, io: {stdin: async () => '\n'}},
         );
         expect(r.code).toBe(2);
@@ -138,7 +138,7 @@ describe('sftp-users add', () => {
 
     test('add prompts secretly on a TTY', async () => {
         let secret: boolean | undefined;
-        const r = await runCli(['sftp-users', 'add', 'klant-x', 'carol'], {
+        const r = await runCli(['sftp-users', 'add', 'my-site', 'carol'], {
             routes,
             tty: true,
             prompts: {
@@ -161,7 +161,7 @@ describe('sftp-users add', () => {
             [
                 'sftp-users',
                 'add',
-                'klant-x',
+                'my-site',
                 'carol',
                 '--password',
                 'x',
@@ -177,7 +177,7 @@ describe('sftp-users add', () => {
 
 describe('sftp-users enable/disable', () => {
     test('enable sends enabled true', async () => {
-        const r = await runCli(['sftp-users', 'enable', 'klant-x', '--json'], {
+        const r = await runCli(['sftp-users', 'enable', 'my-site', '--json'], {
             routes: {...sites, ...op('PUT', `${ENV}/toggle-status`)},
         });
         expect(r.code).toBe(0);
@@ -188,7 +188,7 @@ describe('sftp-users enable/disable', () => {
     });
 
     test('disable sends enabled false', async () => {
-        const r = await runCli(['sftp-users', 'disable', 'klant-x', '--json'], {
+        const r = await runCli(['sftp-users', 'disable', 'my-site', '--json'], {
             routes: {...sites, ...op('PUT', `${ENV}/toggle-status`)},
         });
         expect(r.code).toBe(0);
@@ -202,14 +202,14 @@ describe('sftp-users delete', () => {
 
     test('delete resolves the username and needs --yes', async () => {
         const refused = await runCli(
-            ['sftp-users', 'delete', 'klant-x', 'alice'],
+            ['sftp-users', 'delete', 'my-site', 'alice'],
             {routes},
         );
         expect(refused.code).toBe(5);
         expect(writes(refused.calls)).toHaveLength(0);
 
         const r = await runCli(
-            ['sftp-users', 'delete', 'klant-x', 'alice', '--yes', '--json'],
+            ['sftp-users', 'delete', 'my-site', 'alice', '--yes', '--json'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -221,13 +221,13 @@ describe('sftp-users delete', () => {
 
     test('delete of an unknown username lists the existing ones', async () => {
         const r = await runCli(
-            ['sftp-users', 'delete', 'klant-x', 'zed', '--yes', '--json'],
+            ['sftp-users', 'delete', 'my-site', 'zed', '--yes', '--json'],
             {routes},
         );
         expect(r.code).toBe(2);
         const err = JSON.parse(r.stderr).error;
         expect(err.message).toContain(
-            'no SFTP account "zed" on klant-x (live)',
+            'no SFTP account "zed" on my-site (live)',
         );
         expect(err.hints).toEqual(['Alice', 'bob']);
         expect(writes(r.calls)).toHaveLength(0);

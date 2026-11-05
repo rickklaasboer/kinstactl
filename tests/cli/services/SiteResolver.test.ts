@@ -19,8 +19,8 @@ export const sitesBody = {
         sites: [
             {
                 id: 'id-x',
-                name: 'klant-x',
-                display_name: 'Klant X',
+                name: 'my-site',
+                display_name: 'My Site',
                 status: 'live',
                 environments: [
                     env('env-x-live', 'live', 'Live'),
@@ -29,8 +29,8 @@ export const sitesBody = {
             },
             {
                 id: 'id-xyz',
-                name: 'klant-xyz',
-                display_name: 'Klant XYZ',
+                name: 'my-site-xyz',
+                display_name: 'My Site XYZ',
                 status: 'live',
                 environments: [env('env-xyz-live', 'live', 'Live')],
             },
@@ -96,19 +96,19 @@ async function failure(p: Promise<unknown>): Promise<CliError> {
 }
 
 describe('resolveSite', () => {
-    test.each(['KLANT-X', 'Klant X', 'id-x'])(
+    test.each(['MY-SITE', 'My Site', 'id-x'])(
         'matches %s case-insensitively on name, display name and id',
         async (input) => {
             const {resolver} = setup();
             expect(
                 (await resolver.resolveSite(input, {fresh: false})).name,
-            ).toBe('klant-x');
+            ).toBe('my-site');
         },
     );
 
     test('an exact match wins over a longer prefix match', async () => {
         const {resolver} = setup();
-        expect((await resolver.resolveSite('klant-x', {fresh: false})).id).toBe(
+        expect((await resolver.resolveSite('my-site', {fresh: false})).id).toBe(
             'id-x',
         );
     });
@@ -116,24 +116,24 @@ describe('resolveSite', () => {
     test('a unique prefix resolves', async () => {
         const {resolver} = setup();
         expect(
-            (await resolver.resolveSite('klant-xy', {fresh: false})).id,
+            (await resolver.resolveSite('my-site-xy', {fresh: false})).id,
         ).toBe('id-xyz');
     });
 
     test('an ambiguous prefix lists the candidates', async () => {
         const {resolver} = setup();
-        const e = await failure(resolver.resolveSite('klant', {fresh: false}));
+        const e = await failure(resolver.resolveSite('my', {fresh: false}));
         expect(e.code).toBe('SITE_AMBIGUOUS');
-        expect(e.hints).toEqual(['klant-x', 'klant-xyz']);
+        expect(e.hints).toEqual(['my-site', 'my-site-xyz']);
     });
 
     test('an unknown site suggests close names', async () => {
         const {resolver} = setup();
         const e = await failure(
-            resolver.resolveSite('klnat-x', {fresh: false}),
+            resolver.resolveSite('my-stie', {fresh: false}),
         );
         expect(e.code).toBe('SITE_NOT_FOUND');
-        expect(e.hints[0]).toBe('klant-x');
+        expect(e.hints[0]).toBe('my-site');
     });
 
     test('a missing site non-interactively is a usage error without prompting', async () => {
@@ -161,16 +161,19 @@ describe('resolveSite', () => {
             },
         });
         const site = await resolver.resolveSite(undefined, {fresh: false});
-        expect(site.name).toBe('klant-xyz');
-        expect(labels).toEqual(['Klant X (klant-x)', 'Klant XYZ (klant-xyz)']);
+        expect(site.name).toBe('my-site-xyz');
+        expect(labels).toEqual([
+            'My Site (my-site)',
+            'My Site XYZ (my-site-xyz)',
+        ]);
     });
 });
 
 describe('resolveEnv', () => {
     async function sites() {
         const {resolver, ...rest} = setup();
-        const a = await resolver.resolveSite('klant-x', {fresh: false});
-        const b = await resolver.resolveSite('klant-xyz', {fresh: false});
+        const a = await resolver.resolveSite('my-site', {fresh: false});
+        const b = await resolver.resolveSite('my-site-xyz', {fresh: false});
         return {resolver, a, b, ...rest};
     }
 
@@ -203,7 +206,7 @@ describe('resolveEnv', () => {
                 }) as Prompts['select'],
             },
         });
-        const site = await resolver.resolveSite('klant-x', {fresh: false});
+        const site = await resolver.resolveSite('my-site', {fresh: false});
         // staging first in the source order to prove sorting
         site.environments.reverse();
         const picked = await resolver.resolveEnv(site, undefined);
@@ -230,15 +233,15 @@ describe('resolveEnv', () => {
 describe('resolveTarget', () => {
     test('read targets use the cache, write targets always hit the API', async () => {
         const {resolver, calls} = setup();
-        await resolver.resolveTarget('klant-x', 'live', {write: false});
-        await resolver.resolveTarget('klant-x', 'live', {write: false});
+        await resolver.resolveTarget('my-site', 'live', {write: false});
+        await resolver.resolveTarget('my-site', 'live', {write: false});
         expect(calls).toHaveLength(1);
-        const t = await resolver.resolveTarget('klant-x', 'staging', {
+        const t = await resolver.resolveTarget('my-site', 'staging', {
             write: true,
         });
         expect(calls).toHaveLength(2);
         expect(t.env.id).toBe('env-x-staging');
-        await resolver.resolveTarget('klant-x', 'live', {write: true});
+        await resolver.resolveTarget('my-site', 'live', {write: true});
         expect(calls).toHaveLength(3);
     });
 });
@@ -257,7 +260,7 @@ describe('details', () => {
                 {id: 'env-x-live', cdn_cache_id: 'cdn1'},
             ]),
         );
-        const target = await resolver.resolveTarget('klant-x', 'live', {
+        const target = await resolver.resolveTarget('my-site', 'live', {
             write: false,
         });
         const env = await resolver.details(target);
@@ -270,20 +273,20 @@ describe('details', () => {
             {},
             routes([{id: 'env-x-staging', cdn_cache_id: null}]),
         );
-        const target = await resolver.resolveTarget('klant-x', 'live', {
+        const target = await resolver.resolveTarget('my-site', 'live', {
             write: false,
         });
         await expect(resolver.details(target)).rejects.toThrow(
-            'Environment env-x-live missing from the environments of klant-x',
+            'Environment env-x-live missing from the environments of my-site',
         );
     });
 });
 
 describe('suggest', () => {
     test('orders by distance, is case-insensitive and honors max', () => {
-        expect(suggest('KLNAT-X', ['klant-xyz', 'klant-x', 'other'])).toEqual([
-            'klant-x',
-            'klant-xyz',
+        expect(suggest('MY-STIE', ['my-site-x', 'my-site', 'other'])).toEqual([
+            'my-site',
+            'my-site-x',
         ]);
         expect(suggest('a', ['a1', 'a2', 'a3', 'a4'], 2)).toHaveLength(2);
     });

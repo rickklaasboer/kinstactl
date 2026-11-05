@@ -9,8 +9,8 @@ const SITES = {
         sites: [
             {
                 id: 'site-1',
-                name: 'klant-x',
-                display_name: 'Klant X',
+                name: 'my-site',
+                display_name: 'My Site',
                 status: 'live',
                 environments: [
                     {id: 'env-live', name: 'live', display_name: 'Live'},
@@ -56,7 +56,7 @@ function pemFiles(): {key: string; cert: string} {
 
 describe('domains list', () => {
     test('prints name, id and cloudflare dns', async () => {
-        const r = await runCli(['domains', 'list', 'klant-x'], {routes: base});
+        const r = await runCli(['domains', 'list', 'my-site'], {routes: base});
         expect(r.code).toBe(0);
         expect(r.stdout).toContain('NAME');
         expect(r.stdout).toContain('CLOUDFLARE DNS');
@@ -70,7 +70,7 @@ describe('domains add', () => {
 
     test('sends only the given fields', async () => {
         const r = await runCli(
-            ['domains', 'add', 'klant-x', 'new.com', '--json'],
+            ['domains', 'add', 'my-site', 'new.com', '--json'],
             {routes: {...base, ...addRoute}},
         );
         expect(r.code).toBe(0);
@@ -84,7 +84,7 @@ describe('domains add', () => {
             [
                 'domains',
                 'add',
-                'klant-x',
+                'my-site',
                 'new.com',
                 '--wildcard',
                 '--with-www',
@@ -105,7 +105,7 @@ describe('domains add', () => {
 
     test('--with-www without --wildcard is a usage error', async () => {
         const r = await runCli(
-            ['domains', 'add', 'klant-x', 'new.com', '--with-www'],
+            ['domains', 'add', 'my-site', 'new.com', '--with-www'],
             {routes: {...base, ...addRoute}},
         );
         expect(r.code).toBe(2);
@@ -115,7 +115,7 @@ describe('domains add', () => {
 
     test('an unknown --setup-type is a usage error', async () => {
         const r = await runCli(
-            ['domains', 'add', 'klant-x', 'new.com', '--setup-type', 'fast'],
+            ['domains', 'add', 'my-site', 'new.com', '--setup-type', 'fast'],
             {routes: {...base, ...addRoute}},
         );
         expect(r.code).toBe(2);
@@ -127,7 +127,7 @@ describe('domains add', () => {
         const args = [
             'domains',
             'add',
-            'klant-x',
+            'my-site',
             'new.com',
             '--ssl-key',
             key,
@@ -160,7 +160,7 @@ describe('domains add', () => {
     test('--ssl-key without --ssl-cert is a usage error', async () => {
         const {key} = pemFiles();
         const r = await runCli(
-            ['domains', 'add', 'klant-x', 'new.com', '--ssl-key', key],
+            ['domains', 'add', 'my-site', 'new.com', '--ssl-key', key],
             {routes: {...base, ...addRoute}},
         );
         expect(r.code).toBe(2);
@@ -173,7 +173,7 @@ describe('domains add', () => {
             [
                 'domains',
                 'add',
-                'klant-x',
+                'my-site',
                 'new.com',
                 '--ssl-key',
                 '/nonexistent/key.pem',
@@ -192,14 +192,14 @@ describe('domains remove', () => {
 
     test('resolves the name to an id and needs --yes', async () => {
         const refused = await runCli(
-            ['domains', 'remove', 'klant-x', 'example.com'],
+            ['domains', 'remove', 'my-site', 'example.com'],
             {routes: {...base, ...delRoute}},
         );
         expect(refused.code).toBe(5);
         expect(writes(refused.calls)).toHaveLength(0);
 
         const r = await runCli(
-            ['domains', 'remove', 'klant-x', 'example.com', '--yes', '--json'],
+            ['domains', 'remove', 'my-site', 'example.com', '--yes', '--json'],
             {routes: {...base, ...delRoute}},
         );
         expect(r.code).toBe(0);
@@ -211,7 +211,7 @@ describe('domains remove', () => {
 
     test('an ambiguous prefix lists the candidates and sends nothing', async () => {
         const r = await runCli(
-            ['domains', 'remove', 'klant-x', 'exampl', '--yes', '--json'],
+            ['domains', 'remove', 'my-site', 'exampl', '--yes', '--json'],
             {routes: {...base, ...delRoute}},
         );
         expect(r.code).toBe(2);
@@ -224,7 +224,7 @@ describe('domains remove', () => {
 
     test('an unknown domain is a usage error', async () => {
         const r = await runCli(
-            ['domains', 'remove', 'klant-x', 'other.org', '--yes'],
+            ['domains', 'remove', 'my-site', 'other.org', '--yes'],
             {routes: {...base, ...delRoute}},
         );
         expect(r.code).toBe(2);
@@ -240,7 +240,7 @@ describe('domains primary', () => {
 
     test('without --search-replace asks no confirmation', async () => {
         const r = await runCli(
-            ['domains', 'primary', 'klant-x', 'example.nl', '--json'],
+            ['domains', 'primary', 'my-site', 'example.nl', '--json'],
             {routes: {...base, ...putRoute}},
         );
         expect(r.code).toBe(0);
@@ -252,7 +252,7 @@ describe('domains primary', () => {
 
     test('--search-replace without --yes exits 5 and sends nothing', async () => {
         const r = await runCli(
-            ['domains', 'primary', 'klant-x', 'example.nl', '--search-replace'],
+            ['domains', 'primary', 'my-site', 'example.nl', '--search-replace'],
             {routes: {...base, ...putRoute}},
         );
         expect(r.code).toBe(5);
@@ -264,7 +264,7 @@ describe('domains primary', () => {
             [
                 'domains',
                 'primary',
-                'klant-x',
+                'my-site',
                 'example.nl',
                 '--search-replace',
                 '--yes',
@@ -284,7 +284,7 @@ describe('domains primary', () => {
             [
                 'domains',
                 'primary',
-                'klant-x',
+                'my-site',
                 'example.nl',
                 '--search-replace',
                 '--yes',
@@ -317,7 +317,7 @@ describe('domains verification', () => {
 
     test('prints both record sets', async () => {
         const r = await runCli(
-            ['domains', 'verification', 'klant-x', 'example.com'],
+            ['domains', 'verification', 'my-site', 'example.com'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -329,7 +329,7 @@ describe('domains verification', () => {
 
     test('--json prints the raw response', async () => {
         const r = await runCli(
-            ['domains', 'verification', 'klant-x', 'example.com', '--json'],
+            ['domains', 'verification', 'my-site', 'example.com', '--json'],
             {routes},
         );
         expect(JSON.parse(r.stdout)).toEqual(RECORDS);

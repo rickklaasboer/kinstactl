@@ -8,8 +8,8 @@ const sites = {
                 sites: [
                     {
                         id: 'id-x',
-                        name: 'klant-x',
-                        display_name: 'Klant X',
+                        name: 'my-site',
+                        display_name: 'My Site',
                         status: 'live',
                         environments: [
                             {
@@ -32,7 +32,7 @@ const done = {'GET /operations/op1': {status: 200}};
 describe('security force-https', () => {
     test('shows primary for ENABLED_REDIRECT_TO_PRIMARY', async () => {
         const r = await runCli(
-            ['security', 'force-https', 'klant-x', '--env', 'live'],
+            ['security', 'force-https', 'my-site', '--env', 'live'],
             {
                 routes: {
                     ...sites,
@@ -50,7 +50,7 @@ describe('security force-https', () => {
 
     test('off sends DISABLED', async () => {
         const r = await runCli(
-            ['security', 'force-https', 'klant-x', 'off', '--env', 'live'],
+            ['security', 'force-https', 'my-site', 'off', '--env', 'live'],
             {
                 routes: {
                     ...sites,
@@ -70,7 +70,7 @@ describe('security force-https', () => {
 describe('security bot-protection', () => {
     test('level shows the current level', async () => {
         const r = await runCli(
-            ['security', 'bot-protection', 'level', 'klant-x', '--env', 'live'],
+            ['security', 'bot-protection', 'level', 'my-site', '--env', 'live'],
             {
                 routes: {
                     ...sites,
@@ -88,7 +88,7 @@ describe('security bot-protection', () => {
 
     test('level shows not configured for null', async () => {
         const r = await runCli(
-            ['security', 'bot-protection', 'level', 'klant-x', '--env', 'live'],
+            ['security', 'bot-protection', 'level', 'my-site', '--env', 'live'],
             {
                 routes: {
                     ...sites,
@@ -106,7 +106,7 @@ describe('security bot-protection', () => {
                 'security',
                 'bot-protection',
                 'level',
-                'klant-x',
+                'my-site',
                 'block-automations',
                 '--env',
                 'live',
@@ -128,7 +128,7 @@ describe('security bot-protection', () => {
                 'security',
                 'bot-protection',
                 'ai-crawlers',
-                'klant-x',
+                'my-site',
                 'block',
                 '--env',
                 'live',
@@ -147,7 +147,7 @@ describe('security bot-protection', () => {
                 'security',
                 'bot-protection',
                 'ai-crawlers',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
             ],
@@ -174,7 +174,7 @@ describe('security bot-protection', () => {
                 'security',
                 'bot-protection',
                 'wp-automations',
-                'klant-x',
+                'my-site',
                 'allow',
                 '--env',
                 'live',
@@ -202,7 +202,7 @@ describe('security bot-protection exceptions', () => {
                 'bot-protection',
                 'exceptions',
                 'list',
-                'klant-x',
+                'my-site',
                 '--env',
                 'live',
             ],
@@ -242,7 +242,7 @@ describe('security bot-protection exceptions', () => {
                 'bot-protection',
                 'exceptions',
                 'add',
-                'klant-x',
+                'my-site',
                 'ip',
                 'skip',
                 '192.0.2.1',
@@ -276,7 +276,7 @@ describe('security bot-protection exceptions', () => {
             'bot-protection',
             'exceptions',
             'delete',
-            'klant-x',
+            'my-site',
             'ip:skip:192.0.2.1',
             '--env',
             'live',
@@ -307,13 +307,13 @@ describe('security writes that answer without an operation_id', () => {
     }[] = [
         {
             name: 'force-https',
-            args: ['force-https', 'klant-x', 'off'],
+            args: ['force-https', 'my-site', 'off'],
             route: 'POST /sites/environments/env-live/force-https-status',
             method: 'POST',
         },
         {
             name: 'bot-protection level',
-            args: ['bot-protection', 'level', 'klant-x', 'block-automations'],
+            args: ['bot-protection', 'level', 'my-site', 'block-automations'],
             route: `PUT ${BP}/level`,
             method: 'PUT',
         },
@@ -323,7 +323,7 @@ describe('security writes that answer without an operation_id', () => {
                 'bot-protection',
                 'exceptions',
                 'add',
-                'klant-x',
+                'my-site',
                 'ip',
                 'skip',
                 '192.0.2.1',
@@ -337,7 +337,7 @@ describe('security writes that answer without an operation_id', () => {
                 'bot-protection',
                 'exceptions',
                 'delete',
-                'klant-x',
+                'my-site',
                 'ip:skip:192.0.2.1',
                 '--yes',
             ],

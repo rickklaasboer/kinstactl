@@ -138,11 +138,11 @@ const tree = buildTree();
 
 test('shellSplit keeps quoted arguments together', () => {
     expect(
-        shellSplit('wp run klant-x --env live "plugin list --status=active"'),
+        shellSplit('wp run my-site --env live "plugin list --status=active"'),
     ).toEqual([
         'wp',
         'run',
-        'klant-x',
+        'my-site',
         '--env',
         'live',
         'plugin list --status=active',
@@ -182,7 +182,7 @@ test('checkExample rejects an unknown flag and an unknown command', () => {
         checkExample(tree, [
             'wp',
             'run',
-            'klant-x',
+            'my-site',
             '--env',
             'live',
             'plugin list --status=active',

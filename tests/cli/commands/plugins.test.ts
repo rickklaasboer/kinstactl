@@ -6,8 +6,8 @@ const sitesBody = {
         sites: [
             {
                 id: 'id-x',
-                name: 'klant-x',
-                display_name: 'Klant X',
+                name: 'my-site',
+                display_name: 'My Site',
                 status: 'live',
                 environments: [
                     {id: 'env-live', name: 'live', display_name: 'Live'},
@@ -76,7 +76,7 @@ const routes = {
 describe('plugins list', () => {
     test('marks a vulnerable plugin and an available update', async () => {
         const r = await runCli(
-            ['plugins', 'list', 'klant-x', '--env', 'live'],
+            ['plugins', 'list', 'my-site', '--env', 'live'],
             {
                 routes,
             },
@@ -90,7 +90,7 @@ describe('plugins list', () => {
 
     test('plugin table has no color when NO_COLOR is set, even on a TTY', async () => {
         const r = await runCli(
-            ['plugins', 'list', 'klant-x', '--env', 'live'],
+            ['plugins', 'list', 'my-site', '--env', 'live'],
             {routes, tty: true},
         );
         expect(r.code).toBe(0);
@@ -99,7 +99,7 @@ describe('plugins list', () => {
 
     test('plugin table colors updates on a color TTY', async () => {
         const r = await runCli(
-            ['plugins', 'list', 'klant-x', '--env', 'live'],
+            ['plugins', 'list', 'my-site', '--env', 'live'],
             {routes, tty: true, env: {NO_COLOR: undefined}},
         );
         expect(r.code).toBe(0);
@@ -108,7 +108,7 @@ describe('plugins list', () => {
 
     test('--updates filters to items with an update', async () => {
         const r = await runCli(
-            ['plugins', 'list', 'klant-x', '--env', 'live', '--updates'],
+            ['plugins', 'list', 'my-site', '--env', 'live', '--updates'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -119,7 +119,7 @@ describe('plugins list', () => {
 
     test('--json prints the items', async () => {
         const r = await runCli(
-            ['plugins', 'list', 'klant-x', '--env', 'live', '--json'],
+            ['plugins', 'list', 'my-site', '--env', 'live', '--json'],
             {routes},
         );
         expect(r.code).toBe(0);
@@ -133,7 +133,7 @@ describe('plugins update', () => {
             [
                 'plugins',
                 'update',
-                'klant-x',
+                'my-site',
                 'akismet',
                 '--env',
                 'live',
@@ -157,7 +157,7 @@ describe('plugins update', () => {
 
     test('a name without an update is a usage error', async () => {
         const r = await runCli(
-            ['plugins', 'update', 'klant-x', 'hello-dolly', '--env', 'live'],
+            ['plugins', 'update', 'my-site', 'hello-dolly', '--env', 'live'],
             {routes},
         );
         expect(r.code).toBe(2);
@@ -166,7 +166,7 @@ describe('plugins update', () => {
 
     test('an unknown name is a usage error', async () => {
         const r = await runCli(
-            ['plugins', 'update', 'klant-x', 'nope', '--env', 'live'],
+            ['plugins', 'update', 'my-site', 'nope', '--env', 'live'],
             {routes},
         );
         expect(r.code).toBe(2);
@@ -175,7 +175,7 @@ describe('plugins update', () => {
 
     test('neither name nor --all is a usage error with a hint', async () => {
         const r = await runCli(
-            ['plugins', 'update', 'klant-x', '--env', 'live', '--json'],
+            ['plugins', 'update', 'my-site', '--env', 'live', '--json'],
             {routes},
         );
         expect(r.code).toBe(2);
@@ -189,7 +189,7 @@ describe('plugins update', () => {
             [
                 'plugins',
                 'update',
-                'klant-x',
+                'my-site',
                 '--all',
                 '--env',
                 'live',
@@ -211,7 +211,7 @@ describe('plugins update', () => {
 
     test('--all with nothing to update is a no-op', async () => {
         const r = await runCli(
-            ['plugins', 'update', 'klant-x', '--all', '--env', 'live'],
+            ['plugins', 'update', 'my-site', '--all', '--env', 'live'],
             {
                 routes: {
                     ...routes,
@@ -235,7 +235,7 @@ describe('plugins update', () => {
 
 describe('themes', () => {
     test('list hits wp-themes', async () => {
-        const r = await runCli(['themes', 'list', 'klant-x', '--env', 'live'], {
+        const r = await runCli(['themes', 'list', 'my-site', '--env', 'live'], {
             routes,
         });
         expect(r.code).toBe(0);
@@ -250,7 +250,7 @@ describe('themes', () => {
             [
                 'themes',
                 'update',
-                'klant-x',
+                'my-site',
                 '--all',
                 '--env',
                 'live',
