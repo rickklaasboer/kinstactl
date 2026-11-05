@@ -1,6 +1,6 @@
 # kinstactl
 
-TypeScript/Bun CLI for the Kinsta API. Design: `docs/superpowers/specs/2026-11-05-kinstactl-design.md`.
+TypeScript/Bun CLI and client library for the Kinsta API.
 
 - Commands: `bun test`, `bun run typecheck`, `bun run gen:types` (regenerates types from `openapi/kinsta-openapi.yaml`).
 - `src/client/**` is the library: it must not import from `src/cli/**`, tsyringe, Commander, picocolors, listr2 or @clack/prompts.
