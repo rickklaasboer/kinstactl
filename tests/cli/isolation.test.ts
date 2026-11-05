@@ -105,6 +105,18 @@ test('every scoped service is run-scoped', () => {
     expect(SCOPED.length).toBe(files.length);
 });
 
+test('src/client uses no path aliases', () => {
+    const files = readdirSync('src/client', {
+        recursive: true,
+        encoding: 'utf8',
+    }).filter((f) => f.endsWith('.ts'));
+    expect(files.length).toBeGreaterThan(0);
+    const hits = files.filter((f) =>
+        /from '@\//.test(readFileSync(join('src/client', f), 'utf8')),
+    );
+    expect(hits).toEqual([]);
+});
+
 test('src/cli uses no @singleton', () => {
     const files = readdirSync('src/cli', {
         recursive: true,

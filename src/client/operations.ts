@@ -1,15 +1,15 @@
-import {getOperation} from '@/client/endpoints/operations';
+import {getOperation} from './endpoints/operations';
 import {
     KinstaApiError,
     OperationFailedError,
     OperationTimeoutError,
-} from '@/client/errors';
-import type {RequestSpec} from '@/client/request';
+} from './errors';
+import type {RequestSpec} from './request';
 import {
     type HttpTransport,
     type RawResponse,
     RETRYABLE_GATEWAY_STATUSES,
-} from '@/client/transport';
+} from './transport';
 
 export interface WaitOpts {
     timeoutMs?: number;

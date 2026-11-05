@@ -13,7 +13,7 @@ import {ENDPOINTS as sites} from './sites';
 import {ENDPOINTS as ssh} from './ssh';
 import {ENDPOINTS as tools} from './tools';
 import {ENDPOINTS as wp} from './wp';
-import type {EndpointKey} from '@/client/request';
+import type {EndpointKey} from '../request';
 
 export const ALL_ENDPOINTS: EndpointKey[] = [
     ...account,

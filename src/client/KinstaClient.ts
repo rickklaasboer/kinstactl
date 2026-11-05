@@ -1,14 +1,10 @@
-import {
-    type Operation,
-    operationFor,
-    startOperation,
-} from '@/client/operations';
-import type {RequestSpec} from '@/client/request';
+import {type Operation, operationFor, startOperation} from './operations';
+import type {RequestSpec} from './request';
 import {
     HttpTransport,
     type RawResponse,
     type TransportConfig,
-} from '@/client/transport';
+} from './transport';
 
 export interface KinstaClientOptions extends TransportConfig {
     companyId: string;
