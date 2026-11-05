@@ -336,4 +336,24 @@ describe('CommandRegistry', () => {
             expect(command.name).not.toBe('');
         }
     });
+
+    test('destructive metadata matches the confirmation flags', () => {
+        for (const entry of COMMANDS) {
+            const command = createProgramContainer(io()).resolve(
+                entry as new (
+                    ...deps: unknown[]
+                ) => BaseCommand,
+            );
+            const flags = command.options.map((o) => o.flags);
+            expect({
+                command: command.name,
+                yes: flags.some((f) => f.startsWith('--yes')),
+                confirm: flags.includes('--confirm <site-name>'),
+            }).toEqual({
+                command: command.name,
+                yes: command.destructive === 'confirm',
+                confirm: command.destructive === 'irreversible',
+            });
+        }
+    });
 });
