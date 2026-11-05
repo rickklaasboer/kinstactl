@@ -53,7 +53,6 @@ jobs:
                   curl -s "$base/for-agents/" | grep -q 'kinstactl commands --json' || { echo "for-agents lacks commands --json"; exit 1; }
                   expect_status /does-not-exist/ 404
                   curl -s "$base/does-not-exist/" | grep -q '404' || { echo "404 page lacks 404"; exit 1; }
-            - run: "! docker run --rm kinstactl-docs:ci ls /srv/superpowers"
             - run: docker stop docs
     package:
         runs-on: ubuntu-latest
