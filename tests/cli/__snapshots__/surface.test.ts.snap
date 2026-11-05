@@ -1928,6 +1928,271 @@ exports[`commands --json is unchanged 1`] = `
       "options": [],
       "path": "domains",
     },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "List the DNS zones of the company",
+          "destructive": null,
+          "endpoints": [
+            "GET /domains",
+          ],
+          "name": "zones",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "dns zones",
+        },
+        {
+          "arguments": [],
+          "commands": [
+            {
+              "arguments": [
+                {
+                  "description": "zone name or ID, see: dns zones",
+                  "name": "zone",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "List the DNS records of a zone",
+              "destructive": null,
+              "endpoints": [
+                "GET /domains",
+                "GET /domains/{domain_id}/dns-records",
+              ],
+              "name": "list",
+              "options": [
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "dns records list",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "zone name or ID, see: dns zones",
+                  "name": "zone",
+                  "required": true,
+                },
+                {
+                  "description": "record type, e.g. A",
+                  "name": "type",
+                  "required": true,
+                },
+                {
+                  "description": "record name, e.g. www.example.com",
+                  "name": "name",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Add a DNS record to a zone",
+              "destructive": null,
+              "endpoints": [
+                "GET /domains",
+                "POST /domains/{domain_id}/dns-records",
+              ],
+              "name": "add",
+              "options": [
+                {
+                  "description": "record value; repeat the values for a round-robin record",
+                  "flags": "--value <value...>",
+                },
+                {
+                  "description": "time to live in seconds, at least 300",
+                  "flags": "--ttl <seconds>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "dns records add",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "zone name or ID, see: dns zones",
+                  "name": "zone",
+                  "required": true,
+                },
+                {
+                  "description": "record type, e.g. A",
+                  "name": "type",
+                  "required": true,
+                },
+                {
+                  "description": "record name, e.g. www.example.com",
+                  "name": "name",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Change the TTL or values of a DNS record",
+              "destructive": null,
+              "endpoints": [
+                "GET /domains",
+                "PUT /domains/{domain_id}/dns-records",
+              ],
+              "name": "update",
+              "options": [
+                {
+                  "description": "new time to live in seconds, at least 300",
+                  "flags": "--ttl <seconds>",
+                },
+                {
+                  "description": "values to add to the record",
+                  "flags": "--add <value...>",
+                },
+                {
+                  "description": "values to remove from the record",
+                  "flags": "--remove <value...>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "dns records update",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "zone name or ID, see: dns zones",
+                  "name": "zone",
+                  "required": true,
+                },
+                {
+                  "description": "record type, e.g. A",
+                  "name": "type",
+                  "required": true,
+                },
+                {
+                  "description": "record name, e.g. www.example.com",
+                  "name": "name",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Delete a DNS record from a zone",
+              "destructive": "confirm",
+              "endpoints": [
+                "GET /domains",
+                "DELETE /domains/{domain_id}/dns-records",
+              ],
+              "name": "delete",
+              "options": [
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "skip the confirmation prompt",
+                  "flags": "--yes",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "dns records delete",
+            },
+          ],
+          "description": "DNS records of a zone",
+          "destructive": null,
+          "endpoints": [],
+          "name": "records",
+          "options": [],
+          "path": "dns records",
+        },
+      ],
+      "description": "Kinsta DNS zones and records",
+      "destructive": null,
+      "endpoints": [],
+      "name": "dns",
+      "options": [],
+      "path": "dns",
+    },
   ],
   "description": "Command line client for the Kinsta API",
   "destructive": null,
@@ -2002,6 +2267,13 @@ domains  Manage the domains of an environment
   remove <site> <domain>  Remove a domain from an environment
   primary <site> <domain>  Change the primary domain of an environment
   verification <site> <domain>  Show the DNS records that verify and point a domain
+dns  Kinsta DNS zones and records
+  zones  List the DNS zones of the company
+  records  DNS records of a zone
+    list <zone>  List the DNS records of a zone
+    add <zone> <type> <name>  Add a DNS record to a zone
+    update <zone> <type> <name>  Change the TTL or values of a DNS record
+    delete <zone> <type> <name>  Delete a DNS record from a zone
 "
 `;
 
@@ -2037,6 +2309,7 @@ Commands:
   themes                        List and update WordPress themes
   backups                       List, create, restore and delete backups
   domains                       Manage the domains of an environment
+  dns                           Kinsta DNS zones and records
   help [command]                display help for command
 "
 ,
@@ -3379,6 +3652,189 @@ Options:
 Examples:
   $ kinstactl domains verification klant-x example.com
   $ kinstactl domains verification klant-x example.com --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 52`] = `
+{
+  "code": 0,
+  "path": "dns",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl dns [options] [command]
+
+Kinsta DNS zones and records
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  zones           List the DNS zones of the company
+  records         DNS records of a zone
+  help [command]  display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 53`] = `
+{
+  "code": 0,
+  "path": "dns zones",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl dns zones [options]
+
+List the DNS zones of the company
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl dns zones
+  $ kinstactl dns zones --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 54`] = `
+{
+  "code": 0,
+  "path": "dns records",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl dns records [options] [command]
+
+DNS records of a zone
+
+Options:
+  -h, --help                             display help for command
+
+Commands:
+  list <zone>                            List the DNS records of a zone
+  add [options] <zone> <type> <name>     Add a DNS record to a zone
+  update [options] <zone> <type> <name>  Change the TTL or values of a DNS record
+  delete [options] <zone> <type> <name>  Delete a DNS record from a zone
+  help [command]                         display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 55`] = `
+{
+  "code": 0,
+  "path": "dns records list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl dns records list [options] <zone>
+
+List the DNS records of a zone
+
+Arguments:
+  zone        zone name or ID, see: dns zones
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl dns records list example.com
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 56`] = `
+{
+  "code": 0,
+  "path": "dns records add",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl dns records add [options] <zone> <type> <name>
+
+Add a DNS record to a zone
+
+Arguments:
+  zone                 zone name or ID, see: dns zones
+  type                 record type, e.g. A
+  name                 record name, e.g. www.example.com
+
+Options:
+  --value <value...>   record value; repeat the values for a round-robin record
+  --ttl <seconds>      time to live in seconds, at least 300 (default: 300)
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl dns records add example.com A www --value 203.0.113.10
+  $ kinstactl dns records add example.com A @ --value 203.0.113.10 203.0.113.11 --ttl 600
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 57`] = `
+{
+  "code": 0,
+  "path": "dns records update",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl dns records update [options] <zone> <type> <name>
+
+Change the TTL or values of a DNS record
+
+Arguments:
+  zone                 zone name or ID, see: dns zones
+  type                 record type, e.g. A
+  name                 record name, e.g. www.example.com
+
+Options:
+  --ttl <seconds>      new time to live in seconds, at least 300
+  --add <value...>     values to add to the record
+  --remove <value...>  values to remove from the record
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl dns records update example.com A www --ttl 600
+  $ kinstactl dns records update example.com A www --add 203.0.113.11 --remove 203.0.113.10
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 58`] = `
+{
+  "code": 0,
+  "path": "dns records delete",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl dns records delete [options] <zone> <type> <name>
+
+Delete a DNS record from a zone
+
+Arguments:
+  zone                 zone name or ID, see: dns zones
+  type                 record type, e.g. A
+  name                 record name, e.g. www.example.com
+
+Options:
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl dns records delete example.com A www
+  $ kinstactl dns records delete example.com A www --yes
 "
 ,
 }

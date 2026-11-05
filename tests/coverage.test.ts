@@ -27,11 +27,6 @@ function specOperations(): Set<EndpointKey> {
 const PENDING = new Set<EndpointKey>([
     'GET /company/{id}/users/{id_user}',
     'GET /company/{id}/api-keys',
-    'GET /domains',
-    'GET /domains/{domain_id}/dns-records',
-    'POST /domains/{domain_id}/dns-records',
-    'PUT /domains/{domain_id}/dns-records',
-    'DELETE /domains/{domain_id}/dns-records',
     'POST /sites/{site_id}/environments',
     'POST /sites/{site_id}/environments/plain',
     'POST /sites/{site_id}/environments/clone',

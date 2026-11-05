@@ -14,6 +14,11 @@ import {CacheEdgeDisableCommand} from './cache/CacheEdgeDisableCommand';
 import {CacheEdgeEnableCommand} from './cache/CacheEdgeEnableCommand';
 import type {CommandClass, GroupDef} from './BaseCommand';
 import {CommandsCommand} from './CommandsCommand';
+import {DnsRecordsAddCommand} from './dns/DnsRecordsAddCommand';
+import {DnsRecordsDeleteCommand} from './dns/DnsRecordsDeleteCommand';
+import {DnsRecordsListCommand} from './dns/DnsRecordsListCommand';
+import {DnsRecordsUpdateCommand} from './dns/DnsRecordsUpdateCommand';
+import {DnsZonesCommand} from './dns/DnsZonesCommand';
 import {DomainsAddCommand} from './domains/DomainsAddCommand';
 import {DomainsListCommand} from './domains/DomainsListCommand';
 import {DomainsPrimaryCommand} from './domains/DomainsPrimaryCommand';
@@ -77,6 +82,11 @@ export const COMMANDS: CommandClass[] = [
     DomainsRemoveCommand,
     DomainsPrimaryCommand,
     DomainsVerificationCommand,
+    DnsZonesCommand,
+    DnsRecordsListCommand,
+    DnsRecordsAddCommand,
+    DnsRecordsUpdateCommand,
+    DnsRecordsDeleteCommand,
 ];
 
 export const GROUPS: GroupDef[] = [
@@ -95,4 +105,6 @@ export const GROUPS: GroupDef[] = [
     {path: 'themes', description: 'List and update WordPress themes'},
     {path: 'backups', description: 'List, create, restore and delete backups'},
     {path: 'domains', description: 'Manage the domains of an environment'},
+    {path: 'dns', description: 'Kinsta DNS zones and records'},
+    {path: 'dns records', description: 'DNS records of a zone'},
 ];

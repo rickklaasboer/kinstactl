@@ -8,6 +8,7 @@ import {Output} from '@/cli/output';
 import type {Prompts} from '@/cli/prompts';
 import {ClientProvider} from '@/cli/services/ClientProvider';
 import {BackupService} from '@/cli/commands/backups/BackupService';
+import {DnsZoneService} from '@/cli/commands/dns/DnsZoneService';
 import {DomainService} from '@/cli/commands/domains/DomainService';
 import {WpItemService} from '@/cli/commands/plugins/WpItemService';
 import {ConfigService} from '@/cli/services/ConfigService';
@@ -81,6 +82,7 @@ test('every scoped service is run-scoped', () => {
         WpItemService,
         BackupService,
         DomainService,
+        DnsZoneService,
     ];
     const a = createContainer(io());
     const b = createContainer(io());
