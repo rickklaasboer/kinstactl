@@ -16,7 +16,18 @@ export interface RawResponse {
     status: number;
     body: unknown;
     headers: Headers;
+    /** True when the body could not be parsed as JSON; `body` is then null. */
+    nonJson?: true;
 }
+
+const isTimeout = (e: unknown): boolean =>
+    e instanceof Error && e.name === 'TimeoutError';
+
+const timeoutError = (spec: RequestSpec, timeoutMs: number): KinstaApiError =>
+    new KinstaApiError(
+        0,
+        `Request to ${spec.endpoint} timed out after ${timeoutMs / 1000}s`,
+    );
 
 const DEFAULT_BASE_URL = 'https://api.kinsta.com/v2';
 
@@ -83,12 +94,7 @@ export class HttpTransport {
                     signal: AbortSignal.timeout(timeoutMs),
                 });
             } catch (e) {
-                if (e instanceof Error && e.name === 'TimeoutError') {
-                    throw new KinstaApiError(
-                        0,
-                        `Request to ${spec.endpoint} timed out after ${timeoutMs / 1000}s`,
-                    );
-                }
+                if (isTimeout(e)) throw timeoutError(spec, timeoutMs);
                 throw new KinstaApiError(
                     0,
                     `Network error calling ${spec.endpoint}: ${e instanceof Error ? e.message : String(e)}`,
@@ -117,14 +123,25 @@ export class HttpTransport {
                 await sleep(1000 * 2 ** attempt);
                 continue;
             }
-            let resBody: unknown = null;
+            // The timeout signal stays armed while the body streams, so it can fire here too.
             try {
-                resBody = await res.json();
-            } catch {
-                // Empty or non-JSON body (e.g. a bare gateway error page): callers see null.
-                resBody = null;
+                const resBody: unknown = await res.json();
+                return {
+                    status: res.status,
+                    body: resBody,
+                    headers: res.headers,
+                };
+            } catch (e) {
+                if (isTimeout(e)) throw timeoutError(spec, timeoutMs);
+                // An empty or non-JSON body (e.g. a bare gateway error page): callers see null.
+                if (!(e instanceof SyntaxError)) throw e;
+                return {
+                    status: res.status,
+                    body: null,
+                    headers: res.headers,
+                    nonJson: true,
+                };
             }
-            return {status: res.status, body: resBody, headers: res.headers};
         }
     }
 
@@ -140,6 +157,11 @@ export class HttpTransport {
                 res.body,
             );
         }
+        if (res.nonJson)
+            throw new KinstaApiError(
+                res.status,
+                `Kinsta returned a non-JSON response for ${spec.endpoint}`,
+            );
         return res.body as T;
     }
 }

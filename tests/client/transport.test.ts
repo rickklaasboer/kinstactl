@@ -299,6 +299,79 @@ describe('HttpTransport', () => {
         }
     });
 
+    describe('unreadable bodies', () => {
+        const withFetch = (fetchFn: typeof fetch) =>
+            new HttpTransport({
+                apiKey: 'k',
+                limiter: limiter(),
+                fetchFn,
+                sleep: noSleep,
+            });
+        const html = (status: number) =>
+            (async () =>
+                new Response('<html>Bad gateway</html>', {
+                    status,
+                    headers: {'Content-Type': 'text/html'},
+                })) as unknown as typeof fetch;
+
+        it('turns a timeout while reading the body into the timeout error', async () => {
+            const transport = withFetch((async () => ({
+                status: 200,
+                headers: new Headers(),
+                json: async () => {
+                    throw new DOMException('timed out', 'TimeoutError');
+                },
+            })) as unknown as typeof fetch);
+            try {
+                await transport.send(get('/sites'));
+                expect.unreachable();
+            } catch (e) {
+                expect(e).toBeInstanceOf(KinstaApiError);
+                expect((e as KinstaApiError).status).toBe(0);
+                expect((e as KinstaApiError).message).toContain('timed out');
+            }
+        });
+
+        it('rethrows body read errors that are not a parse failure', async () => {
+            const boom = new TypeError('stream broke');
+            const transport = withFetch((async () => ({
+                status: 200,
+                headers: new Headers(),
+                json: async () => {
+                    throw boom;
+                },
+            })) as unknown as typeof fetch);
+            await expect(transport.send(get('/sites'))).rejects.toBe(boom);
+        });
+
+        it('rejects a 2xx with a non-JSON body', async () => {
+            const transport = withFetch(html(200));
+            try {
+                await transport.send(get('/sites'));
+                expect.unreachable();
+            } catch (e) {
+                expect(e).toBeInstanceOf(KinstaApiError);
+                expect((e as KinstaApiError).status).toBe(200);
+                expect((e as KinstaApiError).message).toBe(
+                    'Kinsta returned a non-JSON response for GET /sites',
+                );
+            }
+        });
+
+        it('still reports the HTTP status for a 4xx with a non-JSON body', async () => {
+            const transport = withFetch(html(403));
+            try {
+                await transport.send(get('/sites'));
+                expect.unreachable();
+            } catch (e) {
+                expect((e as KinstaApiError).status).toBe(403);
+                expect((e as KinstaApiError).message).toBe(
+                    'Kinsta API error (HTTP 403)',
+                );
+            }
+        });
+    });
+
     it('timeout aborts after REQUEST_TIMEOUT_MS', async () => {
         // Never resolves on its own; rejects only when the transport's abort signal fires.
         const hangingFetch = ((_input: RequestInfo | URL, init?: RequestInit) =>
