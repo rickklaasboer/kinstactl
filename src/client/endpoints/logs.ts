@@ -1,4 +1,4 @@
-import type {EndpointKey, RequestSpec} from '../request';
+import type {EndpointKey, RequestSpec} from '../request.js';
 
 export interface LogsOptions {
     fileName: 'error' | 'access' | 'kinsta-cache-perf';

@@ -1,6 +1,6 @@
-import type {components} from '../generated/openapi';
-import type {EndpointKey, RequestSpec} from '../request';
-import type {PhpAllocation} from './sites';
+import type {components} from '../generated/openapi.js';
+import type {EndpointKey, RequestSpec} from '../request.js';
+import type {PhpAllocation} from './sites.js';
 
 type Schemas = components['schemas'];
 

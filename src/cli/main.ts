@@ -1,4 +1,3 @@
-#!/usr/bin/env bun
 import 'reflect-metadata';
 import {clackPrompts} from './prompts';
 import {run} from './program';

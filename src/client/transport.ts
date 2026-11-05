@@ -1,6 +1,6 @@
-import {KinstaApiError} from './errors';
-import {RateLimiter} from './RateLimiter';
-import type {RequestSpec} from './request';
+import {KinstaApiError} from './errors.js';
+import {RateLimiter} from './RateLimiter.js';
+import type {RequestSpec} from './request.js';
 
 export interface TransportConfig {
     apiKey: string;

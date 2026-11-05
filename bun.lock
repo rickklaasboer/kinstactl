@@ -4,18 +4,16 @@
   "workspaces": {
     "": {
       "name": "kinstactl",
-      "dependencies": {
+      "devDependencies": {
+        "@biomejs/biome": "^2.6.5",
         "@clack/prompts": "^1.8.1",
+        "bun-types": "^1.4.4",
         "commander": "^15.0.0",
         "listr2": "^11.4.0",
+        "openapi-typescript": "^7.13.0",
         "picocolors": "^1.1.1",
         "reflect-metadata": "^0.2.2",
         "tsyringe": "^4.10.0",
-      },
-      "devDependencies": {
-        "@biomejs/biome": "^2.6.5",
-        "bun-types": "^1.4.4",
-        "openapi-typescript": "^7.13.0",
         "typescript": "5",
         "yaml": "^2.9.1",
       },

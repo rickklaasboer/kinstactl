@@ -1,4 +1,4 @@
-import type {EndpointKey, RequestSpec} from '../request';
+import type {EndpointKey, RequestSpec} from '../request.js';
 
 export const ANALYTICS_PATHS = [
     'visits',

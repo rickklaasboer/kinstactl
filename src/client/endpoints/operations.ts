@@ -1,4 +1,4 @@
-import type {EndpointKey, RequestSpec} from '../request';
+import type {EndpointKey, RequestSpec} from '../request.js';
 
 export function getOperation(id: string): RequestSpec {
     return {

@@ -1,5 +1,5 @@
-import type {components} from '../generated/openapi';
-import type {EndpointKey, RequestSpec} from '../request';
+import type {components} from '../generated/openapi.js';
+import type {EndpointKey, RequestSpec} from '../request.js';
 
 export function validate(): RequestSpec {
     return {endpoint: 'GET /validate', method: 'GET', path: '/validate'};
