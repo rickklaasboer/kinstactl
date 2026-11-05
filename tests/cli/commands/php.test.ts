@@ -56,6 +56,26 @@ describe('php version', () => {
         expect(r.calls.every((c) => c.method === 'GET')).toBe(true);
     });
 
+    test('--no-auto-update without a version is a usage error and writes nothing', async () => {
+        const r = await runCli(
+            [
+                'php',
+                'version',
+                'klant-x',
+                '--env',
+                'live',
+                '--no-auto-update',
+                '--json',
+            ],
+            {routes},
+        );
+        expect(r.code).toBe(2);
+        const {error} = JSON.parse(r.stderr);
+        expect(error.code).toBe('USAGE');
+        expect(error.message).toBe('--no-auto-update needs a version');
+        expect(r.calls.filter((c) => c.method !== 'GET')).toEqual([]);
+    });
+
     test('without a version in json', async () => {
         const r = await runCli(
             ['php', 'version', 'klant-x', '--env', 'staging', '--json'],

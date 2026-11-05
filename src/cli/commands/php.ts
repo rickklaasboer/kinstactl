@@ -2,6 +2,7 @@ import type {Command} from 'commander';
 import type {components} from '@/client/generated/openapi';
 import {listEnvironments} from '@/client/endpoints/environments';
 import {modifyPhpVersion, restartPhp} from '@/client/endpoints/tools';
+import {CliError} from '../errors';
 import {type ActionFlags, addActionFlags, runOperation} from '../progress';
 import {meta} from '../program';
 import {resolveTarget} from '../resolve';
@@ -65,6 +66,11 @@ export function registerPhp(program: Command, rt: Runtime): void {
                 opts: {env?: string; autoUpdate: boolean} & ActionFlags,
             ) => {
                 if (version === undefined) {
+                    if (opts.autoUpdate === false)
+                        throw new CliError(
+                            'USAGE',
+                            '--no-auto-update needs a version',
+                        );
                     const target = await resolveTarget(
                         rt,
                         siteInput,
