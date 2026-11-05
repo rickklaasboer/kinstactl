@@ -22,8 +22,8 @@ export class DomainsListCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl domains list klant-x',
-        'kinstactl domains list klant-x --env staging --json',
+        'kinstactl domains list my-site',
+        'kinstactl domains list my-site --env staging --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

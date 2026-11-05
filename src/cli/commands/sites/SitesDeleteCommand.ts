@@ -25,8 +25,8 @@ export class SitesDeleteCommand implements BaseCommand<ActionFlags> {
         ...actionOptions({destructive: 'irreversible'}),
     ];
     readonly examples = [
-        'kinstactl sites delete klant-x --confirm klant-x',
-        'kinstactl sites delete klant-x --dry-run',
+        'kinstactl sites delete my-site --confirm my-site',
+        'kinstactl sites delete my-site --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

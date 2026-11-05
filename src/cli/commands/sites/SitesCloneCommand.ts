@@ -40,7 +40,7 @@ export class SitesCloneCommand implements BaseCommand<Options> {
         },
         ...actionOptions({}),
     ];
-    readonly examples = ['kinstactl sites clone klant-x "Klant Y" --env live'];
+    readonly examples = ['kinstactl sites clone my-site "My Site" --env live'];
     readonly endpoints: EndpointKey[] = ['GET /sites', 'POST /sites/clone'];
 
     constructor(

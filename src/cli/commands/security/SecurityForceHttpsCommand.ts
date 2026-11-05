@@ -58,9 +58,9 @@ export class SecurityForceHttpsCommand implements BaseCommand<Options> {
         ...actionOptions({dryRun: true, wait: true}),
     ];
     readonly examples = [
-        'kinstactl security force-https klant-x --env live',
-        'kinstactl security force-https klant-x primary --env live',
-        'kinstactl security force-https klant-x off --env staging --dry-run',
+        'kinstactl security force-https my-site --env live',
+        'kinstactl security force-https my-site primary --env live',
+        'kinstactl security force-https my-site off --env staging --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

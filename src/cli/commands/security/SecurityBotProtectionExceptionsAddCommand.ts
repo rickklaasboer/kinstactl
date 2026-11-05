@@ -58,8 +58,8 @@ export class SecurityBotProtectionExceptionsAddCommand
         ...actionOptions({dryRun: true, wait: true}),
     ];
     readonly examples = [
-        'kinstactl security bot-protection exceptions add klant-x ip skip 192.0.2.1 --env live',
-        'kinstactl security bot-protection exceptions add klant-x country block NL --env live --dry-run',
+        'kinstactl security bot-protection exceptions add my-site ip skip 192.0.2.1 --env live',
+        'kinstactl security bot-protection exceptions add my-site country block NL --env live --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

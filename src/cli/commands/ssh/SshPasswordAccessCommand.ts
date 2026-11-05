@@ -55,8 +55,8 @@ export abstract class SshPasswordAccessCommand implements BaseCommand<Options> {
     get examples(): string[] {
         const verb = this.enabled ? 'enable' : 'disable';
         return [
-            `kinstactl ssh password ${verb} klant-x --env live`,
-            `kinstactl ssh password ${verb} klant-x --env live --dry-run`,
+            `kinstactl ssh password ${verb} my-site --env live`,
+            `kinstactl ssh password ${verb} my-site --env live --dry-run`,
         ];
     }
 

@@ -36,8 +36,8 @@ export class CacheEdgeClearCommand implements BaseCommand<Options> {
         ...actionOptions({dryRun: true, wait: true}),
     ];
     readonly examples = [
-        'kinstactl cache edge clear klant-x --env live',
-        'kinstactl cache edge clear klant-x --env live --url https://example.com/blog/ --subdirectories',
+        'kinstactl cache edge clear my-site --env live',
+        'kinstactl cache edge clear my-site --env live --url https://example.com/blog/ --subdirectories',
     ];
     readonly endpoints: EndpointKey[] = ['POST /sites/edge-caching/clear'];
 

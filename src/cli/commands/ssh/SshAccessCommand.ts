@@ -55,8 +55,8 @@ export abstract class SshAccessCommand implements BaseCommand<Options> {
     get examples(): string[] {
         const verb = this.enabled ? 'enable' : 'disable';
         return [
-            `kinstactl ssh ${verb} klant-x --env live`,
-            `kinstactl ssh ${verb} klant-x --env live --dry-run`,
+            `kinstactl ssh ${verb} my-site --env live`,
+            `kinstactl ssh ${verb} my-site --env live --dry-run`,
         ];
     }
 

@@ -38,8 +38,8 @@ export class BackupsDeleteCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl backups delete klant-x 123456789',
-        'kinstactl backups delete klant-x 123456789 --env staging --yes',
+        'kinstactl backups delete my-site 123456789',
+        'kinstactl backups delete my-site 123456789 --env staging --yes',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites/environments/{env_id}/backups',

@@ -39,8 +39,8 @@ export class EnvFilesCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl env files klant-x --env live',
-        'kinstactl env files klant-x --env live --json',
+        'kinstactl env files my-site --env live',
+        'kinstactl env files my-site --env live --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

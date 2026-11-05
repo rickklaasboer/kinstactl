@@ -65,8 +65,8 @@ export class SecurityRedirectsUpdateCommand implements BaseCommand<Options> {
         ...actionOptions({wait: false, destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl security redirects update klant-x /old --to /newer --yes',
-        'kinstactl security redirects update klant-x /old --domain example.com --type redirect --yes',
+        'kinstactl security redirects update my-site /old --to /newer --yes',
+        'kinstactl security redirects update my-site /old --domain example.com --type redirect --yes',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

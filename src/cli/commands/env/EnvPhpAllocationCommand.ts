@@ -47,7 +47,7 @@ export class EnvPhpAllocationCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl env php-allocation klant-x --env staging --threads 4 --memory 256',
+        'kinstactl env php-allocation my-site --env staging --threads 4 --memory 256',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

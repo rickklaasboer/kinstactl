@@ -80,7 +80,7 @@ export abstract class BotProtectionSettingCommand
     ];
 
     get examples(): string[] {
-        const base = `kinstactl security bot-protection ${this.setting.name} klant-x`;
+        const base = `kinstactl security bot-protection ${this.setting.name} my-site`;
         return [
             `${base} --env live`,
             `${base} ${this.setting.choices[0]} --env live`,

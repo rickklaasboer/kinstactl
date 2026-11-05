@@ -28,8 +28,8 @@ export class CacheCdnClearCommand implements BaseCommand<Options> {
         ...actionOptions({dryRun: true, wait: true}),
     ];
     readonly examples = [
-        'kinstactl cache cdn clear klant-x --env live',
-        'kinstactl cache cdn clear klant-x --env live --dry-run',
+        'kinstactl cache cdn clear my-site --env live',
+        'kinstactl cache cdn clear my-site --env live --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites/{site_id}/environments',

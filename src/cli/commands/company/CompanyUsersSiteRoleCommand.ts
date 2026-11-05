@@ -45,7 +45,7 @@ export class CompanyUsersSiteRoleCommand implements BaseCommand<Options> {
     ];
     readonly options: OptionDef[] = [...actionOptions({})];
     readonly examples = [
-        'kinstactl company users site-role jan@example.com klant-x site-developer',
+        'kinstactl company users site-role jan@example.com my-site site-developer',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /company/{id}/users',

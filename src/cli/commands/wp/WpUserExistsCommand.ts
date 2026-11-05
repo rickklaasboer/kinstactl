@@ -30,7 +30,7 @@ export class WpUserExistsCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl wp user exists klant-x ann@example.com --env live',
+        'kinstactl wp user exists my-site ann@example.com --env live',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

@@ -38,9 +38,9 @@ export class SshAllowlistCommand implements BaseCommand<Options> {
         ...actionOptions({wait: false}),
     ];
     readonly examples = [
-        'kinstactl ssh allowlist klant-x --env live',
-        'kinstactl ssh allowlist klant-x --add 203.0.113.7',
-        'kinstactl ssh allowlist klant-x --remove 203.0.113.7 --dry-run',
+        'kinstactl ssh allowlist my-site --env live',
+        'kinstactl ssh allowlist my-site --add 203.0.113.7',
+        'kinstactl ssh allowlist my-site --remove 203.0.113.7 --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

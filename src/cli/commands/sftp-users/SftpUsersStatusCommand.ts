@@ -53,8 +53,8 @@ export abstract class SftpUsersStatusCommand implements BaseCommand<Options> {
     get examples(): string[] {
         const verb = this.enabled ? 'enable' : 'disable';
         return [
-            `kinstactl sftp-users ${verb} klant-x --env live`,
-            `kinstactl sftp-users ${verb} klant-x --env live --dry-run`,
+            `kinstactl sftp-users ${verb} my-site --env live`,
+            `kinstactl sftp-users ${verb} my-site --env live --dry-run`,
         ];
     }
 

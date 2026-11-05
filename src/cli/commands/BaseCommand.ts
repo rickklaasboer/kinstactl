@@ -43,7 +43,7 @@ export interface BaseCommand<O extends object = never> {
     readonly arguments: ArgumentDef[];
     /** In help order; action flags last. */
     readonly options: OptionDef[];
-    /** Without the '$ ' prefix, e.g. 'kinstactl cache clear klant-x --env live'. */
+    /** Without the '$ ' prefix, e.g. 'kinstactl cache clear my-site --env live'. */
     readonly examples: string[];
     readonly endpoints: EndpointKey[];
     readonly destructive?: Destructive;

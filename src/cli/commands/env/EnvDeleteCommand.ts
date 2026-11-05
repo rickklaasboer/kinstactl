@@ -28,8 +28,8 @@ export class EnvDeleteCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'irreversible'}),
     ];
     readonly examples = [
-        'kinstactl env delete klant-x --env staging --confirm klant-x',
-        'kinstactl env delete klant-x --env staging --dry-run',
+        'kinstactl env delete my-site --env staging --confirm my-site',
+        'kinstactl env delete my-site --env staging --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

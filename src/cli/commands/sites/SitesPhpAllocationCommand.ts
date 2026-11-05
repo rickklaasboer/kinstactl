@@ -46,7 +46,7 @@ export class SitesPhpAllocationCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl sites php-allocation klant-x --threads 4 --memory 256',
+        'kinstactl sites php-allocation my-site --threads 4 --memory 256',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

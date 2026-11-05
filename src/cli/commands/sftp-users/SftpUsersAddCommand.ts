@@ -63,8 +63,8 @@ export class SftpUsersAddCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl sftp-users add klant-x deploy --password - --permission write < password.txt',
-        'kinstactl sftp-users add klant-x reader --root-directory /wp-content/uploads --dry-run',
+        'kinstactl sftp-users add my-site deploy --password - --permission write < password.txt',
+        'kinstactl sftp-users add my-site reader --root-directory /wp-content/uploads --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

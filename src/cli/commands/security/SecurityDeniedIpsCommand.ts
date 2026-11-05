@@ -41,9 +41,9 @@ export class SecurityDeniedIpsCommand implements BaseCommand<Options> {
         ...actionOptions({wait: false, destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl security denied-ips klant-x --env live',
-        'kinstactl security denied-ips klant-x --add 203.0.113.7 --yes',
-        'kinstactl security denied-ips klant-x --clear --dry-run',
+        'kinstactl security denied-ips my-site --env live',
+        'kinstactl security denied-ips my-site --add 203.0.113.7 --yes',
+        'kinstactl security denied-ips my-site --clear --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

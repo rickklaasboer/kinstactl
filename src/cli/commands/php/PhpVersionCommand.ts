@@ -44,9 +44,9 @@ export class PhpVersionCommand implements BaseCommand<Options> {
         ...actionOptions({dryRun: true, wait: true}),
     ];
     readonly examples = [
-        'kinstactl php version klant-x --env live',
-        'kinstactl php version klant-x 8.3 --env staging',
-        'kinstactl php version klant-x 8.3 --env staging --no-auto-update --dry-run',
+        'kinstactl php version my-site --env live',
+        'kinstactl php version my-site 8.3 --env staging',
+        'kinstactl php version my-site 8.3 --env staging --no-auto-update --dry-run',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites/{site_id}/environments',

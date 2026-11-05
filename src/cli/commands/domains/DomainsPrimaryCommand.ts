@@ -43,8 +43,8 @@ export class DomainsPrimaryCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl domains primary klant-x example.com',
-        'kinstactl domains primary klant-x example.com --search-replace --yes',
+        'kinstactl domains primary my-site example.com',
+        'kinstactl domains primary my-site example.com --search-replace --yes',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

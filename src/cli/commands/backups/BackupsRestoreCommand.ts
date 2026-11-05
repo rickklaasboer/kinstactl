@@ -50,9 +50,9 @@ export class BackupsRestoreCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl backups restore klant-x 123456789 --notify rick@example.com',
-        'kinstactl backups restore klant-x 123456789 --env staging --notify rick@example.com --yes',
-        'kinstactl backups restore klant-x 123456789 --from-env staging --env live --notify rick@example.com',
+        'kinstactl backups restore my-site 123456789 --notify rick@example.com',
+        'kinstactl backups restore my-site 123456789 --env staging --notify rick@example.com --yes',
+        'kinstactl backups restore my-site 123456789 --from-env staging --env live --notify rick@example.com',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites/environments/{env_id}/backups',

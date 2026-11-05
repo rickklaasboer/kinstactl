@@ -116,7 +116,7 @@ export class CompanyActivityCommand implements BaseCommand<Options> {
     ];
     readonly examples = [
         'kinstactl company activity',
-        'kinstactl company activity --category siteActions --site klant-x --limit 25',
+        'kinstactl company activity --category siteActions --site my-site --limit 25',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

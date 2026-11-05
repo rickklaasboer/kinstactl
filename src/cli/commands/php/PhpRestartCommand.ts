@@ -27,8 +27,8 @@ export class PhpRestartCommand implements BaseCommand<Options> {
         ...actionOptions({dryRun: true, wait: true}),
     ];
     readonly examples = [
-        'kinstactl php restart klant-x --env live',
-        'kinstactl php restart klant-x --env live --dry-run',
+        'kinstactl php restart my-site --env live',
+        'kinstactl php restart my-site --env live --dry-run',
     ];
     readonly endpoints: EndpointKey[] = ['POST /sites/tools/restart-php'];
 

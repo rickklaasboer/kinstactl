@@ -41,8 +41,8 @@ export class SftpUsersDeleteCommand implements BaseCommand<Options> {
         ...actionOptions({destructive: 'confirm'}),
     ];
     readonly examples = [
-        'kinstactl sftp-users delete klant-x deploy',
-        'kinstactl sftp-users delete klant-x deploy --env live --yes',
+        'kinstactl sftp-users delete my-site deploy',
+        'kinstactl sftp-users delete my-site deploy --env live --yes',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

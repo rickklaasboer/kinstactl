@@ -28,7 +28,7 @@ export class DbLoginCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
         ...actionOptions({wait: false}),
     ];
-    readonly examples = ['kinstactl db login klant-x --env live'];
+    readonly examples = ['kinstactl db login my-site --env live'];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',
         'POST /sites/environments/{env_id}/pma-login-token',

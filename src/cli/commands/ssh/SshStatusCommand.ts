@@ -24,8 +24,8 @@ export class SshStatusCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl ssh status klant-x --env live',
-        'kinstactl ssh status klant-x --json',
+        'kinstactl ssh status my-site --env live',
+        'kinstactl ssh status my-site --json',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

@@ -43,8 +43,8 @@ export class CacheCdnImageOptimizationCommand implements BaseCommand<Options> {
         ...actionOptions({}),
     ];
     readonly examples = [
-        'kinstactl cache cdn image-optimization klant-x --env live',
-        'kinstactl cache cdn image-optimization klant-x lossy --env live',
+        'kinstactl cache cdn image-optimization my-site --env live',
+        'kinstactl cache cdn image-optimization my-site lossy --env live',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

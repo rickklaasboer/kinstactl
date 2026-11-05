@@ -26,7 +26,7 @@ export class BackupsDownloadableListCommand implements BaseCommand<Options> {
         {flags: '--env <environment>', description: 'environment name or ID'},
     ];
     readonly examples = [
-        'kinstactl backups downloadable list klant-x --env live',
+        'kinstactl backups downloadable list my-site --env live',
     ];
     readonly endpoints: EndpointKey[] = [
         'GET /sites',

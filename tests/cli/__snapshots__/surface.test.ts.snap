@@ -5514,9 +5514,9 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl logs klant-x --env live
-  $ kinstactl logs klant-x access --env live --lines 200 --search wp-login
-  $ kinstactl logs klant-x cache --env live --json
+  $ kinstactl logs my-site --env live
+  $ kinstactl logs my-site access --env live --lines 200 --search wp-login
+  $ kinstactl logs my-site cache --env live --json
 "
 ,
 }
@@ -5590,8 +5590,8 @@ Options:
   -h, --help  display help for command
 
 Examples:
-  $ kinstactl sites get klant-x
-  $ kinstactl sites get klant-x --json
+  $ kinstactl sites get my-site
+  $ kinstactl sites get my-site --json
 "
 ,
 }
@@ -5632,8 +5632,8 @@ Options:
   -h, --help                   display help for command
 
 Examples:
-  $ kinstactl sites create "Klant Y" --region europe-west4 --admin-user admin --admin-email admin@klant-y.nl --admin-password -
-  $ kinstactl sites create "Klant Y" --region europe-west4 --plain
+  $ kinstactl sites create "My Site" --region europe-west4 --admin-user admin --admin-email admin@example.com --admin-password -
+  $ kinstactl sites create "My Site" --region europe-west4 --plain
 "
 ,
 }
@@ -5661,7 +5661,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl sites clone klant-x "Klant Y" --env live
+  $ kinstactl sites clone my-site "My Site" --env live
 "
 ,
 }
@@ -5688,8 +5688,8 @@ Options:
   -h, --help             display help for command
 
 Examples:
-  $ kinstactl sites delete klant-x --confirm klant-x
-  $ kinstactl sites delete klant-x --dry-run
+  $ kinstactl sites delete my-site --confirm my-site
+  $ kinstactl sites delete my-site --dry-run
 "
 ,
 }
@@ -5720,8 +5720,8 @@ Options:
   -h, --help                   display help for command
 
 Examples:
-  $ kinstactl sites reset klant-x --admin-password - --confirm klant-x
-  $ kinstactl sites reset klant-x --admin-password x --dry-run
+  $ kinstactl sites reset my-site --admin-password - --confirm my-site
+  $ kinstactl sites reset my-site --admin-password x --dry-run
 "
 ,
 }
@@ -5749,7 +5749,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl sites php-allocation klant-x --threads 4 --memory 256
+  $ kinstactl sites php-allocation my-site --threads 4 --memory 256
 "
 ,
 }
@@ -5772,8 +5772,8 @@ Options:
   -h, --help  display help for command
 
 Examples:
-  $ kinstactl sites usage klant-x
-  $ kinstactl sites usage klant-x --json
+  $ kinstactl sites usage my-site
+  $ kinstactl sites usage my-site --json
 "
 ,
 }
@@ -5824,8 +5824,8 @@ Options:
   -h, --help  display help for command
 
 Examples:
-  $ kinstactl env list klant-x
-  $ kinstactl env list klant-x --json
+  $ kinstactl env list my-site
+  $ kinstactl env list my-site --json
 "
 ,
 }
@@ -5858,8 +5858,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl env push klant-x --from staging --to live
-  $ kinstactl env push klant-x --from staging --to live --no-db --path wp-content/themes --yes
+  $ kinstactl env push my-site --from staging --to live
+  $ kinstactl env push my-site --from staging --to live --no-db --path wp-content/themes --yes
 "
 ,
 }
@@ -5900,8 +5900,8 @@ Options:
   -h, --help                   display help for command
 
 Examples:
-  $ kinstactl env create klant-x dev --admin-user admin --admin-email admin@klant-x.nl --admin-password -
-  $ kinstactl env create klant-x dev --plain
+  $ kinstactl env create my-site dev --admin-user admin --admin-email admin@example.com --admin-password -
+  $ kinstactl env create my-site dev --plain
 "
 ,
 }
@@ -5930,8 +5930,8 @@ Options:
   -h, --help            display help for command
 
 Examples:
-  $ kinstactl env clone klant-x dev --from live
-  $ kinstactl env clone klant-x dev --from live --premium
+  $ kinstactl env clone my-site dev --from live
+  $ kinstactl env clone my-site dev --from live --premium
 "
 ,
 }
@@ -5959,8 +5959,8 @@ Options:
   -h, --help             display help for command
 
 Examples:
-  $ kinstactl env delete klant-x --env staging --confirm klant-x
-  $ kinstactl env delete klant-x --env staging --dry-run
+  $ kinstactl env delete my-site --env staging --confirm my-site
+  $ kinstactl env delete my-site --env staging --dry-run
 "
 ,
 }
@@ -5989,7 +5989,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl env php-allocation klant-x --env staging --threads 4 --memory 256
+  $ kinstactl env php-allocation my-site --env staging --threads 4 --memory 256
 "
 ,
 }
@@ -6019,8 +6019,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl env webroot klant-x /public --env live
-  $ kinstactl env webroot klant-x / --env staging --no-clear-cache
+  $ kinstactl env webroot my-site /public --env live
+  $ kinstactl env webroot my-site / --env staging --no-clear-cache
 "
 ,
 }
@@ -6044,8 +6044,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl env files klant-x --env live
-  $ kinstactl env files klant-x --env live --json
+  $ kinstactl env files my-site --env live
+  $ kinstactl env files my-site --env live --json
 "
 ,
 }
@@ -6095,8 +6095,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl cache clear klant-x --env live
-  $ kinstactl cache clear klant-x --env staging --dry-run
+  $ kinstactl cache clear my-site --env live
+  $ kinstactl cache clear my-site --env staging --dry-run
 "
 ,
 }
@@ -6148,8 +6148,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl cache edge clear klant-x --env live
-  $ kinstactl cache edge clear klant-x --env live --url https://example.com/blog/ --subdirectories
+  $ kinstactl cache edge clear my-site --env live
+  $ kinstactl cache edge clear my-site --env live --url https://example.com/blog/ --subdirectories
 "
 ,
 }
@@ -6176,8 +6176,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl cache edge enable klant-x --env live
-  $ kinstactl cache edge enable klant-x --env live --dry-run
+  $ kinstactl cache edge enable my-site --env live
+  $ kinstactl cache edge enable my-site --env live --dry-run
 "
 ,
 }
@@ -6204,8 +6204,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl cache edge disable klant-x --env live
-  $ kinstactl cache edge disable klant-x --env live --dry-run
+  $ kinstactl cache edge disable my-site --env live
+  $ kinstactl cache edge disable my-site --env live --dry-run
 "
 ,
 }
@@ -6254,8 +6254,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl cache cdn clear klant-x --env live
-  $ kinstactl cache cdn clear klant-x --env live --dry-run
+  $ kinstactl cache cdn clear my-site --env live
+  $ kinstactl cache cdn clear my-site --env live --dry-run
 "
 ,
 }
@@ -6284,8 +6284,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl cache cdn image-optimization klant-x --env live
-  $ kinstactl cache cdn image-optimization klant-x lossy --env live
+  $ kinstactl cache cdn image-optimization my-site --env live
+  $ kinstactl cache cdn image-optimization my-site lossy --env live
 "
 ,
 }
@@ -6335,8 +6335,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl php restart klant-x --env live
-  $ kinstactl php restart klant-x --env live --dry-run
+  $ kinstactl php restart my-site --env live
+  $ kinstactl php restart my-site --env live --dry-run
 "
 ,
 }
@@ -6365,9 +6365,9 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl php version klant-x --env live
-  $ kinstactl php version klant-x 8.3 --env staging
-  $ kinstactl php version klant-x 8.3 --env staging --no-auto-update --dry-run
+  $ kinstactl php version my-site --env live
+  $ kinstactl php version my-site 8.3 --env staging
+  $ kinstactl php version my-site 8.3 --env staging --no-auto-update --dry-run
 "
 ,
 }
@@ -6415,8 +6415,8 @@ Options:
   -h, --help   display help for command
 
 Examples:
-  $ kinstactl plugins list klant-x --env live
-  $ kinstactl plugins list klant-x --env live --updates
+  $ kinstactl plugins list my-site --env live
+  $ kinstactl plugins list my-site --env live --updates
 "
 ,
 }
@@ -6445,8 +6445,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl plugins update klant-x akismet --env live
-  $ kinstactl plugins update klant-x --all --env live --dry-run
+  $ kinstactl plugins update my-site akismet --env live
+  $ kinstactl plugins update my-site --all --env live --dry-run
 "
 ,
 }
@@ -6493,8 +6493,8 @@ Options:
   -h, --help   display help for command
 
 Examples:
-  $ kinstactl themes list klant-x --env live
-  $ kinstactl themes list klant-x --env live --updates
+  $ kinstactl themes list my-site --env live
+  $ kinstactl themes list my-site --env live --updates
 "
 ,
 }
@@ -6523,8 +6523,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl themes update klant-x twentytwentyfour --env live
-  $ kinstactl themes update klant-x --all --env live --dry-run
+  $ kinstactl themes update my-site twentytwentyfour --env live
+  $ kinstactl themes update my-site --all --env live --dry-run
 "
 ,
 }
@@ -6576,8 +6576,8 @@ Options:
   -h, --help     display help for command
 
 Examples:
-  $ kinstactl backups list klant-x
-  $ kinstactl backups list klant-x --env staging --type manual
+  $ kinstactl backups list my-site
+  $ kinstactl backups list my-site --env staging --type manual
 "
 ,
 }
@@ -6605,8 +6605,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl backups create klant-x
-  $ kinstactl backups create klant-x --env live --tag "before plugin update"
+  $ kinstactl backups create my-site
+  $ kinstactl backups create my-site --env live --tag "before plugin update"
 "
 ,
 }
@@ -6638,9 +6638,9 @@ Options:
   -h, --help                display help for command
 
 Examples:
-  $ kinstactl backups restore klant-x 123456789 --notify rick@example.com
-  $ kinstactl backups restore klant-x 123456789 --env staging --notify rick@example.com --yes
-  $ kinstactl backups restore klant-x 123456789 --from-env staging --env live --notify rick@example.com
+  $ kinstactl backups restore my-site 123456789 --notify rick@example.com
+  $ kinstactl backups restore my-site 123456789 --env staging --notify rick@example.com --yes
+  $ kinstactl backups restore my-site 123456789 --from-env staging --env live --notify rick@example.com
 "
 ,
 }
@@ -6669,8 +6669,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl backups delete klant-x 123456789
-  $ kinstactl backups delete klant-x 123456789 --env staging --yes
+  $ kinstactl backups delete my-site 123456789
+  $ kinstactl backups delete my-site 123456789 --env staging --yes
 "
 ,
 }
@@ -6719,7 +6719,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl backups downloadable list klant-x --env live
+  $ kinstactl backups downloadable list my-site --env live
 "
 ,
 }
@@ -6746,8 +6746,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl backups downloadable create klant-x --env live
-  $ kinstactl backups downloadable create klant-x --env live --no-wait
+  $ kinstactl backups downloadable create my-site --env live
+  $ kinstactl backups downloadable create my-site --env live --no-wait
 "
 ,
 }
@@ -6771,7 +6771,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl backups downloadable quota klant-x --env live
+  $ kinstactl backups downloadable quota my-site --env live
 "
 ,
 }
@@ -6820,8 +6820,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl domains list klant-x
-  $ kinstactl domains list klant-x --env staging --json
+  $ kinstactl domains list my-site
+  $ kinstactl domains list my-site --env staging --json
 "
 ,
 }
@@ -6854,8 +6854,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl domains add klant-x example.com --env live
-  $ kinstactl domains add klant-x example.com --wildcard --with-www --ssl-key key.pem --ssl-cert cert.pem
+  $ kinstactl domains add my-site example.com --env live
+  $ kinstactl domains add my-site example.com --wildcard --with-www --ssl-key key.pem --ssl-cert cert.pem
 "
 ,
 }
@@ -6884,8 +6884,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl domains remove klant-x example.com
-  $ kinstactl domains remove klant-x example.com --env live --yes
+  $ kinstactl domains remove my-site example.com
+  $ kinstactl domains remove my-site example.com --env live --yes
 "
 ,
 }
@@ -6915,8 +6915,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl domains primary klant-x example.com
-  $ kinstactl domains primary klant-x example.com --search-replace --yes
+  $ kinstactl domains primary my-site example.com
+  $ kinstactl domains primary my-site example.com --search-replace --yes
 "
 ,
 }
@@ -6941,8 +6941,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl domains verification klant-x example.com
-  $ kinstactl domains verification klant-x example.com --json
+  $ kinstactl domains verification my-site example.com
+  $ kinstactl domains verification my-site example.com --json
 "
 ,
 }
@@ -7177,8 +7177,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl wp run klant-x "wp plugin list" --env live --yes
-  $ kinstactl wp run klant-x "wp core version" --env staging --dry-run
+  $ kinstactl wp run my-site "wp plugin list" --env live --yes
+  $ kinstactl wp run my-site "wp core version" --env staging --dry-run
 "
 ,
 }
@@ -7204,7 +7204,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl wp login klant-x --env live --email admin@example.com
+  $ kinstactl wp login my-site --env live --email admin@example.com
 "
 ,
 }
@@ -7254,7 +7254,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl wp user create klant-x ann@example.com --env live --first-name Ann --last-name Lee
+  $ kinstactl wp user create my-site ann@example.com --env live --first-name Ann --last-name Lee
 "
 ,
 }
@@ -7279,7 +7279,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl wp user exists klant-x ann@example.com --env live
+  $ kinstactl wp user exists my-site ann@example.com --env live
 "
 ,
 }
@@ -7325,7 +7325,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl db login klant-x --env live
+  $ kinstactl db login my-site --env live
 "
 ,
 }
@@ -7357,8 +7357,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl search-replace klant-x http://old.example https://new.example --env live
-  $ kinstactl search-replace klant-x http://old.example https://new.example --env live --apply --clear-cache --yes
+  $ kinstactl search-replace my-site http://old.example https://new.example --env live
+  $ kinstactl search-replace my-site http://old.example https://new.example --env live --apply --clear-cache --yes
 "
 ,
 }
@@ -7409,8 +7409,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh status klant-x --env live
-  $ kinstactl ssh status klant-x --json
+  $ kinstactl ssh status my-site --env live
+  $ kinstactl ssh status my-site --json
 "
 ,
 }
@@ -7435,8 +7435,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh enable klant-x --env live
-  $ kinstactl ssh enable klant-x --env live --dry-run
+  $ kinstactl ssh enable my-site --env live
+  $ kinstactl ssh enable my-site --env live --dry-run
 "
 ,
 }
@@ -7461,8 +7461,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh disable klant-x --env live
-  $ kinstactl ssh disable klant-x --env live --dry-run
+  $ kinstactl ssh disable my-site --env live
+  $ kinstactl ssh disable my-site --env live --dry-run
 "
 ,
 }
@@ -7486,8 +7486,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh config klant-x --env live
-  $ kinstactl ssh config klant-x --json
+  $ kinstactl ssh config my-site --env live
+  $ kinstactl ssh config my-site --json
 "
 ,
 }
@@ -7514,9 +7514,9 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh allowlist klant-x --env live
-  $ kinstactl ssh allowlist klant-x --add 203.0.113.7
-  $ kinstactl ssh allowlist klant-x --remove 203.0.113.7 --dry-run
+  $ kinstactl ssh allowlist my-site --env live
+  $ kinstactl ssh allowlist my-site --add 203.0.113.7
+  $ kinstactl ssh allowlist my-site --remove 203.0.113.7 --dry-run
 "
 ,
 }
@@ -7565,8 +7565,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh password get klant-x --env live
-  $ kinstactl ssh password get klant-x --json
+  $ kinstactl ssh password get my-site --env live
+  $ kinstactl ssh password get my-site --json
 "
 ,
 }
@@ -7591,7 +7591,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh password generate klant-x --env live
+  $ kinstactl ssh password generate my-site --env live
 "
 ,
 }
@@ -7616,8 +7616,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh password enable klant-x --env live
-  $ kinstactl ssh password enable klant-x --env live --dry-run
+  $ kinstactl ssh password enable my-site --env live
+  $ kinstactl ssh password enable my-site --env live --dry-run
 "
 ,
 }
@@ -7642,8 +7642,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh password disable klant-x --env live
-  $ kinstactl ssh password disable klant-x --env live --dry-run
+  $ kinstactl ssh password disable my-site --env live
+  $ kinstactl ssh password disable my-site --env live --dry-run
 "
 ,
 }
@@ -7670,8 +7670,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl ssh password expiration klant-x 7d --env live
-  $ kinstactl ssh password expiration klant-x never --dry-run
+  $ kinstactl ssh password expiration my-site 7d --env live
+  $ kinstactl ssh password expiration my-site never --dry-run
 "
 ,
 }
@@ -7724,8 +7724,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl sftp-users list klant-x
-  $ kinstactl sftp-users list klant-x --env staging --json
+  $ kinstactl sftp-users list my-site
+  $ kinstactl sftp-users list my-site --env staging --json
 "
 ,
 }
@@ -7758,8 +7758,8 @@ Options:
   -h, --help                 display help for command
 
 Examples:
-  $ kinstactl sftp-users add klant-x deploy --password - --permission write < password.txt
-  $ kinstactl sftp-users add klant-x reader --root-directory /wp-content/uploads --dry-run
+  $ kinstactl sftp-users add my-site deploy --password - --permission write < password.txt
+  $ kinstactl sftp-users add my-site reader --root-directory /wp-content/uploads --dry-run
 "
 ,
 }
@@ -7786,8 +7786,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl sftp-users enable klant-x --env live
-  $ kinstactl sftp-users enable klant-x --env live --dry-run
+  $ kinstactl sftp-users enable my-site --env live
+  $ kinstactl sftp-users enable my-site --env live --dry-run
 "
 ,
 }
@@ -7814,8 +7814,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl sftp-users disable klant-x --env live
-  $ kinstactl sftp-users disable klant-x --env live --dry-run
+  $ kinstactl sftp-users disable my-site --env live
+  $ kinstactl sftp-users disable my-site --env live --dry-run
 "
 ,
 }
@@ -7844,8 +7844,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl sftp-users delete klant-x deploy
-  $ kinstactl sftp-users delete klant-x deploy --env live --yes
+  $ kinstactl sftp-users delete my-site deploy
+  $ kinstactl sftp-users delete my-site deploy --env live --yes
 "
 ,
 }
@@ -7901,9 +7901,9 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security force-https klant-x --env live
-  $ kinstactl security force-https klant-x primary --env live
-  $ kinstactl security force-https klant-x off --env staging --dry-run
+  $ kinstactl security force-https my-site --env live
+  $ kinstactl security force-https my-site primary --env live
+  $ kinstactl security force-https my-site off --env staging --dry-run
 "
 ,
 }
@@ -7957,8 +7957,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security bot-protection level klant-x --env live
-  $ kinstactl security bot-protection level klant-x block-malicious-traffic --env live
+  $ kinstactl security bot-protection level my-site --env live
+  $ kinstactl security bot-protection level my-site block-malicious-traffic --env live
 "
 ,
 }
@@ -7987,8 +7987,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security bot-protection ai-crawlers klant-x --env live
-  $ kinstactl security bot-protection ai-crawlers klant-x block --env live
+  $ kinstactl security bot-protection ai-crawlers my-site --env live
+  $ kinstactl security bot-protection ai-crawlers my-site block --env live
 "
 ,
 }
@@ -8017,8 +8017,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security bot-protection wp-automations klant-x --env live
-  $ kinstactl security bot-protection wp-automations klant-x allow --env live
+  $ kinstactl security bot-protection wp-automations my-site --env live
+  $ kinstactl security bot-protection wp-automations my-site allow --env live
 "
 ,
 }
@@ -8065,7 +8065,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security bot-protection exceptions list klant-x --env live
+  $ kinstactl security bot-protection exceptions list my-site --env live
 "
 ,
 }
@@ -8097,8 +8097,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security bot-protection exceptions add klant-x ip skip 192.0.2.1 --env live
-  $ kinstactl security bot-protection exceptions add klant-x country block NL --env live --dry-run
+  $ kinstactl security bot-protection exceptions add my-site ip skip 192.0.2.1 --env live
+  $ kinstactl security bot-protection exceptions add my-site country block NL --env live --dry-run
 "
 ,
 }
@@ -8127,7 +8127,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security bot-protection exceptions delete klant-x ip:skip:192.0.2.1 --env live --yes
+  $ kinstactl security bot-protection exceptions delete my-site ip:skip:192.0.2.1 --env live --yes
 "
 ,
 }
@@ -8156,9 +8156,9 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security denied-ips klant-x --env live
-  $ kinstactl security denied-ips klant-x --add 203.0.113.7 --yes
-  $ kinstactl security denied-ips klant-x --clear --dry-run
+  $ kinstactl security denied-ips my-site --env live
+  $ kinstactl security denied-ips my-site --add 203.0.113.7 --yes
+  $ kinstactl security denied-ips my-site --clear --dry-run
 "
 ,
 }
@@ -8212,8 +8212,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security redirects list klant-x --env live
-  $ kinstactl security redirects list klant-x --search /blog --sort from --desc
+  $ kinstactl security redirects list my-site --env live
+  $ kinstactl security redirects list my-site --search /blog --sort from --desc
 "
 ,
 }
@@ -8242,8 +8242,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security redirects add klant-x /old /new --env live
-  $ kinstactl security redirects add klant-x /old https://example.com/new --type redirect --domain example.com
+  $ kinstactl security redirects add my-site /old /new --env live
+  $ kinstactl security redirects add my-site /old https://example.com/new --type redirect --domain example.com
 "
 ,
 }
@@ -8274,8 +8274,8 @@ Options:
   -h, --help             display help for command
 
 Examples:
-  $ kinstactl security redirects update klant-x /old --to /newer --yes
-  $ kinstactl security redirects update klant-x /old --domain example.com --type redirect --yes
+  $ kinstactl security redirects update my-site /old --to /newer --yes
+  $ kinstactl security redirects update my-site /old --domain example.com --type redirect --yes
 "
 ,
 }
@@ -8304,8 +8304,8 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl security redirects delete klant-x /old --env live --yes
-  $ kinstactl security redirects delete klant-x --all --yes
+  $ kinstactl security redirects delete my-site /old --env live --yes
+  $ kinstactl security redirects delete my-site --all --yes
 "
 ,
 }
@@ -8345,10 +8345,10 @@ Options:
   -h, --help            display help for command
 
 Examples:
-  $ kinstactl analytics visits klant-x --env live
-  $ kinstactl analytics top-countries klant-x --env live --span 30d
-  $ kinstactl analytics diskspace klant-x --env live --time-zone 02:00
-  $ kinstactl analytics bot-traffic-flow klant-x --env live --json
+  $ kinstactl analytics visits my-site --env live
+  $ kinstactl analytics top-countries my-site --env live --span 30d
+  $ kinstactl analytics diskspace my-site --env live --time-zone 02:00
+  $ kinstactl analytics bot-traffic-flow my-site --env live --json
 "
 ,
 }
@@ -8500,7 +8500,7 @@ Options:
   -h, --help           display help for command
 
 Examples:
-  $ kinstactl company users site-role jan@example.com klant-x site-developer
+  $ kinstactl company users site-role jan@example.com my-site site-developer
 "
 ,
 }
@@ -8569,7 +8569,7 @@ Options:
 
 Examples:
   $ kinstactl company activity
-  $ kinstactl company activity --category siteActions --site klant-x --limit 25
+  $ kinstactl company activity --category siteActions --site my-site --limit 25
 "
 ,
 }
@@ -8744,7 +8744,7 @@ Options:
   -h, --help  display help for command
 
 Examples:
-  $ kinstactl completion envs klant-x
+  $ kinstactl completion envs my-site
 "
 ,
 }
