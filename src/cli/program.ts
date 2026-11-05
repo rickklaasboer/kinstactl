@@ -7,6 +7,7 @@ import {registerEnv} from './commands/env';
 import {registerLogs} from './commands/logs';
 import {registerOperations} from './commands/operations';
 import {registerPhp} from './commands/php';
+import {registerPlugins} from './commands/plugins';
 import {registerSites} from './commands/sites';
 import {toCliError} from './errors';
 import {Runtime, type Io} from './runtime';
@@ -55,6 +56,7 @@ export function buildProgram(rt: Runtime): Command {
     registerEnv(program, rt);
     registerCache(program, rt);
     registerPhp(program, rt);
+    registerPlugins(program, rt);
     return program;
 }
 
