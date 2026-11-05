@@ -34,10 +34,23 @@ test('commands without --json prints an indented list', async () => {
     expect(r.stdout).toMatch(/^ {2}login\b/m);
 });
 
-test('every command help has an example', async () => {
-    const r = await runCli(['auth', 'login', '--help']);
-    expect(r.code).toBe(0);
-    expect(r.stdout).toContain('Examples:');
+test('every leaf command help has an example', async () => {
+    const tree = JSON.parse(
+        (await runCli(['commands', '--json'])).stdout,
+    ) as Node;
+    const leaves = flatten(tree).filter((n) => !n.commands?.length);
+    expect(leaves.length).toBeGreaterThan(0);
+    for (const leaf of leaves) {
+        const r = await runCli([...leaf.path.split(' '), '--help']);
+        expect({path: leaf.path, code: r.code}).toEqual({
+            path: leaf.path,
+            code: 0,
+        });
+        expect({path: leaf.path, ok: r.stdout}).toEqual({
+            path: leaf.path,
+            ok: expect.stringContaining('\nExamples:\n  $ kinstactl '),
+        });
+    }
 });
 
 test('unknown command is a usage error', async () => {
