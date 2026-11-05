@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] },
-    "types": ["bun-types"]
-  },
-  "include": ["src", "tests"]
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": { "@/*": ["src/*"] },
+        "types": ["bun-types"]
+    },
+    "include": ["src", "tests"]
 }
