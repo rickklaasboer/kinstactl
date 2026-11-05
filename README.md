@@ -2,6 +2,8 @@
 
 Command line client and typed TypeScript client for the Kinsta API.
 
+Documentation: https://kinstactl.rickklaasboer.nl
+
 ## Install
 
 ### npm
