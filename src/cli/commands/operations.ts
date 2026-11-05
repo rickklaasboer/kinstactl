@@ -1,17 +1,9 @@
 import type {Command} from 'commander';
-import type {RequestSpec} from '@/client/request';
+import {getOperation} from '@/client/endpoints/operations';
 import {CliError} from '../errors';
 import {parseMinutes, waitForOperation} from '../progress';
 import {meta} from '../program';
 import type {Runtime} from '../runtime';
-
-function statusSpec(id: string): RequestSpec {
-    return {
-        endpoint: 'GET /operations/{operation_id}',
-        method: 'GET',
-        path: `/operations/${id}`,
-    };
-}
 
 export function registerOperations(program: Command, rt: Runtime): void {
     const operations = program
@@ -28,7 +20,7 @@ export function registerOperations(program: Command, rt: Runtime): void {
                 '\nExamples:\n  $ kinstactl operations get 0e7b2d61-example\n  $ kinstactl operations get 0e7b2d61-example --json',
             )
             .action(async (id: string) => {
-                const res = await rt.client().raw(statusSpec(id));
+                const res = await rt.client().raw(getOperation(id));
                 const message = (res.body as {message?: unknown} | null)
                     ?.message;
                 const text = typeof message === 'string' ? message : undefined;

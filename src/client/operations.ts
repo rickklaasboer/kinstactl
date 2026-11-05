@@ -1,3 +1,4 @@
+import {getOperation} from '@/client/endpoints/operations';
 import {
     KinstaApiError,
     OperationFailedError,
@@ -64,11 +65,7 @@ export class Operation {
         const started = now();
         let interval = START_INTERVAL_MS;
         let consecutiveErrors = 0;
-        const spec: RequestSpec = {
-            endpoint: 'GET /operations/{operation_id}',
-            method: 'GET',
-            path: `/operations/${this.id}`,
-        };
+        const spec = getOperation(this.id);
         const timeout = () =>
             new OperationTimeoutError(
                 this.id,

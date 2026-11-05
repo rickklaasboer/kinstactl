@@ -6,6 +6,7 @@ import * as backups from '@/client/endpoints/backups';
 import * as environments from '@/client/endpoints/environments';
 import {ALL_ENDPOINTS} from '@/client/endpoints';
 import * as logs from '@/client/endpoints/logs';
+import * as operations from '@/client/endpoints/operations';
 import * as plugins from '@/client/endpoints/plugins';
 import * as sites from '@/client/endpoints/sites';
 import * as tools from '@/client/endpoints/tools';
@@ -23,6 +24,16 @@ describe('account', () => {
             endpoint: 'GET /company/{id}/users',
             method: 'GET',
             path: '/company/c%201/users',
+        });
+    });
+});
+
+describe('operations', () => {
+    test('getOperation encodes the id', () => {
+        expect(operations.getOperation('a/../b')).toEqual({
+            endpoint: 'GET /operations/{operation_id}',
+            method: 'GET',
+            path: '/operations/a%2F..%2Fb',
         });
     });
 });
