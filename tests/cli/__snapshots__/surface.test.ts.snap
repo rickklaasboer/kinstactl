@@ -3496,6 +3496,273 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name, display name or ID",
               "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "List the additional SFTP accounts of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/{site_id}/environments",
+            "GET /sites/environments/{env_id}/additional-sftp-accounts",
+          ],
+          "name": "list",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "sftp-users list",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "username of the new SFTP account",
+              "name": "username",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Add an additional SFTP account to an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/environments/{env_id}/additional-sftp-accounts",
+          ],
+          "name": "add",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": ""-" reads it from stdin; omitted on a TTY prompts",
+              "flags": "--password <password>",
+            },
+            {
+              "description": "directory the account is restricted to",
+              "flags": "--root-directory <path>",
+            },
+            {
+              "description": "access level of the account",
+              "flags": "--permission <read|write>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "sftp-users add",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Enable the additional SFTP accounts of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "PUT /sites/environments/{env_id}/additional-sftp-accounts/toggle-status",
+          ],
+          "name": "enable",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "sftp-users enable",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Disable the additional SFTP accounts of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "PUT /sites/environments/{env_id}/additional-sftp-accounts/toggle-status",
+          ],
+          "name": "disable",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "sftp-users disable",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "username of the SFTP account, see: sftp-users list",
+              "name": "username",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Delete an additional SFTP account",
+          "destructive": "confirm",
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/environments/{env_id}/additional-sftp-accounts",
+            "DELETE /sites/environments/additional-sftp-accounts/{sftp_account_id}",
+          ],
+          "name": "delete",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "skip the confirmation prompt",
+              "flags": "--yes",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "sftp-users delete",
+        },
+      ],
+      "description": "Additional SFTP accounts of an environment",
+      "destructive": null,
+      "endpoints": [],
+      "name": "sftp-users",
+      "options": [],
+      "path": "sftp-users",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
               "required": true,
             },
             {
@@ -4484,6 +4751,12 @@ ssh  SSH and SFTP access of an environment
     enable [site]  Enable SSH/SFTP password login of an environment
     disable [site]  Disable SSH/SFTP password login of an environment
     expiration <site> <interval>  Set how long the SSH/SFTP password stays valid
+sftp-users  Additional SFTP accounts of an environment
+  list [site]  List the additional SFTP accounts of an environment
+  add <site> <username>  Add an additional SFTP account to an environment
+  enable [site]  Enable the additional SFTP accounts of an environment
+  disable [site]  Disable the additional SFTP accounts of an environment
+  delete <site> <username>  Delete an additional SFTP account
 security  Security settings of an environment
   force-https <site> [mode]  Show or change how an environment forces HTTPS (all, primary, off)
   bot-protection  Bot protection
@@ -4543,6 +4816,7 @@ Commands:
   db                                                  Database tools of an environment
   search-replace [options] <site> <search> <replace>  Search and replace in the database (dry run unless --apply)
   ssh                                                 SSH and SFTP access of an environment
+  sftp-users                                          Additional SFTP accounts of an environment
   security                                            Security settings of an environment
   analytics [options] <metric> [site]                 Traffic, bandwidth, disk and bot analytics of an environment
   company                                             Company-wide settings and inventories
@@ -6946,6 +7220,180 @@ Examples:
 exports[`help of every command and group is unchanged 91`] = `
 {
   "code": 0,
+  "path": "sftp-users",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sftp-users [options] [command]
+
+Additional SFTP accounts of an environment
+
+Options:
+  -h, --help                          display help for command
+
+Commands:
+  list [options] [site]               List the additional SFTP accounts of an
+                                      environment
+  add [options] <site> <username>     Add an additional SFTP account to an
+                                      environment
+  enable [options] [site]             Enable the additional SFTP accounts of an
+                                      environment
+  disable [options] [site]            Disable the additional SFTP accounts of an
+                                      environment
+  delete [options] <site> <username>  Delete an additional SFTP account
+  help [command]                      display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 92`] = `
+{
+  "code": 0,
+  "path": "sftp-users list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sftp-users list [options] [site]
+
+List the additional SFTP accounts of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl sftp-users list klant-x
+  $ kinstactl sftp-users list klant-x --env staging --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 93`] = `
+{
+  "code": 0,
+  "path": "sftp-users add",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sftp-users add [options] <site> <username>
+
+Add an additional SFTP account to an environment
+
+Arguments:
+  site                       site name, display name or ID
+  username                   username of the new SFTP account
+
+Options:
+  --env <environment>        environment name or ID
+  --password <password>      "-" reads it from stdin; omitted on a TTY prompts
+  --root-directory <path>    directory the account is restricted to
+  --permission <read|write>  access level of the account
+  --dry-run                  print the resolved target and request; change
+                             nothing
+  --no-wait                  return the operation ID instead of waiting
+  --timeout <minutes>        give up waiting after this many minutes (default
+                             30)
+  -h, --help                 display help for command
+
+Examples:
+  $ kinstactl sftp-users add klant-x deploy --password - --permission write < password.txt
+  $ kinstactl sftp-users add klant-x reader --root-directory /wp-content/uploads --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 94`] = `
+{
+  "code": 0,
+  "path": "sftp-users enable",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sftp-users enable [options] [site]
+
+Enable the additional SFTP accounts of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl sftp-users enable klant-x --env live
+  $ kinstactl sftp-users enable klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 95`] = `
+{
+  "code": 0,
+  "path": "sftp-users disable",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sftp-users disable [options] [site]
+
+Disable the additional SFTP accounts of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl sftp-users disable klant-x --env live
+  $ kinstactl sftp-users disable klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 96`] = `
+{
+  "code": 0,
+  "path": "sftp-users delete",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl sftp-users delete [options] <site> <username>
+
+Delete an additional SFTP account
+
+Arguments:
+  site                 site name, display name or ID
+  username             username of the SFTP account, see: sftp-users list
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl sftp-users delete klant-x deploy
+  $ kinstactl sftp-users delete klant-x deploy --env live --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 97`] = `
+{
+  "code": 0,
   "path": "security",
   "stderr": "",
   "stdout": 
@@ -6966,7 +7414,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 92`] = `
+exports[`help of every command and group is unchanged 98`] = `
 {
   "code": 0,
   "path": "security force-https",
@@ -6998,7 +7446,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 93`] = `
+exports[`help of every command and group is unchanged 99`] = `
 {
   "code": 0,
   "path": "security bot-protection",
@@ -7022,7 +7470,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 94`] = `
+exports[`help of every command and group is unchanged 100`] = `
 {
   "code": 0,
   "path": "security bot-protection level",
@@ -7053,7 +7501,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 95`] = `
+exports[`help of every command and group is unchanged 101`] = `
 {
   "code": 0,
   "path": "security bot-protection ai-crawlers",
@@ -7083,7 +7531,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 96`] = `
+exports[`help of every command and group is unchanged 102`] = `
 {
   "code": 0,
   "path": "security bot-protection wp-automations",
@@ -7113,7 +7561,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 97`] = `
+exports[`help of every command and group is unchanged 103`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions",
@@ -7136,7 +7584,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 98`] = `
+exports[`help of every command and group is unchanged 104`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions list",
@@ -7160,7 +7608,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 99`] = `
+exports[`help of every command and group is unchanged 105`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions add",
@@ -7193,7 +7641,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 100`] = `
+exports[`help of every command and group is unchanged 106`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions delete",
@@ -7222,7 +7670,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 101`] = `
+exports[`help of every command and group is unchanged 107`] = `
 {
   "code": 0,
   "path": "analytics",
@@ -7265,7 +7713,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 102`] = `
+exports[`help of every command and group is unchanged 108`] = `
 {
   "code": 0,
   "path": "company",
@@ -7293,7 +7741,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 103`] = `
+exports[`help of every command and group is unchanged 109`] = `
 {
   "code": 0,
   "path": "company users",
@@ -7317,7 +7765,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 104`] = `
+exports[`help of every command and group is unchanged 110`] = `
 {
   "code": 0,
   "path": "company users list",
@@ -7338,7 +7786,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 105`] = `
+exports[`help of every command and group is unchanged 111`] = `
 {
   "code": 0,
   "path": "company users get",
@@ -7361,7 +7809,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 106`] = `
+exports[`help of every command and group is unchanged 112`] = `
 {
   "code": 0,
   "path": "company users role",
@@ -7389,7 +7837,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 107`] = `
+exports[`help of every command and group is unchanged 113`] = `
 {
   "code": 0,
   "path": "company users site-role",
@@ -7417,7 +7865,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 108`] = `
+exports[`help of every command and group is unchanged 114`] = `
 {
   "code": 0,
   "path": "company api-keys",
@@ -7437,7 +7885,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 109`] = `
+exports[`help of every command and group is unchanged 115`] = `
 {
   "code": 0,
   "path": "company regions",
@@ -7457,7 +7905,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 110`] = `
+exports[`help of every command and group is unchanged 116`] = `
 {
   "code": 0,
   "path": "company activity",
@@ -7486,7 +7934,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 111`] = `
+exports[`help of every command and group is unchanged 117`] = `
 {
   "code": 0,
   "path": "company plugins",
@@ -7509,7 +7957,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 112`] = `
+exports[`help of every command and group is unchanged 118`] = `
 {
   "code": 0,
   "path": "company themes",

@@ -8,6 +8,7 @@ import {ENDPOINTS as logs} from './logs';
 import {ENDPOINTS as operations} from './operations';
 import {ENDPOINTS as plugins} from './plugins';
 import {ENDPOINTS as security} from './security';
+import {ENDPOINTS as sftp} from './sftp';
 import {ENDPOINTS as sites} from './sites';
 import {ENDPOINTS as ssh} from './ssh';
 import {ENDPOINTS as tools} from './tools';
@@ -27,6 +28,7 @@ export const ALL_ENDPOINTS: EndpointKey[] = [
     ...dns,
     ...wp,
     ...ssh,
+    ...sftp,
     ...security,
     ...analytics,
 ];

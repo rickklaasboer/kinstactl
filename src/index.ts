@@ -18,5 +18,6 @@ export * as plugins from './client/endpoints/plugins';
 export * as dns from './client/endpoints/dns';
 export * as wp from './client/endpoints/wp';
 export * as ssh from './client/endpoints/ssh';
+export * as sftp from './client/endpoints/sftp';
 export * as security from './client/endpoints/security';
 export * as analytics from './client/endpoints/analytics';

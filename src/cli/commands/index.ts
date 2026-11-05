@@ -63,6 +63,11 @@ import {SecurityBotProtectionExceptionsListCommand} from './security/SecurityBot
 import {SecurityBotProtectionLevelCommand} from './security/SecurityBotProtectionLevelCommand';
 import {SecurityBotProtectionWpAutomationsCommand} from './security/SecurityBotProtectionWpAutomationsCommand';
 import {SecurityForceHttpsCommand} from './security/SecurityForceHttpsCommand';
+import {SftpUsersAddCommand} from './sftp-users/SftpUsersAddCommand';
+import {SftpUsersDeleteCommand} from './sftp-users/SftpUsersDeleteCommand';
+import {SftpUsersDisableCommand} from './sftp-users/SftpUsersDisableCommand';
+import {SftpUsersEnableCommand} from './sftp-users/SftpUsersEnableCommand';
+import {SftpUsersListCommand} from './sftp-users/SftpUsersListCommand';
 import {SitesCloneCommand} from './sites/SitesCloneCommand';
 import {SitesCreateCommand} from './sites/SitesCreateCommand';
 import {SitesDeleteCommand} from './sites/SitesDeleteCommand';
@@ -156,6 +161,11 @@ export const COMMANDS: CommandClass[] = [
     SshPasswordEnableCommand,
     SshPasswordDisableCommand,
     SshPasswordExpirationCommand,
+    SftpUsersListCommand,
+    SftpUsersAddCommand,
+    SftpUsersEnableCommand,
+    SftpUsersDisableCommand,
+    SftpUsersDeleteCommand,
     SecurityForceHttpsCommand,
     SecurityBotProtectionLevelCommand,
     SecurityBotProtectionAiCrawlersCommand,
@@ -199,6 +209,10 @@ export const GROUPS: GroupDef[] = [
     {path: 'db', description: 'Database tools of an environment'},
     {path: 'ssh', description: 'SSH and SFTP access of an environment'},
     {path: 'ssh password', description: 'SSH/SFTP password access'},
+    {
+        path: 'sftp-users',
+        description: 'Additional SFTP accounts of an environment',
+    },
     {path: 'security', description: 'Security settings of an environment'},
     {path: 'security bot-protection', description: 'Bot protection'},
     {

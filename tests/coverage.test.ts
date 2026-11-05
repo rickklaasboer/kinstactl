@@ -27,10 +27,6 @@ function specOperations(): Set<EndpointKey> {
 const PENDING = new Set<EndpointKey>([
     'GET /sites/tools/denied-ips',
     'PUT /sites/tools/denied-ips',
-    'PUT /sites/environments/{env_id}/additional-sftp-accounts/toggle-status',
-    'POST /sites/environments/{env_id}/additional-sftp-accounts',
-    'GET /sites/environments/{env_id}/additional-sftp-accounts',
-    'DELETE /sites/environments/additional-sftp-accounts/{sftp_account_id}',
     'GET /sites/environments/{env_id}/redirect-rules',
     'POST /sites/environments/{env_id}/redirect-rules',
 ]);
