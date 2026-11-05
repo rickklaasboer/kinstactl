@@ -23,23 +23,15 @@ function specOperations(): Set<EndpointKey> {
     return ops;
 }
 
-// Not yet implemented; plan 2 drives this to empty.
-const PENDING = new Set<EndpointKey>([]);
-
-test('every spec operation is implemented or pending', () => {
-    const missing = [...specOperations()].filter(
-        (k) => !ALL_ENDPOINTS.includes(k) && !PENDING.has(k),
-    );
-    expect(missing).toEqual([]);
+test('every spec operation has a client builder', () => {
+    expect(
+        [...specOperations()].filter((k) => !ALL_ENDPOINTS.includes(k)),
+    ).toEqual([]);
 });
 
-test('nothing is both implemented and pending', () => {
-    expect(ALL_ENDPOINTS.filter((k) => PENDING.has(k))).toEqual([]);
-});
-
-test('nothing pending is unknown to the spec', () => {
+test('the client has no builder the spec does not know', () => {
     const ops = specOperations();
-    expect([...PENDING].filter((k) => !ops.has(k))).toEqual([]);
+    expect(ALL_ENDPOINTS.filter((k) => !ops.has(k))).toEqual([]);
 });
 
 function claimedByCommands(): Set<EndpointKey> {
