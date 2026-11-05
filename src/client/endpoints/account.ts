@@ -12,7 +12,16 @@ export function listCompanyUsers(companyId: string): RequestSpec {
     };
 }
 
+export function listRegions(companyId: string): RequestSpec {
+    return {
+        endpoint: 'GET /company/{id}/available-regions',
+        method: 'GET',
+        path: `/company/${encodeURIComponent(companyId)}/available-regions`,
+    };
+}
+
 export const ENDPOINTS: EndpointKey[] = [
     'GET /validate',
     'GET /company/{id}/users',
+    'GET /company/{id}/available-regions',
 ];

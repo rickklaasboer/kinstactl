@@ -30,8 +30,13 @@ import {PluginsListCommand} from './plugins/PluginsListCommand';
 import {PluginsUpdateCommand} from './plugins/PluginsUpdateCommand';
 import {ThemesListCommand} from './plugins/ThemesListCommand';
 import {ThemesUpdateCommand} from './plugins/ThemesUpdateCommand';
+import {SitesCloneCommand} from './sites/SitesCloneCommand';
+import {SitesCreateCommand} from './sites/SitesCreateCommand';
+import {SitesDeleteCommand} from './sites/SitesDeleteCommand';
 import {SitesGetCommand} from './sites/SitesGetCommand';
 import {SitesListCommand} from './sites/SitesListCommand';
+import {SitesPhpAllocationCommand} from './sites/SitesPhpAllocationCommand';
+import {SitesResetCommand} from './sites/SitesResetCommand';
 
 export const COMMANDS: CommandClass[] = [
     AuthLoginCommand,
@@ -44,6 +49,11 @@ export const COMMANDS: CommandClass[] = [
     LogsCommand,
     SitesListCommand,
     SitesGetCommand,
+    SitesCreateCommand,
+    SitesCloneCommand,
+    SitesDeleteCommand,
+    SitesResetCommand,
+    SitesPhpAllocationCommand,
     EnvListCommand,
     EnvPushCommand,
     CacheClearCommand,
@@ -75,7 +85,7 @@ export const GROUPS: GroupDef[] = [
         path: 'operations',
         description: 'Inspect and follow long-running Kinsta operations',
     },
-    {path: 'sites', description: 'List and inspect Kinsta sites'},
+    {path: 'sites', description: 'Manage Kinsta sites'},
     {path: 'env', description: 'List and manage environments of a site'},
     {path: 'cache', description: 'Clear the caches of a site environment'},
     {path: 'cache edge', description: 'Edge cache'},
