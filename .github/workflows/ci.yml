@@ -34,3 +34,5 @@ jobs:
             - run: test "$(./dist/bin/kinstactl-linux-x64 --version)" = "$(node -p 'require("./package.json").version')"
             - run: cd dist/bin && sha256sum -c SHA256SUMS
             - run: test "$(./dist/bin/kinstactl-linux-x64 commands --json | head -c 19)" = '{"name":"kinstactl"'
+            - run: docker build -t kinstactl:ci .
+            - run: docker run --rm kinstactl:ci kinstactl --version
