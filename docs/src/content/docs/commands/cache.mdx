@@ -1,0 +1,92 @@
+---
+title: cache
+description: Clear the site, edge and CDN caches of an environment and switch edge caching and image optimization.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+Kinsta caches a site in three places: the site cache of the environment itself, the edge cache and the CDN. The `cache` commands clear each of them and control edge caching and CDN image optimization.
+
+```sh
+kinstactl cache clear klant-x --env live
+kinstactl cache edge clear klant-x --env live
+kinstactl cache cdn clear klant-x --env live
+```
+
+Clearing a cache is not destructive, so none of these commands asks for confirmation. They wait for Kinsta to finish by default, and accept `--no-wait`, `--timeout <minutes>` and `--dry-run`; see [operations](/commands/operations/).
+
+## cache clear
+
+Clear the site cache of an environment.
+
+```sh
+kinstactl cache clear klant-x --env live
+```
+
+<CommandRef path="cache clear" />
+
+Use this after a deploy or a content import, when a page still shows old content. It clears the site cache of that one environment, not the edge cache or the CDN.
+
+## cache edge clear
+
+Clear the edge cache of an environment.
+
+```sh
+kinstactl cache edge clear klant-x --env live --url https://example.com/blog/ --subdirectories
+```
+
+<CommandRef path="cache edge clear" />
+
+Without `--url`, the whole edge cache of the environment is cleared. With `--url` only that URL is cleared, and `--subdirectories` extends that to everything below it.
+
+## cache edge enable
+
+Enable edge caching of an environment.
+
+```sh
+kinstactl cache edge enable klant-x --env live
+```
+
+<CommandRef path="cache edge enable" />
+
+Edge caching is a setting per environment. Use this command and `cache edge disable` to switch it, for example to turn it off while you debug a caching problem and on again afterwards.
+
+## cache edge disable
+
+Disable edge caching of an environment.
+
+```sh
+kinstactl cache edge disable klant-x --env live
+```
+
+<CommandRef path="cache edge disable" />
+
+The counterpart of `cache edge enable`.
+
+## cache cdn clear
+
+Clear the CDN cache of an environment.
+
+```sh
+kinstactl cache cdn clear klant-x --env live
+```
+
+<CommandRef path="cache cdn clear" />
+
+Use this when static files such as images, CSS or JavaScript are served stale from the CDN.
+
+## cache cdn image-optimization
+
+Show or set the CDN image optimization of an environment.
+
+```sh
+kinstactl cache cdn image-optimization klant-x lossy --env live
+```
+
+<CommandRef path="cache cdn image-optimization" />
+
+Without a `type`, the command shows the current setting. With `off`, `lossy` or `lossless` it changes the setting; only that form is an operation that waits and accepts `--dry-run`. To read the current value:
+
+```sh
+kinstactl cache cdn image-optimization klant-x --env live
+```

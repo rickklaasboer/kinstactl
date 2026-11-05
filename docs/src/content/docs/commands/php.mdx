@@ -1,0 +1,46 @@
+---
+title: php
+description: Restart the PHP engine of an environment and show or change its PHP version.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `php` commands control the PHP engine of one environment.
+
+```sh
+kinstactl php restart klant-x --env live
+kinstactl php version klant-x --env live
+kinstactl php version klant-x 8.3 --env staging
+```
+
+Both commands act on one environment, so pass `--env` in scripts; see [Sites and environments](/getting-started/sites-and-environments/). Changes wait for Kinsta to finish by default, and accept `--no-wait`, `--timeout <minutes>` and `--dry-run`; see [operations](/commands/operations/).
+
+## php restart
+
+Restart the PHP engine of an environment.
+
+```sh
+kinstactl php restart klant-x --env live
+```
+
+<CommandRef path="php restart" />
+
+Restarting PHP drops the running PHP processes, for example to pick up a changed setting or to recover from stuck workers. It does not ask for confirmation. To change the number of PHP threads or the memory per thread instead, see [`sites php-allocation`](/commands/sites/#sites-php-allocation).
+
+## php version
+
+Show the PHP version of an environment, or change it.
+
+```sh
+kinstactl php version klant-x 8.3 --env staging
+```
+
+<CommandRef path="php version" />
+
+Without a `version`, the command prints the current PHP version of the environment, in the same form (`8.3`) that you pass to change it:
+
+```sh
+kinstactl php version klant-x --env live
+```
+
+With a `version`, the environment is switched to it. `--no-auto-update` opts the environment out of automatic PHP updates, and only makes sense together with a version: without one it fails with a `USAGE` error. Try a new version on a staging environment first, and use `--dry-run` to check the request.

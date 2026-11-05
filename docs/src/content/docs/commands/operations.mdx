@@ -1,0 +1,55 @@
+---
+title: operations
+description: Check on or wait for a long-running Kinsta operation by its ID.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+Many Kinsta actions, such as creating a site or pushing an environment, run in the background and return an operation ID. By default kinstactl waits for the operation to finish for you. The `operations` commands are for the other case: you started something with `--no-wait` and want to look at it or wait for it later.
+
+```sh
+kinstactl cache clear klant-x --env live --no-wait
+kinstactl operations get <operation-id>
+kinstactl operations wait <operation-id>
+```
+
+## Operation IDs
+
+Every command that starts an operation takes `--no-wait`. It returns as soon as Kinsta has accepted the request and prints the operation ID, followed by a hint on stderr:
+
+```text
+✔ Started Clear cache
+Follow with: kinstactl operations wait 0e7b2d61-example
+```
+
+With `--json` the ID is in the `operation_id` field of the output, next to `status: "pending"`.
+
+## operations get
+
+Show the current status of an operation.
+
+```sh
+kinstactl operations get 0e7b2d61-example
+```
+
+<CommandRef path="operations get" />
+
+This asks Kinsta once and returns. It does not wait, so use it to peek at an operation that is still running. The status is `pending` or `completed`. An operation that Kinsta reports as failed makes the command exit with code 3, and an unknown ID fails with a `USAGE` error.
+
+## operations wait
+
+Wait until an operation has finished.
+
+```sh
+kinstactl operations wait 0e7b2d61-example --timeout 10
+```
+
+<CommandRef path="operations wait" />
+
+The command polls the operation and prints a success line when it has completed. `--timeout` is in minutes and defaults to 30, the same as on every command that waits by itself. The exit code tells a script what happened:
+
+- `0`: the operation completed.
+- `3`: the operation failed (`OPERATION_FAILED`).
+- `4`: the timeout passed before the operation finished (`OPERATION_TIMEOUT`).
+
+The same codes apply to any command that waits for an operation without `--no-wait`.

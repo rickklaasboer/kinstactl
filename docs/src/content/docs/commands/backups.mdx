@@ -1,0 +1,108 @@
+---
+title: backups
+description: List, create, restore and delete backups, and create downloadable backup archives.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `backups` commands manage the backups Kinsta keeps of an environment, and the downloadable archives you can take off Kinsta.
+
+```sh
+kinstactl backups list klant-x --env live
+kinstactl backups create klant-x --env live --tag "before plugin update"
+kinstactl backups restore klant-x 123456789 --env live --notify rick@example.com
+```
+
+Backups belong to an environment. Without `--env`, the site's only environment is used; see [Sites and environments](/getting-started/sites-and-environments/). Creating, restoring and deleting wait for Kinsta to finish by default, and accept `--no-wait`, `--timeout <minutes>` and `--dry-run`; see [operations](/commands/operations/).
+
+## backups list
+
+List the backups of an environment, newest first.
+
+```sh
+kinstactl backups list klant-x --env staging --type manual
+```
+
+<CommandRef path="backups list" />
+
+The table shows the backup ID, its type, the note and when it was created. You need the ID for `backups restore` and `backups delete`. `--type` keeps only one kind of backup, for example `manual`, `scheduled` or `system`.
+
+## backups create
+
+Create a manual backup.
+
+```sh
+kinstactl backups create klant-x --env live --tag "before plugin update"
+```
+
+<CommandRef path="backups create" />
+
+Take a manual backup before a risky change such as a plugin update or an [`env push`](/commands/env/#env-push). `--tag` labels the backup so you recognise it later.
+
+## backups restore
+
+Restore a backup, replacing the environment.
+
+```sh
+kinstactl backups restore klant-x 123456789 --notify rick@example.com
+```
+
+<CommandRef path="backups restore" />
+
+Restoring replaces the content of the environment with the backup, so the command asks for confirmation. On a terminal you answer a prompt; in a script pass `--yes`, otherwise it fails with `CONFIRMATION_REQUIRED` (exit code 5). `--notify` takes the email of a company user, who is notified when the restore finishes.
+
+By default the backup is restored onto the environment it was taken on. With `--from-env` you restore a backup taken on another environment of the same site onto `--env`, for example a staging backup onto live:
+
+```sh
+kinstactl backups restore klant-x 123456789 --from-env staging --env live --notify rick@example.com
+```
+
+The backup ID is looked up in `--from-env`, and the confirmation names both environments, so you can see that the content of `live` is about to be replaced by a backup from `staging`.
+
+## backups delete
+
+Delete a backup.
+
+```sh
+kinstactl backups delete klant-x 123456789 --env staging --yes
+```
+
+<CommandRef path="backups delete" />
+
+The backup is looked up first, and the confirmation shows its ID and creation time. On a terminal you answer a prompt; in a script pass `--yes`.
+
+## backups downloadable list
+
+List the downloadable backup archives of an environment.
+
+```sh
+kinstactl backups downloadable list klant-x --env live
+```
+
+<CommandRef path="backups downloadable list" />
+
+A downloadable backup is an archive you can download from Kinsta, as opposed to the backups above, which you can only restore. The table shows when each archive was created and when it expires.
+
+## backups downloadable create
+
+Create a downloadable backup archive.
+
+```sh
+kinstactl backups downloadable create klant-x --env live
+```
+
+<CommandRef path="backups downloadable create" />
+
+When the archive is ready, the command prints its download link. With `--no-wait` it returns the operation ID instead, and you collect the link later with `backups downloadable list`. Kinsta limits how often you can create one; check that with `backups downloadable quota` first.
+
+## backups downloadable quota
+
+Check whether a new downloadable backup can be created.
+
+```sh
+kinstactl backups downloadable quota klant-x --env live
+```
+
+<CommandRef path="backups downloadable quota" />
+
+The command prints `available` when you can create a new archive now, and otherwise when the next one becomes available.

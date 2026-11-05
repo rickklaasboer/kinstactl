@@ -1,0 +1,62 @@
+---
+title: auth
+description: Log in with a Kinsta API key, check the active credentials and manage stored profiles.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `auth` commands manage the credentials kinstactl uses to talk to the Kinsta API. They are stored per profile; see [Authentication](/getting-started/authentication/) for the full story, including the environment variables for CI.
+
+```sh
+kinstactl auth login
+kinstactl auth status
+kinstactl auth profiles
+```
+
+## auth login
+
+Validate an API key and store it, together with your company ID, in a profile.
+
+```sh
+kinstactl auth login --profile work --api-key - < key.txt
+```
+
+<CommandRef path="auth login" />
+
+The key is validated against Kinsta (`GET /validate`) before anything is stored, and the company ID is the one Kinsta reports for that key, so you never type it yourself. A key passed as a literal `--api-key <key>` ends up in your shell history. Pass `-` to read it from stdin instead. When stdin is not a terminal and no `--api-key` is given, the command fails with a `USAGE` error instead of prompting. Use the global `--profile <name>` to store the key under a named profile.
+
+## auth status
+
+Show the active credentials and validate them against Kinsta.
+
+```sh
+kinstactl auth status
+```
+
+<CommandRef path="auth status" />
+
+The output names the source of the credentials (`env` for `KINSTA_API_KEY` and `KINSTA_COMPANY_ID`, `profile` for a stored profile), the profile, the company ID, the name and status of the key and when it expires. The key itself is never printed. Because the key is validated against Kinsta, the command fails when the key has been revoked, which makes it a quick check at the start of a CI job.
+
+## auth logout
+
+Remove a stored profile.
+
+```sh
+kinstactl auth logout --profile work
+```
+
+<CommandRef path="auth logout" />
+
+The profile is selected by the usual rules (`--profile`, `KINSTA_PROFILE`, the default profile), and the command fails with a `USAGE` error when that profile does not exist. Credentials that come from environment variables are not affected.
+
+## auth profiles
+
+List the stored profiles.
+
+```sh
+kinstactl auth profiles
+```
+
+<CommandRef path="auth profiles" />
+
+The table shows each profile with its company ID and key name, and marks the default profile. See [Profiles](/getting-started/profiles/) for working with more than one company.

@@ -1,0 +1,118 @@
+---
+title: sites
+description: List, create, clone, reset and delete Kinsta sites, and read their usage.
+---
+
+import CommandRef from '../../../components/CommandRef.astro';
+
+The `sites` commands manage whole sites, that is a site with all its environments. For one environment of a site, see [env](/commands/env/).
+
+```sh
+kinstactl sites list
+kinstactl sites get klant-x
+kinstactl sites create "Klant Y" --region europe-west4 --plain
+```
+
+Creating, cloning, resetting, deleting and changing the PHP allocation of a site are long operations. Each of them waits for Kinsta to finish by default, and accepts `--no-wait`, `--timeout <minutes>` and `--dry-run`; see [operations](/commands/operations/). `--dry-run` prints the resolved site and the request that would be sent, and changes nothing.
+
+## sites list
+
+List the sites of the company.
+
+```sh
+kinstactl sites list --refresh
+```
+
+<CommandRef path="sites list" />
+
+kinstactl caches the list of sites for five minutes to resolve site names quickly, see [Sites and environments](/getting-started/sites-and-environments/). Use `--refresh` after you created or removed a site in MyKinsta and the list is out of date.
+
+## sites get
+
+Show the details of a site.
+
+```sh
+kinstactl sites get klant-x
+```
+
+<CommandRef path="sites get" />
+
+Without `<site>`, a command on a terminal shows a picker. Add `--json` for the full API response.
+
+## sites create
+
+Create a new site.
+
+```sh
+kinstactl sites create "Klant Y" --region europe-west4 --admin-user admin --admin-email admin@klant-y.nl --admin-password -
+```
+
+<CommandRef path="sites create" />
+
+By default the new site gets a WordPress install, which needs the admin user, email and password. Pass `--plain` for an empty environment without WordPress; the WordPress options (`--admin-user`, `--title`, `--multisite`, `--woocommerce`, `--yoast` and so on) are for the default install. `--admin-password -` reads the password from stdin, so it stays out of your shell history. On a terminal, a missing region or password is asked for interactively.
+
+```sh
+kinstactl sites create "Klant Y" --region europe-west4 --plain
+```
+
+Run `kinstactl company regions` to see the region IDs.
+
+## sites clone
+
+Clone an environment of a site into a new site.
+
+```sh
+kinstactl sites clone klant-x "Klant Y" --env live
+```
+
+<CommandRef path="sites clone" />
+
+The new site gets a copy of the chosen environment. Without `--env`, the site's only environment is used.
+
+## sites delete
+
+Delete a site with all its environments.
+
+```sh
+kinstactl sites delete klant-x --confirm klant-x
+```
+
+<CommandRef path="sites delete" />
+
+Deleting a site cannot be undone, so `--yes` is not accepted here. You confirm by typing the site name when prompted, or by passing it as `--confirm <site-name>`, which is the way to do it in a script. A name that does not match fails with `CONFIRMATION_REQUIRED` (exit code 5), and so does a script that passes no `--confirm`. Run it with `--dry-run` first to see what would be deleted.
+
+## sites reset
+
+Reset a site to a fresh WordPress install, in all environments.
+
+```sh
+kinstactl sites reset klant-x --admin-password - --confirm klant-x
+```
+
+<CommandRef path="sites reset" />
+
+Everything on the site is replaced by a clean WordPress install, in every environment. This cannot be undone either, so the same `--confirm <site-name>` rule as for `sites delete` applies. The admin password for the new install is read from stdin with `-`, or prompted for on a terminal.
+
+## sites php-allocation
+
+Change the PHP allocation of the live and standard staging environments.
+
+```sh
+kinstactl sites php-allocation klant-x --threads 4 --memory 256
+```
+
+<CommandRef path="sites php-allocation" />
+
+`--threads` sets the number of PHP threads and `--memory` the memory per thread in MB. The change applies to the live environment and the standard staging environment of the site. For a premium staging environment, use [`env php-allocation`](/commands/env/#env-php-allocation).
+
+## sites usage
+
+Show the visits, bandwidth and CDN bandwidth of a site this month.
+
+```sh
+kinstactl sites usage klant-x
+```
+
+<CommandRef path="sites usage" />
+
+The numbers are for the current month. Use `--json` to feed them into a report.
