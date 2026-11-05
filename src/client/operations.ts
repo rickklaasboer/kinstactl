@@ -4,7 +4,11 @@ import {
     OperationTimeoutError,
 } from '@/client/errors';
 import type {RequestSpec} from '@/client/request';
-import type {HttpTransport, RawResponse} from '@/client/transport';
+import {
+    type HttpTransport,
+    type RawResponse,
+    RETRYABLE_GATEWAY_STATUSES,
+} from '@/client/transport';
 
 export interface WaitOpts {
     timeoutMs?: number;
@@ -35,6 +39,20 @@ export class Operation {
         readonly message: string | null,
     ) {}
 
+    /** One poll. A string is the cause of a transient failure; anything else is rethrown. */
+    private async pollOnce(spec: RequestSpec): Promise<RawResponse | string> {
+        try {
+            const res = await this.transport.raw(spec);
+            return RETRYABLE_GATEWAY_STATUSES.has(res.status)
+                ? `HTTP ${res.status}`
+                : res;
+        } catch (e) {
+            // Only network failures and timeouts (status 0) say nothing about the operation.
+            if (e instanceof KinstaApiError && e.status === 0) return e.message;
+            throw e;
+        }
+    }
+
     async wait(opts: WaitOpts = {}): Promise<void> {
         const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS;
         const now = opts.now ?? Date.now;
@@ -59,18 +77,15 @@ export class Operation {
 
         await sleep(jitter(FIRST_POLL_MS));
         for (;;) {
-            let res: RawResponse;
-            try {
-                res = await this.transport.raw(spec);
-            } catch (e) {
+            const res = await this.pollOnce(spec);
+            if (typeof res === 'string') {
                 consecutiveErrors++;
-                if (consecutiveErrors > MAX_CONSECUTIVE_TRANSIENT_ERRORS) {
-                    const cause = e instanceof Error ? e.message : String(e);
-                    throw new OperationFailedError(
+                // The operation may well be running, so this is an unknown outcome, not a failure.
+                if (consecutiveErrors > MAX_CONSECUTIVE_TRANSIENT_ERRORS)
+                    throw new OperationTimeoutError(
                         this.id,
-                        `Lost contact with Kinsta while waiting for operation ${this.id} after ${consecutiveErrors} consecutive network errors: ${cause}`,
+                        `Lost contact with Kinsta while waiting for ${this.id} (${res}); the operation may still complete server-side`,
                     );
-                }
                 opts.onPoll?.('pending');
                 if (now() - started >= timeoutMs) throw timeout();
                 await sleep(jitter(interval));
@@ -79,6 +94,12 @@ export class Operation {
             }
             consecutiveErrors = 0;
             const message = (res.body as {message?: unknown} | null)?.message;
+            if (res.status === 401)
+                throw new KinstaApiError(
+                    401,
+                    typeof message === 'string' ? message : 'Unauthorized',
+                    res.body,
+                );
             if (res.status === 200) {
                 opts.onPoll?.('done');
                 return;

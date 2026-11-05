@@ -36,6 +36,12 @@ function fakeTransport(
     return {transport, paths, specs};
 }
 
+const networkError = () =>
+    new KinstaApiError(
+        0,
+        'Network error calling GET /operations/{operation_id}: ECONNRESET',
+    );
+
 function fakeTime() {
     let t = 0;
     return {
@@ -157,21 +163,33 @@ describe('Operation.wait', () => {
     it('tolerates up to 3 consecutive transient network errors then resolves', async () => {
         const time = fakeTime();
         const {transport, paths} = fakeTransport([
-            {throw: new Error('ECONNRESET')},
-            {throw: new Error('ECONNRESET')},
+            {throw: networkError()},
+            {throw: networkError()},
             {status: 200},
         ]);
         await operationFor(transport, 'op-7').wait(base(time));
         expect(paths.length).toBe(3);
     });
 
-    it('rejects with OperationFailedError after 4 consecutive transient network errors', async () => {
+    it('treats gateway statuses as transient too', async () => {
         const time = fakeTime();
         const {transport, paths} = fakeTransport([
-            {throw: new Error('ECONNRESET')},
-            {throw: new Error('ECONNRESET')},
-            {throw: new Error('ECONNRESET')},
-            {throw: new Error('ECONNRESET')},
+            {status: 502},
+            {status: 503},
+            {status: 504},
+            {status: 200},
+        ]);
+        await operationFor(transport, 'op-7').wait(base(time));
+        expect(paths.length).toBe(4);
+    });
+
+    it('rejects with OperationTimeoutError after 4 consecutive network errors', async () => {
+        const time = fakeTime();
+        const {transport, paths} = fakeTransport([
+            {throw: networkError()},
+            {throw: networkError()},
+            {throw: networkError()},
+            {throw: networkError()},
         ]);
         let caught: unknown;
         try {
@@ -179,9 +197,42 @@ describe('Operation.wait', () => {
         } catch (e) {
             caught = e;
         }
-        expect(caught).toBeInstanceOf(OperationFailedError);
-        expect((caught as Error).message).toContain('ECONNRESET');
+        expect(caught).toBeInstanceOf(OperationTimeoutError);
+        expect((caught as OperationTimeoutError).operationId).toBe('op-8');
+        expect((caught as Error).message).toBe(
+            'Lost contact with Kinsta while waiting for op-8 (Network error calling GET /operations/{operation_id}: ECONNRESET); the operation may still complete server-side',
+        );
         expect(paths.length).toBe(4);
+    });
+
+    it('rethrows a non-network error on its first occurrence', async () => {
+        const time = fakeTime();
+        const boom = new TypeError('programming error');
+        const {transport, paths} = fakeTransport([{throw: boom}]);
+        let caught: unknown;
+        try {
+            await operationFor(transport, 'op-10').wait(base(time));
+        } catch (e) {
+            caught = e;
+        }
+        expect(caught).toBe(boom);
+        expect(paths.length).toBe(1);
+    });
+
+    it('surfaces a 401 while polling as a KinstaApiError', async () => {
+        const time = fakeTime();
+        const {transport, paths} = fakeTransport([
+            {status: 401, body: {message: 'Unauthorized'}},
+        ]);
+        let caught: unknown;
+        try {
+            await operationFor(transport, 'op-11').wait(base(time));
+        } catch (e) {
+            caught = e;
+        }
+        expect(caught).toBeInstanceOf(KinstaApiError);
+        expect((caught as KinstaApiError).status).toBe(401);
+        expect(paths.length).toBe(1);
     });
 
     it('caps the poll interval at 15s', async () => {

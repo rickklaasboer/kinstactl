@@ -32,7 +32,7 @@ const MAX_RETRIES = 3;
  * NOT here: it is an application error, and `/operations/{id}` uses exactly that status to mean
  * "the operation failed", which must surface immediately rather than be retried.
  */
-const RETRYABLE_GATEWAY_STATUSES = new Set([502, 503, 504]);
+export const RETRYABLE_GATEWAY_STATUSES = new Set([502, 503, 504]);
 
 /**
  * Generous on purpose. Some Kinsta endpoints are genuinely slow (`/sites?include_environments=true`

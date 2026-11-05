@@ -68,6 +68,7 @@ export function toCliError(e: unknown): CliError {
     if (e instanceof OperationTimeoutError)
         return new CliError('OPERATION_TIMEOUT', e.message, [
             `Operation: ${e.operationId}`,
+            `Check with: kinstactl operations get ${e.operationId}`,
         ]);
     if (e instanceof CommanderError)
         return new CliError('USAGE', e.message.replace(/^error: /, ''));

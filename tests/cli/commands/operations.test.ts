@@ -66,6 +66,20 @@ describe('operations wait', () => {
         expect(r.code).toBe(3);
     });
 
+    test('losing contact while waiting exits 4 as an unknown outcome', async () => {
+        // No route: the fake fetch rejects on every poll.
+        const r = await runCli(['operations', 'wait', 'op1', '--json'], {
+            routes: {},
+        });
+        expect(r.code).toBe(4);
+        const {error} = JSON.parse(r.stderr);
+        expect(error.code).toBe('OPERATION_TIMEOUT');
+        expect(error.message).toContain('Lost contact with Kinsta');
+        expect(error.hints).toContain(
+            'Check with: kinstactl operations get op1',
+        );
+    });
+
     test('rejects a non-positive --timeout', async () => {
         const r = await runCli(
             ['operations', 'wait', 'op1', '--timeout', '0', '--json'],
