@@ -33,8 +33,10 @@ Make changes safely
 
 kinstactl sites delete my-site --dry-run --json --no-input
 
+- After you show the dry run, wait for the human's go-ahead before you run the write itself, whatever its confirmation level.
 - Never pass --yes or --confirm without the human's explicit approval for that specific action. Approval for one action is not approval for the next.
 - --confirm <site-name> exists only for irreversible actions, and takes the exact site name.
+- Treat passwords, login links and tokens that commands print (ssh password get, wp login, db login) like the API key: never log, echo or store them, and show them to the human only when that was the point of the request.
 
 Long operations
 - Prefer --no-wait. With --json the response has an operation_id; read it from the JSON, then wait for it:
