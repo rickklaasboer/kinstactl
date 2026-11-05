@@ -14,4 +14,10 @@ process.exitCode = await run(process.argv.slice(2), {
     isTTY: Boolean(process.stdin.isTTY && process.stdout.isTTY),
     env: process.env,
     prompts: clackPrompts,
+    stdin: async () => {
+        process.stdin.setEncoding('utf8');
+        let data = '';
+        for await (const chunk of process.stdin) data += chunk;
+        return data;
+    },
 });

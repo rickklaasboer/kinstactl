@@ -27,6 +27,25 @@ describe('auth login', () => {
         expect(loadConfig(r.env).defaultProfile).toBe('work');
     });
 
+    test('--api-key - reads the key from stdin', async () => {
+        const r = await runCli(['auth', 'login', '--api-key', '-'], {
+            io: {stdin: async () => 'k\n'},
+            routes: {'GET /validate': {body: validate}},
+        });
+        expect(r.code).toBe(0);
+        expect(r.calls[0]!.headers.get('Authorization')).toBe('Bearer k');
+        expect(loadConfig(r.env).profiles.default?.apiKey).toBe('k');
+    });
+
+    test('--api-key - with empty stdin is a usage error', async () => {
+        const r = await runCli(['auth', 'login', '--api-key', '-', '--json'], {
+            io: {stdin: async () => '\n'},
+        });
+        expect(r.code).toBe(2);
+        expect(JSON.parse(r.stderr).error.code).toBe('USAGE');
+        expect(r.calls).toEqual([]);
+    });
+
     test('non-interactive login without --api-key is a usage error', async () => {
         const r = await runCli(['auth', 'login', '--json']);
         expect(r.code).toBe(2);

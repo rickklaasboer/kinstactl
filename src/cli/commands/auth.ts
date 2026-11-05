@@ -23,20 +23,33 @@ export function registerAuth(program: Command, rt: Runtime): void {
             .description('Validate an API key and store it in a profile')
             .option(
                 '--api-key <key>',
-                'API key (required when not interactive)',
+                'API key (required when not interactive); "-" reads it from stdin. A literal key ends up in your shell history: prefer "--api-key -" or KINSTA_API_KEY',
             )
             .addHelpText(
                 'after',
-                '\nExamples:\n  $ kinstactl auth login\n  $ kinstactl auth login --profile work --api-key <key>',
+                '\nExamples:\n  $ kinstactl auth login\n  $ kinstactl auth login --profile work --api-key -  < key.txt\n  $ kinstactl auth login --profile work --api-key <key>',
             )
             .action(async (opts: {apiKey?: string}) => {
                 let apiKey = opts.apiKey;
+                if (apiKey === '-') {
+                    if (!rt.io.stdin)
+                        throw new CliError(
+                            'USAGE',
+                            'Reading the API key from stdin is not available here',
+                        );
+                    apiKey = (await rt.io.stdin()).trim();
+                    if (!apiKey)
+                        throw new CliError(
+                            'USAGE',
+                            'stdin is empty; expected the API key',
+                        );
+                }
                 if (!apiKey) {
                     if (!rt.interactive) {
                         throw new CliError(
                             'USAGE',
                             'No API key given and prompting is disabled',
-                            ['Pass --api-key <key>'],
+                            ['Pass --api-key <key> or --api-key - (stdin)'],
                         );
                     }
                     apiKey = await rt.prompts.text('Kinsta API key', {

@@ -14,6 +14,8 @@ export interface Io {
     /** Clock in epoch milliseconds; injectable for the site cache TTL. */
     now?: () => number;
     prompts: Prompts;
+    /** Reads all of stdin; used for `--api-key -`. */
+    stdin?: () => Promise<string>;
 }
 
 export interface GlobalOptions {
