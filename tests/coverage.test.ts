@@ -137,9 +137,6 @@ test('nothing pending is unknown to the spec', () => {
 // Client endpoints no command uses yet; each command task removes the keys it claims.
 const COMMAND_PENDING = new Set<EndpointKey>([
     'GET /company/{id}/users',
-    'GET /sites',
-    'GET /sites/{site_id}',
-    'GET /sites/{site_id}/environments',
     'PUT /sites/{site_id}/environments',
     'POST /sites/tools/clear-cache',
     'POST /sites/tools/restart-php',
