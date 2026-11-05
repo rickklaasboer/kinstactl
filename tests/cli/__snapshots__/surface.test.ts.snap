@@ -3065,6 +3065,437 @@ exports[`commands --json is unchanged 1`] = `
             {
               "description": "site name, display name or ID",
               "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Show whether SSH and SFTP access is enabled",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/environments/{env_id}/ssh/get-status",
+          ],
+          "name": "status",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "ssh status",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Enable SSH and SFTP access of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/environments/{env_id}/ssh/set-status",
+          ],
+          "name": "enable",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "ssh enable",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Disable SSH and SFTP access of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/environments/{env_id}/ssh/set-status",
+          ],
+          "name": "disable",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "ssh disable",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Show the SSH/SFTP connection details",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/{site_id}/environments/{env_id}/ssh/config",
+          ],
+          "name": "config",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "ssh config",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Show or change the IP allowlist for SSH and SFTP access",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/environments/{env_id}/ssh/get-allowed-ips",
+            "POST /sites/environments/{env_id}/ssh/set-allowed-ips",
+          ],
+          "name": "allowlist",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "IP addresses to add",
+              "flags": "--add <ip...>",
+            },
+            {
+              "description": "IP addresses to remove",
+              "flags": "--remove <ip...>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "ssh allowlist",
+        },
+        {
+          "arguments": [],
+          "commands": [
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Print the SSH/SFTP password of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/ssh/password",
+              ],
+              "name": "get",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "ssh password get",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Generate a new SSH/SFTP password",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "POST /sites/environments/{env_id}/ssh/generate-password",
+              ],
+              "name": "generate",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "ssh password generate",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Enable SSH/SFTP password login of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "POST /sites/environments/{env_id}/ssh/set-password-status",
+              ],
+              "name": "enable",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "ssh password enable",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Disable SSH/SFTP password login of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "POST /sites/environments/{env_id}/ssh/set-password-status",
+              ],
+              "name": "disable",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "ssh password disable",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": true,
+                },
+                {
+                  "choices": [
+                    "24h",
+                    "7d",
+                    "30d",
+                    "90d",
+                    "never",
+                  ],
+                  "description": "validity of the password",
+                  "name": "interval",
+                  "required": true,
+                },
+              ],
+              "commands": [],
+              "description": "Set how long the SSH/SFTP password stays valid",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "POST /sites/environments/{env_id}/ssh/change-expiration-interval",
+              ],
+              "name": "expiration",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "ssh password expiration",
+            },
+          ],
+          "description": "SSH/SFTP password access",
+          "destructive": null,
+          "endpoints": [],
+          "name": "password",
+          "options": [],
+          "path": "ssh password",
+        },
+      ],
+      "description": "SSH and SFTP access of an environment",
+      "destructive": null,
+      "endpoints": [],
+      "name": "ssh",
+      "options": [],
+      "path": "ssh",
+    },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
               "required": true,
             },
             {
@@ -4041,6 +4472,18 @@ wp  WordPress tools of an environment
 db  Database tools of an environment
   login [site]  Create a phpMyAdmin login link
 search-replace <site> <search> <replace>  Search and replace in the database (dry run unless --apply)
+ssh  SSH and SFTP access of an environment
+  status [site]  Show whether SSH and SFTP access is enabled
+  enable [site]  Enable SSH and SFTP access of an environment
+  disable [site]  Disable SSH and SFTP access of an environment
+  config [site]  Show the SSH/SFTP connection details
+  allowlist [site]  Show or change the IP allowlist for SSH and SFTP access
+  password  SSH/SFTP password access
+    get [site]  Print the SSH/SFTP password of an environment
+    generate [site]  Generate a new SSH/SFTP password
+    enable [site]  Enable SSH/SFTP password login of an environment
+    disable [site]  Disable SSH/SFTP password login of an environment
+    expiration <site> <interval>  Set how long the SSH/SFTP password stays valid
 security  Security settings of an environment
   force-https <site> [mode]  Show or change how an environment forces HTTPS (all, primary, off)
   bot-protection  Bot protection
@@ -4099,6 +4542,7 @@ Commands:
   wp                                                  WordPress tools of an environment
   db                                                  Database tools of an environment
   search-replace [options] <site> <search> <replace>  Search and replace in the database (dry run unless --apply)
+  ssh                                                 SSH and SFTP access of an environment
   security                                            Security settings of an environment
   analytics [options] <metric> [site]                 Traffic, bandwidth, disk and bot analytics of an environment
   company                                             Company-wide settings and inventories
@@ -6189,6 +6633,319 @@ Examples:
 exports[`help of every command and group is unchanged 79`] = `
 {
   "code": 0,
+  "path": "ssh",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh [options] [command]
+
+SSH and SFTP access of an environment
+
+Options:
+  -h, --help                  display help for command
+
+Commands:
+  status [options] [site]     Show whether SSH and SFTP access is enabled
+  enable [options] [site]     Enable SSH and SFTP access of an environment
+  disable [options] [site]    Disable SSH and SFTP access of an environment
+  config [options] [site]     Show the SSH/SFTP connection details
+  allowlist [options] [site]  Show or change the IP allowlist for SSH and SFTP
+                              access
+  password                    SSH/SFTP password access
+  help [command]              display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 80`] = `
+{
+  "code": 0,
+  "path": "ssh status",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh status [options] [site]
+
+Show whether SSH and SFTP access is enabled
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh status klant-x --env live
+  $ kinstactl ssh status klant-x --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 81`] = `
+{
+  "code": 0,
+  "path": "ssh enable",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh enable [options] [site]
+
+Enable SSH and SFTP access of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh enable klant-x --env live
+  $ kinstactl ssh enable klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 82`] = `
+{
+  "code": 0,
+  "path": "ssh disable",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh disable [options] [site]
+
+Disable SSH and SFTP access of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh disable klant-x --env live
+  $ kinstactl ssh disable klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 83`] = `
+{
+  "code": 0,
+  "path": "ssh config",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh config [options] [site]
+
+Show the SSH/SFTP connection details
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh config klant-x --env live
+  $ kinstactl ssh config klant-x --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 84`] = `
+{
+  "code": 0,
+  "path": "ssh allowlist",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh allowlist [options] [site]
+
+Show or change the IP allowlist for SSH and SFTP access
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --add <ip...>        IP addresses to add
+  --remove <ip...>     IP addresses to remove
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh allowlist klant-x --env live
+  $ kinstactl ssh allowlist klant-x --add 203.0.113.7
+  $ kinstactl ssh allowlist klant-x --remove 203.0.113.7 --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 85`] = `
+{
+  "code": 0,
+  "path": "ssh password",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh password [options] [command]
+
+SSH/SFTP password access
+
+Options:
+  -h, --help                              display help for command
+
+Commands:
+  get [options] [site]                    Print the SSH/SFTP password of an environment
+  generate [options] [site]               Generate a new SSH/SFTP password
+  enable [options] [site]                 Enable SSH/SFTP password login of an environment
+  disable [options] [site]                Disable SSH/SFTP password login of an environment
+  expiration [options] <site> <interval>  Set how long the SSH/SFTP password stays valid
+  help [command]                          display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 86`] = `
+{
+  "code": 0,
+  "path": "ssh password get",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh password get [options] [site]
+
+Print the SSH/SFTP password of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh password get klant-x --env live
+  $ kinstactl ssh password get klant-x --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 87`] = `
+{
+  "code": 0,
+  "path": "ssh password generate",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh password generate [options] [site]
+
+Generate a new SSH/SFTP password
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh password generate klant-x --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 88`] = `
+{
+  "code": 0,
+  "path": "ssh password enable",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh password enable [options] [site]
+
+Enable SSH/SFTP password login of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh password enable klant-x --env live
+  $ kinstactl ssh password enable klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 89`] = `
+{
+  "code": 0,
+  "path": "ssh password disable",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh password disable [options] [site]
+
+Disable SSH/SFTP password login of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh password disable klant-x --env live
+  $ kinstactl ssh password disable klant-x --env live --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 90`] = `
+{
+  "code": 0,
+  "path": "ssh password expiration",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl ssh password expiration [options] <site> <interval>
+
+Set how long the SSH/SFTP password stays valid
+
+Arguments:
+  site                 site name, display name or ID
+  interval             validity of the password (choices: "24h", "7d", "30d",
+                       "90d", "never")
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl ssh password expiration klant-x 7d --env live
+  $ kinstactl ssh password expiration klant-x never --dry-run
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 91`] = `
+{
+  "code": 0,
   "path": "security",
   "stderr": "",
   "stdout": 
@@ -6209,7 +6966,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 80`] = `
+exports[`help of every command and group is unchanged 92`] = `
 {
   "code": 0,
   "path": "security force-https",
@@ -6241,7 +6998,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 81`] = `
+exports[`help of every command and group is unchanged 93`] = `
 {
   "code": 0,
   "path": "security bot-protection",
@@ -6265,7 +7022,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 82`] = `
+exports[`help of every command and group is unchanged 94`] = `
 {
   "code": 0,
   "path": "security bot-protection level",
@@ -6296,7 +7053,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 83`] = `
+exports[`help of every command and group is unchanged 95`] = `
 {
   "code": 0,
   "path": "security bot-protection ai-crawlers",
@@ -6326,7 +7083,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 84`] = `
+exports[`help of every command and group is unchanged 96`] = `
 {
   "code": 0,
   "path": "security bot-protection wp-automations",
@@ -6356,7 +7113,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 85`] = `
+exports[`help of every command and group is unchanged 97`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions",
@@ -6379,7 +7136,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 86`] = `
+exports[`help of every command and group is unchanged 98`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions list",
@@ -6403,7 +7160,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 87`] = `
+exports[`help of every command and group is unchanged 99`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions add",
@@ -6436,7 +7193,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 88`] = `
+exports[`help of every command and group is unchanged 100`] = `
 {
   "code": 0,
   "path": "security bot-protection exceptions delete",
@@ -6465,7 +7222,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 89`] = `
+exports[`help of every command and group is unchanged 101`] = `
 {
   "code": 0,
   "path": "analytics",
@@ -6508,7 +7265,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 90`] = `
+exports[`help of every command and group is unchanged 102`] = `
 {
   "code": 0,
   "path": "company",
@@ -6536,7 +7293,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 91`] = `
+exports[`help of every command and group is unchanged 103`] = `
 {
   "code": 0,
   "path": "company users",
@@ -6560,7 +7317,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 92`] = `
+exports[`help of every command and group is unchanged 104`] = `
 {
   "code": 0,
   "path": "company users list",
@@ -6581,7 +7338,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 93`] = `
+exports[`help of every command and group is unchanged 105`] = `
 {
   "code": 0,
   "path": "company users get",
@@ -6604,7 +7361,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 94`] = `
+exports[`help of every command and group is unchanged 106`] = `
 {
   "code": 0,
   "path": "company users role",
@@ -6632,7 +7389,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 95`] = `
+exports[`help of every command and group is unchanged 107`] = `
 {
   "code": 0,
   "path": "company users site-role",
@@ -6660,7 +7417,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 96`] = `
+exports[`help of every command and group is unchanged 108`] = `
 {
   "code": 0,
   "path": "company api-keys",
@@ -6680,7 +7437,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 97`] = `
+exports[`help of every command and group is unchanged 109`] = `
 {
   "code": 0,
   "path": "company regions",
@@ -6700,7 +7457,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 98`] = `
+exports[`help of every command and group is unchanged 110`] = `
 {
   "code": 0,
   "path": "company activity",
@@ -6729,7 +7486,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 99`] = `
+exports[`help of every command and group is unchanged 111`] = `
 {
   "code": 0,
   "path": "company plugins",
@@ -6752,7 +7509,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 100`] = `
+exports[`help of every command and group is unchanged 112`] = `
 {
   "code": 0,
   "path": "company themes",

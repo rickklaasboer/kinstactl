@@ -33,15 +33,6 @@ const PENDING = new Set<EndpointKey>([
     'DELETE /sites/environments/additional-sftp-accounts/{sftp_account_id}',
     'GET /sites/environments/{env_id}/redirect-rules',
     'POST /sites/environments/{env_id}/redirect-rules',
-    'POST /sites/environments/{env_id}/ssh/set-status',
-    'GET /sites/environments/{env_id}/ssh/get-status',
-    'POST /sites/environments/{env_id}/ssh/set-password-status',
-    'POST /sites/environments/{env_id}/ssh/generate-password',
-    'GET /sites/environments/{env_id}/ssh/get-allowed-ips',
-    'POST /sites/environments/{env_id}/ssh/set-allowed-ips',
-    'GET /sites/{site_id}/environments/{env_id}/ssh/config',
-    'POST /sites/environments/{env_id}/ssh/change-expiration-interval',
-    'GET /sites/environments/{env_id}/ssh/password',
 ]);
 
 test('every spec operation is implemented or pending', () => {

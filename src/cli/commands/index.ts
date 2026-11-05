@@ -71,6 +71,16 @@ import {SitesListCommand} from './sites/SitesListCommand';
 import {SitesPhpAllocationCommand} from './sites/SitesPhpAllocationCommand';
 import {SitesResetCommand} from './sites/SitesResetCommand';
 import {SitesUsageCommand} from './sites/SitesUsageCommand';
+import {SshAllowlistCommand} from './ssh/SshAllowlistCommand';
+import {SshConfigCommand} from './ssh/SshConfigCommand';
+import {SshDisableCommand} from './ssh/SshDisableCommand';
+import {SshEnableCommand} from './ssh/SshEnableCommand';
+import {SshPasswordDisableCommand} from './ssh/SshPasswordDisableCommand';
+import {SshPasswordEnableCommand} from './ssh/SshPasswordEnableCommand';
+import {SshPasswordExpirationCommand} from './ssh/SshPasswordExpirationCommand';
+import {SshPasswordGenerateCommand} from './ssh/SshPasswordGenerateCommand';
+import {SshPasswordGetCommand} from './ssh/SshPasswordGetCommand';
+import {SshStatusCommand} from './ssh/SshStatusCommand';
 import {WpLoginCommand} from './wp/WpLoginCommand';
 import {WpRunCommand} from './wp/WpRunCommand';
 import {WpUserCreateCommand} from './wp/WpUserCreateCommand';
@@ -136,6 +146,16 @@ export const COMMANDS: CommandClass[] = [
     WpUserExistsCommand,
     DbLoginCommand,
     SearchReplaceCommand,
+    SshStatusCommand,
+    SshEnableCommand,
+    SshDisableCommand,
+    SshConfigCommand,
+    SshAllowlistCommand,
+    SshPasswordGetCommand,
+    SshPasswordGenerateCommand,
+    SshPasswordEnableCommand,
+    SshPasswordDisableCommand,
+    SshPasswordExpirationCommand,
     SecurityForceHttpsCommand,
     SecurityBotProtectionLevelCommand,
     SecurityBotProtectionAiCrawlersCommand,
@@ -177,6 +197,8 @@ export const GROUPS: GroupDef[] = [
     {path: 'wp', description: 'WordPress tools of an environment'},
     {path: 'wp user', description: 'WordPress admin users'},
     {path: 'db', description: 'Database tools of an environment'},
+    {path: 'ssh', description: 'SSH and SFTP access of an environment'},
+    {path: 'ssh password', description: 'SSH/SFTP password access'},
     {path: 'security', description: 'Security settings of an environment'},
     {path: 'security bot-protection', description: 'Bot protection'},
     {
