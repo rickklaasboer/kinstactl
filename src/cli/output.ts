@@ -14,6 +14,8 @@ export interface OutputSink {
     /** Read on every call: the flag is only known after Commander parsed the arguments. */
     json: () => boolean;
     color: boolean;
+    /** Adds the stack of unexpected errors to JSON error output. */
+    debug?: boolean;
 }
 
 export class Output {
@@ -66,15 +68,25 @@ export class Output {
     }
 
     error(e: CliError): void {
+        const stack =
+            e.code === 'INTERNAL' && e.cause instanceof Error
+                ? e.cause.stack
+                : undefined;
         if (this.sink.json()) {
             this.sink.stderr(
                 `${JSON.stringify({
-                    error: {code: e.code, message: e.message, hints: e.hints},
+                    error: {
+                        code: e.code,
+                        message: e.message,
+                        hints: e.hints,
+                        ...(this.sink.debug && stack ? {stack} : {}),
+                    },
                 })}\n`,
             );
             return;
         }
         this.sink.stderr(`${this.c.red(e.message)}\n`);
         for (const hint of e.hints) this.sink.stderr(`${this.c.dim(hint)}\n`);
+        if (stack) this.sink.stderr(`${this.c.dim(stack)}\n`);
     }
 }

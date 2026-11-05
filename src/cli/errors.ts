@@ -16,6 +16,7 @@ export type ErrorCode =
     | 'CONFIRMATION_REQUIRED'
     | 'CONFIRMATION_DECLINED'
     | 'API_ERROR'
+    | 'INTERNAL'
     | 'OPERATION_FAILED'
     | 'OPERATION_TIMEOUT';
 
@@ -27,6 +28,7 @@ const EXIT_CODES: Record<ErrorCode, number> = {
     ENV_REQUIRED: 2,
     ENV_NOT_FOUND: 2,
     API_ERROR: 1,
+    INTERNAL: 1,
     AUTH_INVALID: 1,
     OPERATION_FAILED: 3,
     OPERATION_TIMEOUT: 4,
@@ -41,8 +43,10 @@ export class CliError extends Error {
         readonly code: ErrorCode,
         message: string,
         readonly hints: string[] = [],
+        /** The original error, kept so its stack can be shown for INTERNAL errors. */
+        cause?: unknown,
     ) {
-        super(message);
+        super(message, {cause});
         this.name = 'CliError';
         this.exitCode = EXIT_CODES[code];
     }
@@ -68,7 +72,9 @@ export function toCliError(e: unknown): CliError {
     if (e instanceof CommanderError)
         return new CliError('USAGE', e.message.replace(/^error: /, ''));
     return new CliError(
-        'API_ERROR',
-        e instanceof Error ? e.message : String(e),
+        'INTERNAL',
+        `Unexpected error: ${e instanceof Error ? e.message : String(e)}`,
+        [],
+        e,
     );
 }

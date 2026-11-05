@@ -41,6 +41,7 @@ export class Runtime {
             stdout: io.stdout,
             stderr: io.stderr,
             json: () => this.json,
+            debug: io.env.KINSTACTL_DEBUG === '1',
             color: io.isTTY && !io.env.NO_COLOR && io.env.TERM !== 'dumb',
         });
     }
