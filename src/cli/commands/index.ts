@@ -14,6 +14,11 @@ import {CacheEdgeDisableCommand} from './cache/CacheEdgeDisableCommand';
 import {CacheEdgeEnableCommand} from './cache/CacheEdgeEnableCommand';
 import type {CommandClass, GroupDef} from './BaseCommand';
 import {CommandsCommand} from './CommandsCommand';
+import {DomainsAddCommand} from './domains/DomainsAddCommand';
+import {DomainsListCommand} from './domains/DomainsListCommand';
+import {DomainsPrimaryCommand} from './domains/DomainsPrimaryCommand';
+import {DomainsRemoveCommand} from './domains/DomainsRemoveCommand';
+import {DomainsVerificationCommand} from './domains/DomainsVerificationCommand';
 import {EnvListCommand} from './env/EnvListCommand';
 import {EnvPushCommand} from './env/EnvPushCommand';
 import {LogsCommand} from './logs/LogsCommand';
@@ -57,6 +62,11 @@ export const COMMANDS: CommandClass[] = [
     BackupsCreateCommand,
     BackupsRestoreCommand,
     BackupsDeleteCommand,
+    DomainsListCommand,
+    DomainsAddCommand,
+    DomainsRemoveCommand,
+    DomainsPrimaryCommand,
+    DomainsVerificationCommand,
 ];
 
 export const GROUPS: GroupDef[] = [
@@ -74,4 +84,5 @@ export const GROUPS: GroupDef[] = [
     {path: 'plugins', description: 'List and update WordPress plugins'},
     {path: 'themes', description: 'List and update WordPress themes'},
     {path: 'backups', description: 'List, create, restore and delete backups'},
+    {path: 'domains', description: 'Manage the domains of an environment'},
 ];

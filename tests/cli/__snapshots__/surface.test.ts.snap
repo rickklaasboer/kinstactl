@@ -1352,6 +1352,288 @@ exports[`commands --json is unchanged 1`] = `
       "options": [],
       "path": "backups",
     },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "List the domains of an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/environments/{env_id}/domains",
+          ],
+          "name": "list",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "domains list",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "domain name to add",
+              "name": "domain",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Add a domain to an environment",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "POST /sites/environments/{env_id}/domains",
+          ],
+          "name": "add",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "also add the www subdomain",
+              "flags": "--with-www",
+            },
+            {
+              "description": "also cover subdomains (clears is_wildcardless)",
+              "flags": "--wildcard",
+            },
+            {
+              "description": "quick or avoid_downtime",
+              "flags": "--setup-type <type>",
+            },
+            {
+              "description": "private key file of a custom SSL certificate",
+              "flags": "--ssl-key <file>",
+            },
+            {
+              "description": "certificate file of a custom SSL certificate",
+              "flags": "--ssl-cert <file>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "domains add",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "domain name or ID, see: domains list",
+              "name": "domain",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Remove a domain from an environment",
+          "destructive": "confirm",
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/environments/{env_id}/domains",
+            "DELETE /sites/environments/{env_id}/domains",
+          ],
+          "name": "remove",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "skip the confirmation prompt",
+              "flags": "--yes",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "domains remove",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "domain name or ID, see: domains list",
+              "name": "domain",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Change the primary domain of an environment",
+          "destructive": "confirm",
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/environments/{env_id}/domains",
+            "PUT /sites/environments/{env_id}/change-primary-domain",
+          ],
+          "name": "primary",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "also rewrite the old URL in the database",
+              "flags": "--search-replace",
+            },
+            {
+              "description": "print the resolved target and request; change nothing",
+              "flags": "--dry-run",
+            },
+            {
+              "description": "return the operation ID instead of waiting",
+              "flags": "--no-wait",
+            },
+            {
+              "description": "give up waiting after this many minutes (default 30)",
+              "flags": "--timeout <minutes>",
+            },
+            {
+              "description": "skip the confirmation prompt",
+              "flags": "--yes",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "domains primary",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name, display name or ID",
+              "name": "site",
+              "required": true,
+            },
+            {
+              "description": "domain name or ID, see: domains list",
+              "name": "domain",
+              "required": true,
+            },
+          ],
+          "commands": [],
+          "description": "Show the DNS records that verify and point a domain",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+            "GET /sites/environments/{env_id}/domains",
+            "GET /sites/environments/domains/{site_domain_id}/verification-records",
+          ],
+          "name": "verification",
+          "options": [
+            {
+              "description": "environment name or ID",
+              "flags": "--env <environment>",
+            },
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "domains verification",
+        },
+      ],
+      "description": "Manage the domains of an environment",
+      "destructive": null,
+      "endpoints": [],
+      "name": "domains",
+      "options": [],
+      "path": "domains",
+    },
   ],
   "description": "Command line client for the Kinsta API",
   "destructive": null,
@@ -1415,6 +1697,12 @@ backups  List, create, restore and delete backups
   create [site]  Create a manual backup
   restore <site> <backup-id>  Restore a backup, replacing the environment
   delete <site> <backup-id>  Delete a backup
+domains  Manage the domains of an environment
+  list [site]  List the domains of an environment
+  add <site> <domain>  Add a domain to an environment
+  remove <site> <domain>  Remove a domain from an environment
+  primary <site> <domain>  Change the primary domain of an environment
+  verification <site> <domain>  Show the DNS records that verify and point a domain
 "
 `;
 
@@ -1449,6 +1737,7 @@ Commands:
   plugins                       List and update WordPress plugins
   themes                        List and update WordPress themes
   backups                       List, create, restore and delete backups
+  domains                       Manage the domains of an environment
   help [command]                display help for command
 "
 ,
@@ -2457,6 +2746,177 @@ Options:
 Examples:
   $ kinstactl backups delete klant-x 123456789
   $ kinstactl backups delete klant-x 123456789 --env staging --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 38`] = `
+{
+  "code": 0,
+  "path": "domains",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl domains [options] [command]
+
+Manage the domains of an environment
+
+Options:
+  -h, --help                              display help for command
+
+Commands:
+  list [options] [site]                   List the domains of an environment
+  add [options] <site> <domain>           Add a domain to an environment
+  remove [options] <site> <domain>        Remove a domain from an environment
+  primary [options] <site> <domain>       Change the primary domain of an environment
+  verification [options] <site> <domain>  Show the DNS records that verify and point a domain
+  help [command]                          display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 39`] = `
+{
+  "code": 0,
+  "path": "domains list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl domains list [options] [site]
+
+List the domains of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl domains list klant-x
+  $ kinstactl domains list klant-x --env staging --json
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 40`] = `
+{
+  "code": 0,
+  "path": "domains add",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl domains add [options] <site> <domain>
+
+Add a domain to an environment
+
+Arguments:
+  site                 site name, display name or ID
+  domain               domain name to add
+
+Options:
+  --env <environment>  environment name or ID
+  --with-www           also add the www subdomain
+  --wildcard           also cover subdomains (clears is_wildcardless)
+  --setup-type <type>  quick or avoid_downtime
+  --ssl-key <file>     private key file of a custom SSL certificate
+  --ssl-cert <file>    certificate file of a custom SSL certificate
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl domains add klant-x example.com --env live
+  $ kinstactl domains add klant-x example.com --with-www --ssl-key key.pem --ssl-cert cert.pem
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 41`] = `
+{
+  "code": 0,
+  "path": "domains remove",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl domains remove [options] <site> <domain>
+
+Remove a domain from an environment
+
+Arguments:
+  site                 site name, display name or ID
+  domain               domain name or ID, see: domains list
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl domains remove klant-x example.com
+  $ kinstactl domains remove klant-x example.com --env live --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 42`] = `
+{
+  "code": 0,
+  "path": "domains primary",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl domains primary [options] <site> <domain>
+
+Change the primary domain of an environment
+
+Arguments:
+  site                 site name, display name or ID
+  domain               domain name or ID, see: domains list
+
+Options:
+  --env <environment>  environment name or ID
+  --search-replace     also rewrite the old URL in the database
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  --yes                skip the confirmation prompt
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl domains primary klant-x example.com
+  $ kinstactl domains primary klant-x example.com --search-replace --yes
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 43`] = `
+{
+  "code": 0,
+  "path": "domains verification",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl domains verification [options] <site> <domain>
+
+Show the DNS records that verify and point a domain
+
+Arguments:
+  site                 site name, display name or ID
+  domain               domain name or ID, see: domains list
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl domains verification klant-x example.com
+  $ kinstactl domains verification klant-x example.com --json
 "
 ,
 }

@@ -12,5 +12,6 @@ export * as sites from './client/endpoints/sites';
 export * as environments from './client/endpoints/environments';
 export * as tools from './client/endpoints/tools';
 export * as backups from './client/endpoints/backups';
+export * as domains from './client/endpoints/domains';
 export * as logs from './client/endpoints/logs';
 export * as plugins from './client/endpoints/plugins';

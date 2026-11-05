@@ -1,5 +1,6 @@
 import {ENDPOINTS as account} from './account';
 import {ENDPOINTS as backups} from './backups';
+import {ENDPOINTS as domains} from './domains';
 import {ENDPOINTS as environments} from './environments';
 import {ENDPOINTS as logs} from './logs';
 import {ENDPOINTS as operations} from './operations';
@@ -17,4 +18,5 @@ export const ALL_ENDPOINTS: EndpointKey[] = [
     ...logs,
     ...plugins,
     ...operations,
+    ...domains,
 ];
