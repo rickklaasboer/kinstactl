@@ -36,6 +36,11 @@ export function shellSplit(line: string): string[] {
     return tokens;
 }
 
+/** Drops a trailing `# comment`, which may hold an unbalanced quote. */
+function stripComment(text: string): string {
+    return text.replace(/(^|\s)#.*$/, '');
+}
+
 /** Lines inside ``` fences that mention the `kinstactl` token. */
 export function exampleLines(markdown: string): {line: number; text: string}[] {
     const found: {line: number; text: string}[] = [];
@@ -45,7 +50,11 @@ export function exampleLines(markdown: string): {line: number; text: string}[] {
             inFence = !inFence;
             return;
         }
-        if (inFence && shellSplit(text).includes('kinstactl')) {
+        if (
+            inFence &&
+            /\bkinstactl\b/.test(text) &&
+            shellSplit(stripComment(text)).includes('kinstactl')
+        ) {
             found.push({line: i + 1, text});
         }
     });
@@ -54,7 +63,7 @@ export function exampleLines(markdown: string): {line: number; text: string}[] {
 
 /** The arguments after `kinstactl`, up to the first shell operator. */
 export function commandTokens(text: string): string[] {
-    const tokens = shellSplit(text);
+    const tokens = shellSplit(stripComment(text));
     const start = tokens.indexOf('kinstactl');
     if (start === -1) throw new Error(`No kinstactl token in: ${text}`);
     const rest = tokens.slice(start + 1);
@@ -145,6 +154,24 @@ test('commandTokens stops at a pipe', () => {
         'sites',
         'list',
         '--json',
+    ]);
+});
+
+test('unbalanced apostrophes outside commands do not throw', () => {
+    const markdown = [
+        '```ts',
+        "// don't touch this",
+        '```',
+        '```sh',
+        "kinstactl sites list # don't",
+        '```',
+    ].join('\n');
+    expect(exampleLines(markdown)).toEqual([
+        {line: 5, text: "kinstactl sites list # don't"},
+    ]);
+    expect(commandTokens("kinstactl sites list # don't")).toEqual([
+        'sites',
+        'list',
     ]);
 });
 
