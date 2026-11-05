@@ -4,7 +4,11 @@ import {
     startOperation,
 } from '@/client/operations';
 import type {RequestSpec} from '@/client/request';
-import {HttpTransport, type TransportConfig} from '@/client/transport';
+import {
+    HttpTransport,
+    type RawResponse,
+    type TransportConfig,
+} from '@/client/transport';
 
 export interface KinstaClientOptions extends TransportConfig {
     companyId: string;
@@ -22,6 +26,11 @@ export class KinstaClient {
 
     send<T = unknown>(spec: RequestSpec): Promise<T> {
         return this.transport.send<T>(spec);
+    }
+
+    /** Like send, but keeps the status and does not throw on HTTP errors. */
+    raw(spec: RequestSpec): Promise<RawResponse> {
+        return this.transport.raw(spec);
     }
 
     /** Sends a request that must answer with an operation_id and returns a handle to wait on. */

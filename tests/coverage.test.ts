@@ -157,7 +157,6 @@ const COMMAND_PENDING = new Set<EndpointKey>([
     'PUT /sites/environments/{env_id}/themes',
     'PUT /sites/environments/{env_id}/plugins/bulk-update',
     'PUT /sites/environments/{env_id}/themes/bulk-update',
-    'GET /operations/{operation_id}',
 ]);
 
 function claimedByCommands(): Set<EndpointKey> {
