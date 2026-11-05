@@ -27,6 +27,11 @@ import {CompanyUsersGetCommand} from './company/CompanyUsersGetCommand';
 import {CompanyUsersListCommand} from './company/CompanyUsersListCommand';
 import {CompanyUsersRoleCommand} from './company/CompanyUsersRoleCommand';
 import {CompanyUsersSiteRoleCommand} from './company/CompanyUsersSiteRoleCommand';
+import {CompletionBashCommand} from './completion/CompletionBashCommand';
+import {CompletionEnvsCommand} from './completion/CompletionEnvsCommand';
+import {CompletionFishCommand} from './completion/CompletionFishCommand';
+import {CompletionSitesCommand} from './completion/CompletionSitesCommand';
+import {CompletionZshCommand} from './completion/CompletionZshCommand';
 import {DbLoginCommand} from './db/DbLoginCommand';
 import {DnsRecordsAddCommand} from './dns/DnsRecordsAddCommand';
 import {DnsRecordsDeleteCommand} from './dns/DnsRecordsDeleteCommand';
@@ -193,6 +198,11 @@ export const COMMANDS: CommandClass[] = [
     CompanyActivityCommand,
     CompanyPluginsCommand,
     CompanyThemesCommand,
+    CompletionZshCommand,
+    CompletionBashCommand,
+    CompletionFishCommand,
+    CompletionSitesCommand,
+    CompletionEnvsCommand,
 ];
 
 export const GROUPS: GroupDef[] = [
@@ -232,4 +242,5 @@ export const GROUPS: GroupDef[] = [
     {path: 'security redirects', description: 'Redirect rules'},
     {path: 'company', description: 'Company-wide settings and inventories'},
     {path: 'company users', description: 'Company users and roles'},
+    {path: 'completion', description: 'Shell completion scripts'},
 ];

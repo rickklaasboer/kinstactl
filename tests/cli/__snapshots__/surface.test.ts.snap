@@ -4948,6 +4948,142 @@ exports[`commands --json is unchanged 1`] = `
       "options": [],
       "path": "company",
     },
+    {
+      "arguments": [],
+      "commands": [
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "Print the zsh completion script",
+          "destructive": null,
+          "endpoints": [],
+          "name": "zsh",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "completion zsh",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "Print the bash completion script",
+          "destructive": null,
+          "endpoints": [],
+          "name": "bash",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "completion bash",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "Print the fish completion script",
+          "destructive": null,
+          "endpoints": [],
+          "name": "fish",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "completion fish",
+        },
+        {
+          "arguments": [],
+          "commands": [],
+          "description": "Print the site names for shell completion",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+          ],
+          "name": "sites",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "completion sites",
+        },
+        {
+          "arguments": [
+            {
+              "description": "site name or ID",
+              "name": "site",
+              "required": false,
+            },
+          ],
+          "commands": [],
+          "description": "Print the environment names of a site for shell completion",
+          "destructive": null,
+          "endpoints": [
+            "GET /sites",
+          ],
+          "name": "envs",
+          "options": [
+            {
+              "description": "config profile to use",
+              "flags": "--profile <name>",
+            },
+            {
+              "description": "print machine-readable JSON",
+              "flags": "--json",
+            },
+            {
+              "description": "never prompt; fail instead",
+              "flags": "--no-input",
+            },
+          ],
+          "path": "completion envs",
+        },
+      ],
+      "description": "Shell completion scripts",
+      "destructive": null,
+      "endpoints": [],
+      "name": "completion",
+      "options": [],
+      "path": "completion",
+    },
   ],
   "description": "Command line client for the Kinsta API",
   "destructive": null,
@@ -5095,6 +5231,12 @@ company  Company-wide settings and inventories
   activity  Show the activity log of the company
   plugins  List the plugins in use across the company (filters apply client-side)
   themes  List the themes in use across the company (filters apply client-side)
+completion  Shell completion scripts
+  zsh  Print the zsh completion script
+  bash  Print the bash completion script
+  fish  Print the fish completion script
+  sites  Print the site names for shell completion
+  envs [site]  Print the environment names of a site for shell completion
 "
 `;
 
@@ -5136,6 +5278,7 @@ Commands:
   security                                            Security settings of an environment
   analytics [options] <metric> [site]                 Traffic, bandwidth, disk and bot analytics of an environment
   company                                             Company-wide settings and inventories
+  completion                                          Shell completion scripts
   help [command]                                      display help for command
 "
 ,
@@ -8472,6 +8615,135 @@ Options:
 Examples:
   $ kinstactl company themes
   $ kinstactl company themes --updates --vulnerable
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 113`] = `
+{
+  "code": 0,
+  "path": "completion",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl completion [options] [command]
+
+Shell completion scripts
+
+Options:
+  -h, --help      display help for command
+
+Commands:
+  zsh             Print the zsh completion script
+  bash            Print the bash completion script
+  fish            Print the fish completion script
+  sites           Print the site names for shell completion
+  envs [site]     Print the environment names of a site for shell completion
+  help [command]  display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 114`] = `
+{
+  "code": 0,
+  "path": "completion zsh",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl completion zsh [options]
+
+Print the zsh completion script
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl completion zsh > "\${fpath[1]}/_kinstactl"
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 115`] = `
+{
+  "code": 0,
+  "path": "completion bash",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl completion bash [options]
+
+Print the bash completion script
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl completion bash
+  $ eval "$(kinstactl completion bash)"
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 116`] = `
+{
+  "code": 0,
+  "path": "completion fish",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl completion fish [options]
+
+Print the fish completion script
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl completion fish > ~/.config/fish/completions/kinstactl.fish
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 117`] = `
+{
+  "code": 0,
+  "path": "completion sites",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl completion sites [options]
+
+Print the site names for shell completion
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl completion sites
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 118`] = `
+{
+  "code": 0,
+  "path": "completion envs",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl completion envs [options] [site]
+
+Print the environment names of a site for shell completion
+
+Arguments:
+  site        site name or ID
+
+Options:
+  -h, --help  display help for command
+
+Examples:
+  $ kinstactl completion envs klant-x
 "
 ,
 }
