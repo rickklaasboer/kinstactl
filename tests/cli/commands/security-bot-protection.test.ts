@@ -292,3 +292,84 @@ describe('security bot-protection exceptions', () => {
         });
     });
 });
+
+// The spec makes operation_id optional for these four responses.
+describe('security writes that answer without an operation_id', () => {
+    const synchronous = {
+        status: 200,
+        body: {message: 'Applied', status: 200},
+    };
+    const cases: {
+        name: string;
+        args: string[];
+        route: string;
+        method: string;
+    }[] = [
+        {
+            name: 'force-https',
+            args: ['force-https', 'klant-x', 'off'],
+            route: 'POST /sites/environments/env-live/force-https-status',
+            method: 'POST',
+        },
+        {
+            name: 'bot-protection level',
+            args: ['bot-protection', 'level', 'klant-x', 'block-automations'],
+            route: `PUT ${BP}/level`,
+            method: 'PUT',
+        },
+        {
+            name: 'exceptions add',
+            args: [
+                'bot-protection',
+                'exceptions',
+                'add',
+                'klant-x',
+                'ip',
+                'skip',
+                '192.0.2.1',
+            ],
+            route: `POST ${BP}/exception-rules`,
+            method: 'POST',
+        },
+        {
+            name: 'exceptions delete',
+            args: [
+                'bot-protection',
+                'exceptions',
+                'delete',
+                'klant-x',
+                'ip:skip:192.0.2.1',
+                '--yes',
+            ],
+            route: `DELETE ${BP}/exception-rules`,
+            method: 'DELETE',
+        },
+    ];
+
+    test.each(cases)('$name succeeds', async ({args, route, method}) => {
+        const r = await runCli(['security', ...args, '--env', 'live'], {
+            routes: {...sites, [route]: synchronous},
+        });
+        expect(r.code).toBe(0);
+        expect(r.calls.some((c) => c.method === method)).toBe(true);
+        expect(
+            r.calls.some((c) => c.url.pathname.includes('/operations')),
+        ).toBe(false);
+        expect(r.stdout).toContain('completed');
+    });
+
+    test.each(cases)(
+        '$name prints one JSON document',
+        async ({args, route}) => {
+            const r = await runCli(
+                ['security', ...args, '--env', 'live', '--json'],
+                {routes: {...sites, [route]: synchronous}},
+            );
+            expect(r.code).toBe(0);
+            expect(JSON.parse(r.stdout)).toEqual({
+                message: 'Applied',
+                status: 'completed',
+            });
+        },
+    );
+});

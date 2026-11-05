@@ -115,6 +115,24 @@ export function printOperationResult(
     );
 }
 
+/**
+ * The success line for a send() whose response may or may not have started an
+ * operation (operation_id optional in the spec): one document under --json.
+ */
+export function printSentResult(
+    output: Output,
+    title: string,
+    body: {message: string; operation_id?: string},
+): void {
+    output.success(`${title} completed`, {
+        ...(body.operation_id !== undefined && {
+            operation_id: body.operation_id,
+        }),
+        message: body.message,
+        status: 'completed',
+    });
+}
+
 /** Runs an API operation: dry-run, confirmation, request, then waiting. */
 @scoped(Lifecycle.ContainerScoped)
 export class OperationRunner {

@@ -12,6 +12,7 @@ import {
     type ActionFlags,
     actionOptions,
     OperationRunner,
+    printSentResult,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
 import type {
@@ -95,11 +96,15 @@ export class SecurityForceHttpsCommand implements BaseCommand<Options> {
             options.env,
             {write: true},
         );
-        await this.operations.run({
-            title: `Set force HTTPS to ${mode}`,
+        const title = `Set force HTTPS to ${mode}`;
+        const body = await this.operations.send<
+            components['schemas']['SetForceHttpsStatus-Response']
+        >({
+            title,
             spec: setForceHttps(target.env.id, MODES[mode]),
             target,
             flags: options,
         });
+        if (body !== undefined) printSentResult(this.output, title, body);
     }
 }

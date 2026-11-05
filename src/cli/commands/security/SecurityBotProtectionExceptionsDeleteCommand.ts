@@ -1,10 +1,13 @@
 import {injectable} from 'tsyringe';
 import {removeExceptionRule} from '@/client/endpoints/security';
+import type {components} from '@/client/generated/openapi';
 import type {EndpointKey} from '@/client/request';
+import {Output} from '../../output';
 import {
     type ActionFlags,
     actionOptions,
     OperationRunner,
+    printSentResult,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
 import type {
@@ -52,6 +55,7 @@ export class SecurityBotProtectionExceptionsDeleteCommand
     constructor(
         private readonly resolver: SiteResolver,
         private readonly operations: OperationRunner,
+        private readonly output: Output,
     ) {}
 
     async execute(args: CommandArgs, options: Options): Promise<void> {
@@ -61,15 +65,16 @@ export class SecurityBotProtectionExceptionsDeleteCommand
             {write: true},
         );
         const ruleId = args.ruleId as string;
-        await this.operations.run({
-            title: `Delete exception rule ${ruleId}`,
+        const title = `Delete exception rule ${ruleId}`;
+        const body = await this.operations.send<
+            components['schemas']['RemoveBotProtectionExceptionRule-Response']
+        >({
+            title,
             spec: removeExceptionRule(target.env.id, ruleId),
             target,
             flags: options,
-            confirm: {
-                action: `Delete exception rule ${ruleId}`,
-                level: 'confirm',
-            },
+            confirm: {action: title, level: 'confirm'},
         });
+        if (body !== undefined) printSentResult(this.output, title, body);
     }
 }

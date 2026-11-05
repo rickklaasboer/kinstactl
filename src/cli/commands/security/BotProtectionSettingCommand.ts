@@ -6,6 +6,7 @@ import {
     type ActionFlags,
     actionOptions,
     OperationRunner,
+    printSentResult,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
 import type {
@@ -113,11 +114,18 @@ export abstract class BotProtectionSettingCommand
             options.env,
             {write: true},
         );
-        await this.operations.run({
-            title: `Set bot protection ${setting.name} to ${value}`,
+        // send() for every setting: the level response has an optional
+        // operation_id, the others always carry one and are waited on all the same.
+        const title = `Set bot protection ${setting.name} to ${value}`;
+        const body = await this.operations.send<{
+            message: string;
+            operation_id?: string;
+        }>({
+            title,
             spec: setting.set(target.env.id, setting.toApi(value)),
             target,
             flags: options,
         });
+        if (body !== undefined) printSentResult(this.output, title, body);
     }
 }

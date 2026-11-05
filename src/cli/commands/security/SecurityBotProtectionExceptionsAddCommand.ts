@@ -4,11 +4,14 @@ import {
     type ExceptionRuleAction,
     type ExceptionRuleType,
 } from '@/client/endpoints/security';
+import type {components} from '@/client/generated/openapi';
 import type {EndpointKey} from '@/client/request';
+import {Output} from '../../output';
 import {
     type ActionFlags,
     actionOptions,
     OperationRunner,
+    printSentResult,
 } from '../../services/OperationRunner';
 import {SiteResolver} from '../../services/SiteResolver';
 import type {
@@ -66,6 +69,7 @@ export class SecurityBotProtectionExceptionsAddCommand
     constructor(
         private readonly resolver: SiteResolver,
         private readonly operations: OperationRunner,
+        private readonly output: Output,
     ) {}
 
     async execute(args: CommandArgs, options: Options): Promise<void> {
@@ -79,11 +83,15 @@ export class SecurityBotProtectionExceptionsAddCommand
             action: args.action as ExceptionRuleAction,
             value: args.value as string,
         };
-        await this.operations.run({
-            title: `Add exception rule ${rule.type}:${rule.action}:${rule.value}`,
+        const title = `Add exception rule ${rule.type}:${rule.action}:${rule.value}`;
+        const body = await this.operations.send<
+            components['schemas']['AddBotProtectionExceptionRule-Response']
+        >({
+            title,
             spec: addExceptionRule(target.env.id, rule),
             target,
             flags: options,
         });
+        if (body !== undefined) printSentResult(this.output, title, body);
     }
 }
