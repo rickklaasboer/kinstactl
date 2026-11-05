@@ -44,6 +44,11 @@ jobs:
               with:
                   fetch-depth: 0 # release-it needs tags and history
 
+            # A run queued behind another one (concurrency) checked out its own
+            # sha, which is behind the version-bump commit the earlier run pushed.
+            - name: Fast-forward to the latest main
+              run: git pull --ff-only origin main
+
             - uses: oven-sh/setup-bun@v2
               with:
                   bun-version: latest

@@ -25,6 +25,18 @@ test('release-it bumps on main and leaves publishing to the workflow', () => {
     ]);
 });
 
+test('the release job fast-forwards to the latest main after checkout', () => {
+    const steps: {uses?: string; run?: string}[] = release.jobs.release.steps;
+    const checkout = steps.findIndex((s) =>
+        s.uses?.startsWith('actions/checkout'),
+    );
+    const pull = steps.findIndex((s) =>
+        s.run?.includes('git pull --ff-only origin main'),
+    );
+    expect(checkout).toBe(0);
+    expect(pull).toBeGreaterThan(checkout);
+});
+
 test('a push to main releases a patch and the manual trigger offers the four increments', () => {
     expect(release.on.push.branches).toEqual(['main']);
     const options = release.on.workflow_dispatch.inputs.increment.options;
