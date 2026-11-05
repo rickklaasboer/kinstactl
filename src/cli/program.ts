@@ -2,6 +2,7 @@ import {Command, CommanderError} from 'commander';
 import type {EndpointKey} from '@/client/request';
 import {registerAuth} from './commands/auth';
 import {registerCommands} from './commands/commands';
+import {registerLogs} from './commands/logs';
 import {registerOperations} from './commands/operations';
 import {toCliError} from './errors';
 import {Runtime, type Io} from './runtime';
@@ -45,6 +46,7 @@ export function buildProgram(rt: Runtime): Command {
     registerAuth(program, rt);
     registerCommands(program, rt);
     registerOperations(program, rt);
+    registerLogs(program, rt);
     return program;
 }
 

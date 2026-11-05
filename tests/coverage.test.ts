@@ -150,7 +150,6 @@ const COMMAND_PENDING = new Set<EndpointKey>([
     'POST /sites/environments/{env_id}/manual-backups',
     'POST /sites/environments/{target_env_id}/backups/restore',
     'DELETE /sites/environments/backups/{backup_id}',
-    'GET /sites/environments/{env_id}/logs',
     'GET /sites/environments/{env_id}/wp-plugins',
     'GET /sites/environments/{env_id}/wp-themes',
     'PUT /sites/environments/{env_id}/plugins',
