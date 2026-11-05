@@ -89,7 +89,10 @@ export class HttpTransport {
                         `Request to ${spec.endpoint} timed out after ${timeoutMs / 1000}s`,
                     );
                 }
-                throw e;
+                throw new KinstaApiError(
+                    0,
+                    `Network error calling ${spec.endpoint}: ${e instanceof Error ? e.message : String(e)}`,
+                );
             }
             this.limiter.noteHeaders(res.headers);
             if (res.status === 429 && attempt < MAX_RETRIES) {

@@ -277,6 +277,28 @@ describe('HttpTransport', () => {
         expect(acquired).toEqual(['general']);
     });
 
+    it('reports a rejected fetch as a status 0 network error', async () => {
+        const failingFetch = (async () => {
+            throw new TypeError('fetch failed');
+        }) as unknown as typeof fetch;
+        const transport = new HttpTransport({
+            apiKey: 'k',
+            limiter: limiter(),
+            fetchFn: failingFetch,
+            sleep: noSleep,
+        });
+        try {
+            await transport.send(get('/sites'));
+            expect.unreachable();
+        } catch (e) {
+            expect(e).toBeInstanceOf(KinstaApiError);
+            expect((e as KinstaApiError).status).toBe(0);
+            expect((e as KinstaApiError).message).toBe(
+                'Network error calling GET /sites: fetch failed',
+            );
+        }
+    });
+
     it('timeout aborts after REQUEST_TIMEOUT_MS', async () => {
         // Never resolves on its own; rejects only when the transport's abort signal fires.
         const hangingFetch = ((_input: RequestInfo | URL, init?: RequestInit) =>
