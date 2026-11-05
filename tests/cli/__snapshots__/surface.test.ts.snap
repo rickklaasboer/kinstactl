@@ -1994,6 +1994,138 @@ exports[`commands --json is unchanged 1`] = `
           ],
           "path": "backups delete",
         },
+        {
+          "arguments": [],
+          "commands": [
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "List the downloadable backup archives of an environment",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/downloadable-backups",
+              ],
+              "name": "list",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "backups downloadable list",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Create a downloadable backup archive",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "POST /sites/environments/{env_id}/downloadable-backups",
+                "GET /sites/environments/{env_id}/downloadable-backups",
+              ],
+              "name": "create",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "print the resolved target and request; change nothing",
+                  "flags": "--dry-run",
+                },
+                {
+                  "description": "return the operation ID instead of waiting",
+                  "flags": "--no-wait",
+                },
+                {
+                  "description": "give up waiting after this many minutes (default 30)",
+                  "flags": "--timeout <minutes>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "backups downloadable create",
+            },
+            {
+              "arguments": [
+                {
+                  "description": "site name, display name or ID",
+                  "name": "site",
+                  "required": false,
+                },
+              ],
+              "commands": [],
+              "description": "Check whether a new downloadable backup can be created",
+              "destructive": null,
+              "endpoints": [
+                "GET /sites",
+                "GET /sites/environments/{env_id}/next-downloadable-backup-available",
+              ],
+              "name": "quota",
+              "options": [
+                {
+                  "description": "environment name or ID",
+                  "flags": "--env <environment>",
+                },
+                {
+                  "description": "config profile to use",
+                  "flags": "--profile <name>",
+                },
+                {
+                  "description": "print machine-readable JSON",
+                  "flags": "--json",
+                },
+                {
+                  "description": "never prompt; fail instead",
+                  "flags": "--no-input",
+                },
+              ],
+              "path": "backups downloadable quota",
+            },
+          ],
+          "description": "Downloadable backup archives",
+          "destructive": null,
+          "endpoints": [],
+          "name": "downloadable",
+          "options": [],
+          "path": "backups downloadable",
+        },
       ],
       "description": "List, create, restore and delete backups",
       "destructive": null,
@@ -2961,6 +3093,10 @@ backups  List, create, restore and delete backups
   create [site]  Create a manual backup
   restore <site> <backup-id>  Restore a backup, replacing the environment
   delete <site> <backup-id>  Delete a backup
+  downloadable  Downloadable backup archives
+    list [site]  List the downloadable backup archives of an environment
+    create [site]  Create a downloadable backup archive
+    quota [site]  Check whether a new downloadable backup can be created
 domains  Manage the domains of an environment
   list [site]  List the domains of an environment
   add <site> <domain>  Add a domain to an environment
@@ -4264,6 +4400,7 @@ Commands:
   restore [options] <site> <backup-id>  Restore a backup, replacing the
                                         environment
   delete [options] <site> <backup-id>   Delete a backup
+  downloadable                          Downloadable backup archives
   help [command]                        display help for command
 "
 ,
@@ -4389,6 +4526,107 @@ Examples:
 exports[`help of every command and group is unchanged 52`] = `
 {
   "code": 0,
+  "path": "backups downloadable",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl backups downloadable [options] [command]
+
+Downloadable backup archives
+
+Options:
+  -h, --help               display help for command
+
+Commands:
+  list [options] [site]    List the downloadable backup archives of an
+                           environment
+  create [options] [site]  Create a downloadable backup archive
+  quota [options] [site]   Check whether a new downloadable backup can be
+                           created
+  help [command]           display help for command
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 53`] = `
+{
+  "code": 0,
+  "path": "backups downloadable list",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl backups downloadable list [options] [site]
+
+List the downloadable backup archives of an environment
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl backups downloadable list klant-x --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 54`] = `
+{
+  "code": 0,
+  "path": "backups downloadable create",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl backups downloadable create [options] [site]
+
+Create a downloadable backup archive
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  --dry-run            print the resolved target and request; change nothing
+  --no-wait            return the operation ID instead of waiting
+  --timeout <minutes>  give up waiting after this many minutes (default 30)
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl backups downloadable create klant-x --env live
+  $ kinstactl backups downloadable create klant-x --env live --no-wait
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 55`] = `
+{
+  "code": 0,
+  "path": "backups downloadable quota",
+  "stderr": "",
+  "stdout": 
+"Usage: kinstactl backups downloadable quota [options] [site]
+
+Check whether a new downloadable backup can be created
+
+Arguments:
+  site                 site name, display name or ID
+
+Options:
+  --env <environment>  environment name or ID
+  -h, --help           display help for command
+
+Examples:
+  $ kinstactl backups downloadable quota klant-x --env live
+"
+,
+}
+`;
+
+exports[`help of every command and group is unchanged 56`] = `
+{
+  "code": 0,
   "path": "domains",
   "stderr": "",
   "stdout": 
@@ -4411,7 +4649,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 53`] = `
+exports[`help of every command and group is unchanged 57`] = `
 {
   "code": 0,
   "path": "domains list",
@@ -4436,7 +4674,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 54`] = `
+exports[`help of every command and group is unchanged 58`] = `
 {
   "code": 0,
   "path": "domains add",
@@ -4470,7 +4708,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 55`] = `
+exports[`help of every command and group is unchanged 59`] = `
 {
   "code": 0,
   "path": "domains remove",
@@ -4500,7 +4738,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 56`] = `
+exports[`help of every command and group is unchanged 60`] = `
 {
   "code": 0,
   "path": "domains primary",
@@ -4531,7 +4769,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 57`] = `
+exports[`help of every command and group is unchanged 61`] = `
 {
   "code": 0,
   "path": "domains verification",
@@ -4557,7 +4795,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 58`] = `
+exports[`help of every command and group is unchanged 62`] = `
 {
   "code": 0,
   "path": "dns",
@@ -4579,7 +4817,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 59`] = `
+exports[`help of every command and group is unchanged 63`] = `
 {
   "code": 0,
   "path": "dns zones",
@@ -4600,7 +4838,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 60`] = `
+exports[`help of every command and group is unchanged 64`] = `
 {
   "code": 0,
   "path": "dns records",
@@ -4624,7 +4862,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 61`] = `
+exports[`help of every command and group is unchanged 65`] = `
 {
   "code": 0,
   "path": "dns records list",
@@ -4647,7 +4885,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 62`] = `
+exports[`help of every command and group is unchanged 66`] = `
 {
   "code": 0,
   "path": "dns records add",
@@ -4678,7 +4916,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 63`] = `
+exports[`help of every command and group is unchanged 67`] = `
 {
   "code": 0,
   "path": "dns records update",
@@ -4710,7 +4948,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 64`] = `
+exports[`help of every command and group is unchanged 68`] = `
 {
   "code": 0,
   "path": "dns records delete",
@@ -4740,7 +4978,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 65`] = `
+exports[`help of every command and group is unchanged 69`] = `
 {
   "code": 0,
   "path": "wp",
@@ -4763,7 +5001,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 66`] = `
+exports[`help of every command and group is unchanged 70`] = `
 {
   "code": 0,
   "path": "wp run",
@@ -4793,7 +5031,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 67`] = `
+exports[`help of every command and group is unchanged 71`] = `
 {
   "code": 0,
   "path": "wp login",
@@ -4819,7 +5057,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 68`] = `
+exports[`help of every command and group is unchanged 72`] = `
 {
   "code": 0,
   "path": "wp user",
@@ -4841,7 +5079,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 69`] = `
+exports[`help of every command and group is unchanged 73`] = `
 {
   "code": 0,
   "path": "wp user create",
@@ -4869,7 +5107,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 70`] = `
+exports[`help of every command and group is unchanged 74`] = `
 {
   "code": 0,
   "path": "wp user exists",
@@ -4894,7 +5132,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 71`] = `
+exports[`help of every command and group is unchanged 75`] = `
 {
   "code": 0,
   "path": "db",
@@ -4915,7 +5153,7 @@ Commands:
 }
 `;
 
-exports[`help of every command and group is unchanged 72`] = `
+exports[`help of every command and group is unchanged 76`] = `
 {
   "code": 0,
   "path": "db login",
@@ -4940,7 +5178,7 @@ Examples:
 }
 `;
 
-exports[`help of every command and group is unchanged 73`] = `
+exports[`help of every command and group is unchanged 77`] = `
 {
   "code": 0,
   "path": "search-replace",

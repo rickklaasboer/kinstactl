@@ -49,9 +49,38 @@ export function deleteBackup(backupId: number): RequestSpec {
     };
 }
 
+export function listDownloadableBackups(envId: string): RequestSpec {
+    return {
+        endpoint: 'GET /sites/environments/{env_id}/downloadable-backups',
+        method: 'GET',
+        path: `/sites/environments/${encodeURIComponent(envId)}/downloadable-backups`,
+    };
+}
+
+export function createDownloadableBackup(envId: string): RequestSpec {
+    return {
+        endpoint: 'POST /sites/environments/{env_id}/downloadable-backups',
+        method: 'POST',
+        path: `/sites/environments/${encodeURIComponent(envId)}/downloadable-backups`,
+        creation: true,
+    };
+}
+
+export function nextDownloadableBackup(envId: string): RequestSpec {
+    return {
+        endpoint:
+            'GET /sites/environments/{env_id}/next-downloadable-backup-available',
+        method: 'GET',
+        path: `/sites/environments/${encodeURIComponent(envId)}/next-downloadable-backup-available`,
+    };
+}
+
 export const ENDPOINTS: EndpointKey[] = [
     'GET /sites/environments/{env_id}/backups',
     'POST /sites/environments/{env_id}/manual-backups',
     'POST /sites/environments/{target_env_id}/backups/restore',
     'DELETE /sites/environments/backups/{backup_id}',
+    'GET /sites/environments/{env_id}/downloadable-backups',
+    'POST /sites/environments/{env_id}/downloadable-backups',
+    'GET /sites/environments/{env_id}/next-downloadable-backup-available',
 ];

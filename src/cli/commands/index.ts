@@ -4,6 +4,9 @@ import {AuthProfilesCommand} from './auth/AuthProfilesCommand';
 import {AuthStatusCommand} from './auth/AuthStatusCommand';
 import {BackupsCreateCommand} from './backups/BackupsCreateCommand';
 import {BackupsDeleteCommand} from './backups/BackupsDeleteCommand';
+import {BackupsDownloadableCreateCommand} from './backups/BackupsDownloadableCreateCommand';
+import {BackupsDownloadableListCommand} from './backups/BackupsDownloadableListCommand';
+import {BackupsDownloadableQuotaCommand} from './backups/BackupsDownloadableQuotaCommand';
 import {BackupsListCommand} from './backups/BackupsListCommand';
 import {BackupsRestoreCommand} from './backups/BackupsRestoreCommand';
 import {CacheCdnClearCommand} from './cache/CacheCdnClearCommand';
@@ -95,6 +98,9 @@ export const COMMANDS: CommandClass[] = [
     BackupsCreateCommand,
     BackupsRestoreCommand,
     BackupsDeleteCommand,
+    BackupsDownloadableListCommand,
+    BackupsDownloadableCreateCommand,
+    BackupsDownloadableQuotaCommand,
     DomainsListCommand,
     DomainsAddCommand,
     DomainsRemoveCommand,
@@ -128,6 +134,7 @@ export const GROUPS: GroupDef[] = [
     {path: 'plugins', description: 'List and update WordPress plugins'},
     {path: 'themes', description: 'List and update WordPress themes'},
     {path: 'backups', description: 'List, create, restore and delete backups'},
+    {path: 'backups downloadable', description: 'Downloadable backup archives'},
     {path: 'domains', description: 'Manage the domains of an environment'},
     {path: 'dns', description: 'Kinsta DNS zones and records'},
     {path: 'dns records', description: 'DNS records of a zone'},
