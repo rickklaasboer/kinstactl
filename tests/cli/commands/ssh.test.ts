@@ -94,28 +94,21 @@ describe('ssh enable/disable', () => {
 });
 
 describe('ssh config', () => {
-    const config = (activeContainer?: object) => ({
+    const flatConfig = {
+        name: 'My Site',
+        host: '203.0.113.9',
+        port: '12345',
+        user: 'mysite',
+        ssh_command: 'ssh mysite@203.0.113.9 -p 12345',
+    };
+    const config = (body: object) => ({
         ...sites,
-        'GET /sites/id-x/environments/env-live/ssh/config': {
-            body: {
-                site: {
-                    id: 'id-x',
-                    name: 'my-site',
-                    displayName: 'My Site',
-                    usr: 'mysite',
-                    environment: {id: 'env-live', activeContainer},
-                },
-            },
-        },
+        'GET /sites/id-x/environments/env-live/ssh/config': {body},
     });
 
-    test('prints the ssh command from the nested shape', async () => {
+    test('prints the ssh command from the flat response', async () => {
         const r = await runCli(['ssh', 'config', 'my-site', '--json'], {
-            routes: config({
-                id: 'c1',
-                lxdSshPort: '12345',
-                loadBalancer: {id: 'lb1', extIP: '203.0.113.9'},
-            }),
+            routes: config(flatConfig),
         });
         expect(r.code).toBe(0);
         expect(JSON.parse(r.stdout)).toEqual({
@@ -128,11 +121,7 @@ describe('ssh config', () => {
 
     test('human output has Host, Port and User lines', async () => {
         const r = await runCli(['ssh', 'config', 'my-site'], {
-            routes: config({
-                id: 'c1',
-                lxdSshPort: '12345',
-                loadBalancer: {id: 'lb1', extIP: '203.0.113.9'},
-            }),
+            routes: config(flatConfig),
         });
         expect(r.stdout.trim().split('\n')).toEqual([
             'Host: 203.0.113.9',
@@ -144,7 +133,7 @@ describe('ssh config', () => {
 
     test('without connection details is an api error', async () => {
         const r = await runCli(['ssh', 'config', 'my-site', '--json'], {
-            routes: config(undefined),
+            routes: config({name: 'My Site'}),
         });
         expect(r.code).toBe(1);
         const {error} = JSON.parse(r.stderr);

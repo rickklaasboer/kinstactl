@@ -1,6 +1,6 @@
 import {injectable} from 'tsyringe';
 import {getSshConfig} from '@/client/endpoints/ssh';
-import type {components} from '@/client/generated/openapi';
+import type {operations} from '@/client/generated/openapi';
 import type {EndpointKey} from '@/client/request';
 import {CliError} from '../../errors';
 import {Output} from '../../output';
@@ -16,21 +16,21 @@ import {
 
 type Options = {env?: string};
 
-type SftpConfig = components['schemas']['GetSftpConfig-Response'];
+type SftpConfig =
+    operations['getSftpConfig']['responses'][200]['content']['application/json'];
 
-/** The one place that knows the response shape: the nested `site` object. */
+/**
+ * The one place that knows the response shape. The API returns the flat
+ * fields; the nested `site` object from the spec is not sent.
+ */
 function readConnection(res: SftpConfig) {
-    const container = res.site?.environment?.activeContainer;
-    if (!container)
+    const {host, port, user} = res;
+    if (!host || !port || !user)
         throw new CliError(
             'API_ERROR',
             'Response has no SSH connection details',
         );
-    return {
-        host: container.loadBalancer.extIP,
-        port: container.lxdSshPort,
-        user: res.site.usr,
-    };
+    return {host, port, user};
 }
 
 @injectable()
